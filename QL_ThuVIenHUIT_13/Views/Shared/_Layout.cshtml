@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thư viện HUIT - Trang chủ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="top-header">
+        <div class="container header-flex">
+            <div class="brand-section">
+                <img src="@Url.Content("~/Images/logo.jpg")" alt="Logo" class="logo-img">
+                <div class="site-titles">
+                    <h3>TRƯỜNG ĐẠI HỌC CÔNG THƯƠNG TP. HỒ CHÍ MINH</h3>
+                    <h2>THƯ VIỆN</h2>
+                </div>
+            </div>
+            <div class="user-login">
+                <a href="#"><i class="fas fa-user-circle"></i> Đăng nhập</a>
+            </div>
+        </div>
+    </div>
+
+    <nav class="main-nav">
+        <div class="container">
+            <ul>
+                <li><a href="#" class="active">TRANG CHỦ</a></li>
+                <li><a href="#">GIỚI THIỆU <i class="fas fa-caret-down"></i></a></li>
+                <li><a href="#">DỊCH VỤ <i class="fas fa-caret-down"></i></a></li>
+                <li><a href="#">TÀI NGUYÊN <i class="fas fa-caret-down"></i></a></li>
+                <li><a href="#">HƯỚNG DẪN <i class="fas fa-caret-down"></i></a></li>
+                <li><a href="#">VĂN BẢN <i class="fas fa-caret-down"></i></a></li>
+                <li><a href="#">SÁCH <i class="fas fa-caret-down"></i></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="search-bar-section">
+        <div class="container">
+            <div class="search-wrapper">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="" />
+                <button class="btn-timkiem">TÌM KIẾM</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="body-content">
+        @RenderBody()
+    </div>
+
+    <footer>
+        <div class="footer-top">
+            <div class="container footer-grid">
+                <div class="footer-info">
+                    <h4>TRUNG TÂM THÔNG TIN - THƯ VIỆN ĐẠI HỌC CÔNG THƯƠNG TP.HCM</h4>
+                    <p>Địa chỉ liên hệ: 140 Lê Trọng Tấn, Tân Phú, TP. Hồ Chí Minh, Việt Nam</p>
+                    <p>Điện thoại: 028 3816 1673 - 137</p>
+                    <p>Email: thuvien@huit.edu.vn</p>
+                    <p>Hotline: 097 117 3837</p>
+                    <div class="footer-links-inline">
+                        <a href="#">Trang chủ</a> | <a href="#">Góp ý</a> | <a href="#">Liên hệ</a>
+                        <br>
+                        <a href="#">Phát triển bởi Lạc Việt</a>
+                    </div>
+                </div>
+                <div class="footer-stats">
+                    <p><strong>2086150</strong> Tổng lượt truy cập</p>
+                    <p><strong>25</strong> Số lượt online</p>
+                    <p><strong>0</strong> Thành viên online</p>
+                    <p><strong>28</strong> Khách online</p>
+                    <p><strong>1146</strong> Trong ngày</p>
+                    <p><strong>1929</strong> Hôm qua</p>
+                    <p><strong>39112</strong> Trong tháng</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>2019 © Thư viện Trường Đại học Công Thương TP.HCM.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
