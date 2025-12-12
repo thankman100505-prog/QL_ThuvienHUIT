@@ -2,7 +2,7 @@
 GO
  
 USE CNPM_DATABASE_THUVIEN
-use master
+--use master
 --DROP DATABASE CNPM_DATABASE_THUVIEN
 --1) Tạo bảng tác giả
 CREATE TABLE TACGIA
@@ -12,7 +12,6 @@ CREATE TABLE TACGIA
 	NGAYSINH DATE CHECK(NGAYSINH<GETDATE()),
 	QUOCTICH NVARCHAR(50) DEFAULT N'Việt Nam'
 )
-
 
 --2) Tạo bảng THELOAI
 CREATE TABLE THELOAI
@@ -39,13 +38,20 @@ CREATE TABLE QLSACH
 	MATG CHAR(7),
 	MATHELOAI CHAR(7),
 	MAXB CHAR(7),
-	NAMXB DATE CHECK(NAMXB<=GETDATE()),
+	NAMXB INT CHECK(NAMXB<=YEAR(GETDATE())),
 	SL INT CHECK(SL>=0),
 	TINHTRANG INT CHECK(TINHTRANG>=0),
 	FOREIGN KEY (MATG) REFERENCES TACGIA (MATG),
 	FOREIGN KEY (MATHELOAI) REFERENCES THELOAI (MATHELOAI),
 	FOREIGN KEY (MAXB) REFERENCES NHAXUATBAN (MAXB),
 	CONSTRAINT CK_TINHTRANG CHECK (TINHTRANG <= SL)
+)
+
+CREATE TABLE BIASACH
+(
+	MASACH CHAR(7) PRIMARY KEY,
+	URL_ANH NVARCHAR(100),
+	FOREIGN KEY (MASACH) REFERENCES QLSACH(MASACH)
 )
 
 --5) Đọc Giả
@@ -103,7 +109,7 @@ CREATE TABLE CHITIETPM
 ( MAPM CHAR(7),
   MASACH CHAR(7) NOT NULL,
   SLMUON INT CHECK (SLMUON >0),
-  TIENTHECHAN DECIMAL(4,2),
+  TIENTHECHAN MONEY,
   PRIMARY KEY (MAPM,MASACH),
   FOREIGN KEY (MAPM) REFERENCES PHIEUMUON (MAPM),
   FOREIGN KEY (MASACH) REFERENCES QLSACH (MASACH)
@@ -147,6 +153,26 @@ CREATE TABLE PHIEU_MUONPHONG
 	FOREIGN KEY (MADG) REFERENCES DOCGIA(MADG)
 )
 
+CREATE TABLE ROLE_USER
+(
+	ROLE_ID INT IDENTITY(1,1) PRIMARY KEY,
+	ROLE_NAME NVARCHAR(20) UNIQUE, 
+	DESCRIPT NVARCHAR(200)
+)
+
+INSERT INTO ROLE_USER VALUES
+(N'Admin',N'Toàn quyền trên DB'),
+(N'Librarian',N'Quản lý độc giả, sách, mượn trả sách, phòng họp'),
+(N'Reader',N'Xem sách, mượn sách, phòng họp')
+
+CREATE TABLE TAIKHOAN
+(
+	USERNAME VARCHAR(50) PRIMARY KEY, -- LÀ MÃ ĐỘC GIẢ ĐƯỢC CẤP 
+	PASS VARBINARY(64),
+	ROLE_ID INT,
+	FOREIGN KEY (ROLE_ID) REFERENCES ROLE_USER(ROLE_ID) 
+)
+
 --DROP TABLE PHIEU_MUONPHONG
 --DROP TABLE PHONGHOP
 --DROP TABLE PHIEUTRA
@@ -154,6 +180,7 @@ CREATE TABLE PHIEU_MUONPHONG
 --DROP TABLE PHIEUMUON
 --DROP TABLE THETHUVIEN
 --DROP TABLE DOCGIA
+--DROP TABLE TAIKHOAN
 
 SELECT * FROM [TACGIA];
 SELECT * FROM [THELOAI];
@@ -171,45 +198,87 @@ SELECT * FROM [PHIEU_MUONPHONG];
 
 ------- THÊM DỮ LIỆU
 INSERT INTO TACGIA VALUES
-('TG00001',N'Nguyễn Nhật Ánh','1955-05-07',N'Việt Nam'),
-('TG00002',N'J.K. Rowling','1965-07-31',N'Anh'),
-('TG00003',N'Haruki Murakami','1949-01-12',N'Nhật Bản'),
-('TG00004',N'George Orwell','1903-06-25',N'Anh'),
-('TG00005',N'Ernest Hemingway','1899-07-21',N'Mỹ'),
-('TG00006',N'Lev Tolstoy','1828-09-09',N'Nga'),
-('TG00007',N'Victor Hugo','1802-02-26',N'Pháp'),
-('TG00008',N'Gabriel García Márquez','1927-03-06',N'Colombia'),
-('TG00009',N'Paulo Coelho','1947-08-24',N'Brazil'),
-('TG00010',N'Nam Cao','1915-10-29',N'Việt Nam');
+('TG00001', N'Allen B. Downey', '1970-01-01', N'Mỹ'),
+('TG00002', N'Andrew S. Tanenbaum', '1944-03-16', N'Hà Lan'),
+('TG00003', N'Ian Goodfellow', '1985-01-01', N'Mỹ'),
+('TG00004', N'Haykin Simon', '1942-01-01', N'Canada'),
+('TG00005', N'Nguyễn Thanh Tùng', '1978-05-12', N'Việt Nam'),
+('TG00006', N'Tristan Nguyen', '1981-04-21', N'Việt Nam'),
+('TG00007', N'Daniel Goleman', '1946-03-07', N'Mỹ'),
+('TG00008', N'Dale Carnegie', '1888-11-24', N'Mỹ'),
+('TG00009', N'Nguyễn Trung Hiếu', '1983-09-09', N'Việt Nam'),
+('TG00010', N'Hồ Trung Thành', '1972-02-22', N'Việt Nam'),
+('TG00011', N'Phạm Quốc Bảo', '1985-12-01', N'Việt Nam'),
+('TG00012', N'Lê Thị Mỹ Hạnh', '1987-06-14', N'Việt Nam'),
+('TG00013', N'Huỳnh Hữu Tuấn', '1989-08-18', N'Việt Nam'),
+('TG00014', N'Nguyễn Hoàng Dũng', '1990-04-04', N'Việt Nam'),
+('TG00015', N'Elon Musk', '1971-06-28', N'Mỹ');
+
 
 INSERT INTO THELOAI VALUES
-('TL00001',N'Tiểu thuyết',N'Sách văn học, tiểu thuyết'),
-('TL00004',N'Thiếu nhi',N'Sách cho trẻ em'),
-('TL00005',N'Chính trị - Xã hội',N'Sách chính trị, xã hội'),
-('TL00009',N'Kinh điển',N'Tác phẩm kinh điển');
+('TL00001', N'Sách chuyên ngành', N'Sách phục vụ nghiên cứu'),
+('TL00002', N'Giáo trình', N'Sách phục vụ học tập'),
+('TL00003', N'Tài liệu tham khảo', N'Tài liệu dùng để tra cứu'),
+('TL00004', N'Sách kĩ năng', N'Sách phát triển bản thân'),
+('TL00005', N'Luận văn - Khóa luận', N'Bài làm cuối khóa'),
+('TL00006', N'Tạp chí khoa học', N'Tạp chí chuyên ngành khoa học');
 
 INSERT INTO NHAXUATBAN VALUES
-('XB00001',N'NXB Kim Đồng',N'Hà Nội','0912345678'),
-('XB00002',N'NXB Giáo Dục',N'Hồ Chí Minh','0987654321'),
-('XB00003',N'Bloomsbury',N'London, UK','0044090901'),
-('XB00004',N'Shinchosha',N'Tokyo, Japan','0081090902'),
-('XB00005',N'Secker & Warburg',N'London, UK','0044090903'),
-('XB00006',N'The Russian Messenger',N'Moscow, Russia','0079090904'),
-('XB00007',N'A. Lacroix, Verboeckhoven & Cie.',N'Paris, France','0061090905'),
-('XB00008',N'Editorial Sudamericana',N'Buenos Aires, Argentina','0054090906'),
-('XB00009',N'HarperTorch',N'USA','0019090907');
+('NXB0001', N'NXB Giáo Dục', N'Hà Nội', '0283456789'),
+('NXB0002', N'NXB Trẻ', N'TP.HCM', '0283456790'),
+('NXB0003', N'NXB Khoa Học Tự Nhiên', N'Hà Nội', '0243876543'),
+('NXB0004', N'NXB Đại Học Quốc Gia', N'TP.HCM', '0283451234'),
+('NXB0005', N'NXB Reilly', N'Hoa Kỳ', '0012345678'),
+('NXB0006', N'NXB McGraw-Hill', N'Hoa Kỳ', '0018765432'),
+('NXB0007', N'NXB Pearson', N'Anh Quốc', '0044556677'),
+('NXB0008', N'NXB DataSci Press', N'Singapore', '0066123456'),
+('NXB0009', N'NXB Kinh Tế', N'Hà Nội', '0243688011'),
+('NXB0010', N'NXB Tự Lực', N'TP.HCM', '0284562391');
+
 
 INSERT INTO QLSACH VALUES
-('S000001',N'Tôi Thấy Hoa Vàng Trên Cỏ Xanh','TG00001','TL00004','XB00001','2010-06-15',100,85),
-('S000002',N'Cho Tôi Xin Một Vé Đi Tuổi Thơ','TG00001','TL00004','XB00002','2008-09-10',120,95),
-('S000003',N'Harry Potter và Hòn Đá Phù Thủy','TG00002','TL00001','XB00003','1997-06-26',200,150),
-('S000004',N'Rừng Na Uy','TG00003','TL00001','XB00004','1987-09-04',150,130),
-('S000005',N'1984','TG00004','TL00005','XB00005','1949-06-08',180,140),
-('S000006',N'Chuông Nguyện Hồn Ai','TG00005','TL00005','XB00005','1940-03-15',90,60),
-('S000007',N'Chiến Tranh và Hòa Bình','TG00006','TL00001','XB00006','1869-01-01',70,55),
-('S000008',N'Những Người Khốn Khổ','TG00007','TL00005','XB00007','1862-01-01',120,80),
-('S000009',N'Trăm Năm Cô Đơn','TG00008','TL00001','XB00008','1967-05-30',110,75),
-('S000010',N'Nhà Giả Kim','TG00009','TL00009','XB00009','1988-04-01',95,70);
+('S000001', N'Think Python', 'TG00001', 'TL00001', 'NXB0005', 2015, 12, 12),
+('S000002', N'Computer Networks', 'TG00002', 'TL00001', 'NXB0007', 2011, 10, 9),
+('S000003', N'Deep Learning', 'TG00003', 'TL00001', 'NXB0006', 2016, 8, 8),
+('S000004', N'Neural Networks and Learning Machines', 'TG00004', 'TL00001', 'NXB0006', 2008, 7, 7),
+('S000005', N'Giáo trình Cơ sở dữ liệu', 'TG00005', 'TL00002', 'NXB0001', 2020, 20, 19),
+('S000006', N'Giáo trình Mạng máy tính', 'TG00010', 'TL00002', 'NXB0004', 2021, 15, 14),
+('S000007', N'Giáo trình Thuật toán', 'TG00011', 'TL00002', 'NXB0003', 2019, 10, 10),
+('S000008', N'Phân tích dữ liệu với Python', 'TG00006', 'TL00003', 'NXB0008', 2022, 12, 11),
+('S000009', N'Hướng dẫn lập trình C++', 'TG00009', 'TL00003', 'NXB0001', 2018, 18, 17),
+('S000010', N'Tài liệu học máy nâng cao', 'TG00004', 'TL00003', 'NXB0006', 2021, 9, 9),
+('S000011', N'Emotional Intelligence', 'TG00007', 'TL00004', 'NXB0006', 1995, 10, 9),
+('S000012', N'How to Win Friends and Influence People', 'TG00008', 'TL00004', 'NXB0010', 1936, 20, 20),
+('S000013', N'Sức mạnh tư duy tích cực', 'TG00012', 'TL00004', 'NXB0002', 2017, 25, 24),
+('S000014', N'Khóa luận ứng dụng AI trong xử lý ảnh', 'TG00013', 'TL00005', 'NXB0004', 2023, 3, 3),
+('S000015', N'Luận văn nhận diện chữ viết tay', 'TG00014', 'TL00005', 'NXB0004', 2022, 2, 2),
+('S000016', N'Khóa luận phân tích dữ liệu lớn', 'TG00012', 'TL00005', 'NXB0009', 2023, 4, 4),
+('S000017', N'Journal of Machine Learning Research – Vol 1', 'TG00003', 'TL00006', 'NXB0006', 2019, 5, 5),
+('S000018', N'Journal of Data Science – Vol 2', 'TG00006', 'TL00006', 'NXB0008', 2020, 6, 6),
+('S000019', N'Vietnam Journal of Science – Số 15', 'TG00009', 'TL00006', 'NXB0003', 2022, 4, 4),
+('S000020', N'International AI Review – Vol 5', 'TG00003', 'TL00006', 'NXB0006', 2021, 7, 7);
+
+INSERT INTO BIASACH VALUES
+('S000001', 'Sach1.jpg'),
+('S000002', 'Sach2.jpg'),
+('S000003', 'Sach3.jpg'),
+('S000004', 'Sach4.jpg'),
+('S000005', 'Sach5.jpg'),
+('S000006','Sach6jpg'),
+('S000007','Sach7.jpg'),
+('S000008','Sach8.jpg'),
+('S000009', 'Sach9.jpg'),
+('S000010', 'Sach10.jpg'),
+('S000011', 'Sach11.jpg'),
+('S000012', 'Sach12.jpg'),
+('S000013', 'Sach13.jpg'),
+('S000014', 'Sach14.jpg'),
+('S000015', 'Sach15.jpg'),
+('S000016', 'Sach16.jpg'),
+('S000017', 'Sach17.jpg'),
+('S000018', 'Sach18.jpg'),
+('S000019', 'Sach19.jpg'),
+('S000020', 'Sach20.jpg');
 
 INSERT INTO DOCGIA VALUES
 ('DG00001',N'Đỗ Thành Trung',N'Khoa Công Nghệ Thông Tin',N'14DHTH12',N'TP.HCM','0912345678','dothanhtrunf@gmail.com'),
@@ -269,3 +338,9 @@ INSERT INTO PHIEU_MUONPHONG VALUES
 ('MP00002','DG00002','PH00001','2025/10/14','12:30:00',6,N'Họp nhóm và thảo luận đồ án với giảng viên hướng dẫn',0),
 ('MP00003','DG00001','PH00001','2025/02/11','09:50:00',6,N'Báo cáo đồ án cuối kì online',0),
 ('MP00004','DG00001','PH00001','2025/02/11','09:50:00',6,N'Họp nhóm',0)
+
+--- TẠO TÀI KHOẢN 
+INSERT INTO TAIKHOAN VALUES 
+('admin',   HASHBYTES('SHA2_256', '12345'), 1),
+('librarian1', HASHBYTES('SHA2_256', '12345'), 2),
+('DG00001',  HASHBYTES('SHA2_256', '12345'), 3);
