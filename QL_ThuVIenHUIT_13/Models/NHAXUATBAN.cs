@@ -17,7 +17,7 @@ namespace QL_ThuVIenHUIT_13.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public NHAXUATBAN()
         {
-            this.QLSACHes = new HashSet<QLSACH>();
+            this.QLSACH = new HashSet<QLSACH>();
         }
     
         public string MAXB { get; set; }
@@ -26,6 +26,6 @@ namespace QL_ThuVIenHUIT_13.Models
         public string SDT { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<QLSACH> QLSACHes { get; set; }
+        public virtual ICollection<QLSACH> QLSACH { get; set; }
     }
 }

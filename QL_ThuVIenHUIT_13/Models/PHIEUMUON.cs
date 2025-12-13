@@ -17,8 +17,8 @@ namespace QL_ThuVIenHUIT_13.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PHIEUMUON()
         {
-            this.CHITIETPMs = new HashSet<CHITIETPM>();
-            this.PHIEUTRAs = new HashSet<PHIEUTRA>();
+            this.CHITIETPM = new HashSet<CHITIETPM>();
+            this.PHIEUTRA = new HashSet<PHIEUTRA>();
         }
     
         public string MAPM { get; set; }
@@ -28,10 +28,10 @@ namespace QL_ThuVIenHUIT_13.Models
         public Nullable<System.DateTime> NgayDenHan { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CHITIETPM> CHITIETPMs { get; set; }
+        public virtual ICollection<CHITIETPM> CHITIETPM { get; set; }
         public virtual DOCGIA DOCGIA { get; set; }
         public virtual QLNHANVIEN QLNHANVIEN { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PHIEUTRA> PHIEUTRAs { get; set; }
+        public virtual ICollection<PHIEUTRA> PHIEUTRA { get; set; }
     }
 }

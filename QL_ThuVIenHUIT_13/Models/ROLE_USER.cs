@@ -12,25 +12,19 @@ namespace QL_ThuVIenHUIT_13.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class QLNHANVIEN
+    public partial class ROLE_USER
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public QLNHANVIEN()
+        public ROLE_USER()
         {
-            this.PHIEUMUON = new HashSet<PHIEUMUON>();
-            this.PHIEUTRA = new HashSet<PHIEUTRA>();
+            this.TAIKHOAN = new HashSet<TAIKHOAN>();
         }
     
-        public string MANV { get; set; }
-        public string TENNV { get; set; }
-        public Nullable<System.DateTime> NGSINH { get; set; }
-        public string CHUCVU { get; set; }
-        public string SDIENTHOAI { get; set; }
-        public string MAIL { get; set; }
+        public int ROLE_ID { get; set; }
+        public string ROLE_NAME { get; set; }
+        public string DESCRIPT { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PHIEUMUON> PHIEUMUON { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PHIEUTRA> PHIEUTRA { get; set; }
+        public virtual ICollection<TAIKHOAN> TAIKHOAN { get; set; }
     }
 }

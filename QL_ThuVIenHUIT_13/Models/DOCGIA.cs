@@ -18,8 +18,8 @@ namespace QL_ThuVIenHUIT_13.Models
         public DOCGIA()
         {
             this.PHIEU_MUONPHONG = new HashSet<PHIEU_MUONPHONG>();
-            this.PHIEUMUONs = new HashSet<PHIEUMUON>();
-            this.THETHUVIENs = new HashSet<THETHUVIEN>();
+            this.PHIEUMUON = new HashSet<PHIEUMUON>();
+            this.THETHUVIEN = new HashSet<THETHUVIEN>();
         }
     
         public string MADG { get; set; }
@@ -33,8 +33,8 @@ namespace QL_ThuVIenHUIT_13.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PHIEU_MUONPHONG> PHIEU_MUONPHONG { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PHIEUMUON> PHIEUMUONs { get; set; }
+        public virtual ICollection<PHIEUMUON> PHIEUMUON { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<THETHUVIEN> THETHUVIENs { get; set; }
+        public virtual ICollection<THETHUVIEN> THETHUVIEN { get; set; }
     }
 }

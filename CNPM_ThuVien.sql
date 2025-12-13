@@ -257,7 +257,14 @@ INSERT INTO QLSACH VALUES
 ('S000018', N'Journal of Data Science – Vol 2', 'TG00006', 'TL00006', 'NXB0008', 2020, 6, 6),
 ('S000019', N'Vietnam Journal of Science – Số 15', 'TG00009', 'TL00006', 'NXB0003', 2022, 4, 4),
 ('S000020', N'International AI Review – Vol 5', 'TG00003', 'TL00006', 'NXB0006', 2021, 7, 7);
-
+SELECT 
+    S.MASACH, 
+    S.TENSACH, 
+    TG.TENTG
+FROM 
+    QLSACH S
+JOIN 
+    TACGIA TG ON S.MATG = TG.MATG;
 INSERT INTO BIASACH VALUES
 ('S000001', 'Sach1.jpg'),
 ('S000002', 'Sach2.jpg'),

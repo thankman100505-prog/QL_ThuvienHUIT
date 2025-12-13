@@ -17,7 +17,7 @@ namespace QL_ThuVIenHUIT_13.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TACGIA()
         {
-            this.QLSACHes = new HashSet<QLSACH>();
+            this.QLSACH = new HashSet<QLSACH>();
         }
     
         public string MATG { get; set; }
@@ -26,6 +26,6 @@ namespace QL_ThuVIenHUIT_13.Models
         public string QUOCTICH { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<QLSACH> QLSACHes { get; set; }
+        public virtual ICollection<QLSACH> QLSACH { get; set; }
     }
 }

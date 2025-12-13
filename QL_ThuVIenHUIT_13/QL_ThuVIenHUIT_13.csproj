@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <Import Project="packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -51,6 +51,9 @@
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
@@ -121,68 +124,74 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
-      <HintPath>packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SachController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\DataHelper.cs" />
+    <Compile Include="Models\BIASACH.cs">
+      <DependentUpon>CNPM_ThuVien.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CHITIETPM.cs">
-      <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
+      <DependentUpon>CNPM_ThuVien.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\CNPM_DATABASE_THUVIEN.Context.cs">
+    <Compile Include="Models\CNPM_ThuVien.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CNPM_DATABASE_THUVIEN.Context.tt</DependentUpon>
+      <DependentUpon>CNPM_ThuVien.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\CNPM_DATABASE_THUVIEN.cs">
+    <Compile Include="Models\CNPM_ThuVien.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
+      <DependentUpon>CNPM_ThuVien.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\CNPM_DATABASE_THUVIEN.Designer.cs">
+    <Compile Include="Models\CNPM_ThuVien.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CNPM_DATABASE_THUVIEN.edmx</DependentUpon>
+      <DependentUpon>CNPM_ThuVien.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\DOCGIA.cs">
-      <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
+      <DependentUpon>CNPM_ThuVien.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\NHAXUATBAN.cs">
-      <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
+      <DependentUpon>CNPM_ThuVien.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PHIEUMUON.cs">
-      <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
+      <DependentUpon>CNPM_ThuVien.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PHIEUTRA.cs">
-      <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
+      <DependentUpon>CNPM_ThuVien.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PHIEU_MUONPHONG.cs">
-      <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
+      <DependentUpon>CNPM_ThuVien.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PHONGHOP.cs">
-      <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
+      <DependentUpon>CNPM_ThuVien.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\QLNHANVIEN.cs">
-      <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
+      <DependentUpon>CNPM_ThuVien.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\QLSACH.cs">
-      <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
+      <DependentUpon>CNPM_ThuVien.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ROLE_USER.cs">
+      <DependentUpon>CNPM_ThuVien.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TACGIA.cs">
-      <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
+      <DependentUpon>CNPM_ThuVien.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TAIKHOAN.cs">
+      <DependentUpon>CNPM_ThuVien.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\THELOAI.cs">
-      <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
+      <DependentUpon>CNPM_ThuVien.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\THETHUVIEN.cs">
-      <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
+      <DependentUpon>CNPM_ThuVien.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -236,15 +245,15 @@
     <Content Include="images\tapchi_congthuong.jpg" />
     <Content Include="images\tapchi_giaoduc.jpg" />
     <Content Include="images\tapchi_sangche.jpg" />
-    <Content Include="Models\CNPM_DATABASE_THUVIEN.Context.tt">
+    <Content Include="Models\CNPM_ThuVien.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>CNPM_DATABASE_THUVIEN.edmx</DependentUpon>
-      <LastGenOutput>CNPM_DATABASE_THUVIEN.Context.cs</LastGenOutput>
+      <DependentUpon>CNPM_ThuVien.edmx</DependentUpon>
+      <LastGenOutput>CNPM_ThuVien.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\CNPM_DATABASE_THUVIEN.tt">
+    <Content Include="Models\CNPM_ThuVien.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>CNPM_DATABASE_THUVIEN.edmx</DependentUpon>
-      <LastGenOutput>CNPM_DATABASE_THUVIEN.cs</LastGenOutput>
+      <DependentUpon>CNPM_ThuVien.edmx</DependentUpon>
+      <LastGenOutput>CNPM_ThuVien.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -252,12 +261,12 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\CNPM_DATABASE_THUVIEN.edmx">
+    <EntityDeploy Include="Models\CNPM_ThuVien.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>CNPM_DATABASE_THUVIEN.Designer.cs</LastGenOutput>
+      <LastGenOutput>CNPM_ThuVien.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\CNPM_DATABASE_THUVIEN.edmx.diagram">
-      <DependentUpon>CNPM_DATABASE_THUVIEN.edmx</DependentUpon>
+    <Content Include="Models\CNPM_ThuVien.edmx.diagram">
+      <DependentUpon>CNPM_ThuVien.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
@@ -284,6 +293,12 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Sach\Index.cshtml" />
+    <Content Include="Views\Shared\_SidebarPartial.cshtml" />
+    <Content Include="Views\Sach\ChiTiet.cshtml" />
+    <Content Include="Views\Sach\ThemSach.cshtml" />
+    <Content Include="Views\Sach\CapNhat.cshtml" />
+    <Content Include="Views\Sach\QuanLySach.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -350,9 +365,9 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
     <Error Condition="!Exists('packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
     <Error Condition="!Exists('packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
   <Import Project="packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
