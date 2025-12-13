@@ -116,7 +116,7 @@ BEGIN
 
 	DECLARE cur CURSOR FOR
 		SELECT MATHE
-		FROM THETHUVIEN;
+		FROM inserted;
 
 	OPEN cur;
 	FETCH NEXT FROM cur INTO @MATHE;
@@ -132,6 +132,8 @@ BEGIN
 
 		FETCH NEXT FROM cur INTO @MATHE;
 	END
+	CLOSE cur
+	DEALLOCATE cur
 END
 
 --7) BẢNG NHÂN VIÊN
@@ -154,7 +156,7 @@ BEGIN
 
 	DECLARE cur CURSOR FOR
 		SELECT MANV
-		FROM QLNHANVIEN;
+		FROM inserted;
 
 	OPEN cur;
 	FETCH NEXT FROM cur INTO @MANV;
@@ -170,6 +172,8 @@ BEGIN
 
 		FETCH NEXT FROM cur INTO @MANV;
 	END
+	CLOSE cur
+	DEALLOCATE cur
 END
 
 -----==================== QUẢN LÝ CÁC THUỘC TÍNH VÀ BẢNG NGHIỆP VỤ TRONG THƯ VIỆN ========================
