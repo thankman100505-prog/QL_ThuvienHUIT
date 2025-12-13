@@ -17,8 +17,6 @@ namespace QL_ThuVIenHUIT_13.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public DOCGIA()
         {
-            this.PHIEU_MUONPHONG = new HashSet<PHIEU_MUONPHONG>();
-            this.PHIEUMUONs = new HashSet<PHIEUMUON>();
             this.THETHUVIENs = new HashSet<THETHUVIEN>();
         }
     
@@ -30,10 +28,6 @@ namespace QL_ThuVIenHUIT_13.Models
         public string SODT { get; set; }
         public string MAIL { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PHIEU_MUONPHONG> PHIEU_MUONPHONG { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PHIEUMUON> PHIEUMUONs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<THETHUVIEN> THETHUVIENs { get; set; }
     }

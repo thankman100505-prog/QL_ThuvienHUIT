@@ -25,10 +25,11 @@ namespace QL_ThuVIenHUIT_13.Models
         public string MATG { get; set; }
         public string MATHELOAI { get; set; }
         public string MAXB { get; set; }
-        public Nullable<System.DateTime> NAMXB { get; set; }
+        public Nullable<int> NAMXB { get; set; }
         public Nullable<int> SL { get; set; }
         public Nullable<int> TINHTRANG { get; set; }
     
+        public virtual BIASACH BIASACH { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CHITIETPM> CHITIETPMs { get; set; }
         public virtual NHAXUATBAN NHAXUATBAN { get; set; }

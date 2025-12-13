@@ -15,7 +15,7 @@ namespace QL_ThuVIenHUIT_13.Models
     public partial class PHIEU_MUONPHONG
     {
         public string MAPHIEU { get; set; }
-        public string MADG { get; set; }
+        public string MATHE { get; set; }
         public string MAPH { get; set; }
         public Nullable<System.DateTime> NGAYMUON { get; set; }
         public Nullable<System.TimeSpan> GIOMUON { get; set; }
@@ -23,7 +23,7 @@ namespace QL_ThuVIenHUIT_13.Models
         public string MUCDICH { get; set; }
         public Nullable<decimal> TIENPHAT { get; set; }
     
-        public virtual DOCGIA DOCGIA { get; set; }
+        public virtual THETHUVIEN THETHUVIEN { get; set; }
         public virtual PHONGHOP PHONGHOP { get; set; }
     }
 }

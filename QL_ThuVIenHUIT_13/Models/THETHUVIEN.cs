@@ -14,6 +14,13 @@ namespace QL_ThuVIenHUIT_13.Models
     
     public partial class THETHUVIEN
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public THETHUVIEN()
+        {
+            this.PHIEU_MUONPHONG = new HashSet<PHIEU_MUONPHONG>();
+            this.PHIEUMUONs = new HashSet<PHIEUMUON>();
+        }
+    
         public string MATHE { get; set; }
         public string MADG { get; set; }
         public Nullable<System.DateTime> NGAYCAP { get; set; }
@@ -21,5 +28,9 @@ namespace QL_ThuVIenHUIT_13.Models
         public string TRANGTHAI { get; set; }
     
         public virtual DOCGIA DOCGIA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PHIEU_MUONPHONG> PHIEU_MUONPHONG { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PHIEUMUON> PHIEUMUONs { get; set; }
     }
 }
