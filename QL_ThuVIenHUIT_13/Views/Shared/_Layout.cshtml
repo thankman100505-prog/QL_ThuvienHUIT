@@ -60,39 +60,45 @@
                 </div>
             </div>
 
-            <nav class="main-nav">
-                <div class="container">
-                    <ul style="margin-top:10px">
-                        <li><a href="@Url.Action("Index","Home")" class="active">TRANG CHỦ</a></li>
-                        <li><a href="#">GIỚI THIỆU <i class="fas fa-caret-down"></i></a></li>
-                        <li class="dropdown">
-                            <a href="#">
-                                DỊCH VỤ <i class="fas fa-caret-down"></i>
-                            </a>
+            <nav>
+                <div class="container-fluid">
+                    <div class="menu">
+                        <ul>
+                            <li><a href="@Url.Action("Index","Home")">TRANG CHỦ</a></li>
+                            <li><a href="#">GIỚI THIỆU <i class="fas fa-caret-down"></i></a></li>
+                            <li>
+                                <a href="#">DỊCH VỤ <i class="fas fa-caret-down"></i></a>
+                                <ul>
+                                    <li><a href="@Url.Action("Index", "MuonPhong")">Mượn phòng</a>
+                                    <li><a href="#">Mượn sách</a>
+                                </ul>
+                            </li>
+                            <li><a href="#">TÀI NGUYÊN <i class="fas fa-caret-down"></i></a></li>
+                            <li>
+                                <a href="#">HƯỚNG DẪN <i class="fas fa-caret-down"></i></a>
+                                <ul>
+                                    <li><a href="@Url.Action("HuongDan_DK_The","Home")">Đăng kí thẻ</a>
+                                    <li><a href="@Url.Action("HuongDan_SD_PhongHop","Home")">Mượn phòng</a>
+                                </ul>
+                            </li>
+                            <li><a href="#">VĂN BẢN <i class="fas fa-caret-down"></i></a></li>
+                            <li>
+                                <a href="@Url.Action("Index","Sach")">SÁCH <i class="fas fa-caret-down"></i></a>
+                                @{
+                                    string username = Convert.ToString(Session["Username"]);
+                                }
 
-                            <ul class="dropdown-menu dropdown-menu-huit">
-                                <li>
-                                    <a class="dropdown-item" href="@Url.Action("Index", "MuonPhong")">MƯỢN PHÒNG</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li><a href="#">TÀI NGUYÊN <i class="fas fa-caret-down"></i></a></li>
-                        <li class="dropdown">
-                            <a href="#">
-                                HƯỚNG DẪN <i class="fas fa-caret-down"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-huit">
-                                <li>
-                                    <a class="dropdown-item" href="@Url.Action("HuongDan_DK_The","Home")">HƯỚNG DẪN ĐĂNG KÝ THẺ THƯ VIỆN</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="@Url.Action("HuongDan_SD_PhongHop","Home")">HƯỚNG DẪN MƯỢN PHÒNG</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li><a href="#">VĂN BẢN <i class="fas fa-caret-down"></i></a></li>
-                        <li><a href="@Url.Action("Index","Sach")">SÁCH </a></li>
-                    </ul>
+                                @if (username != "" && !username.StartsWith("TH"))
+                                {
+                                    <ul>
+                                        <li><a href="@Url.Action("QuanLySach","Sach")">Quản lý sách</a>
+                                        <li><a href="@Url.Action("ThemSach","Sach")">Thêm sách</a>
+                                    </ul>
+                                }
+
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </nav>
             <div class="body-content">
