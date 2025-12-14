@@ -74,5 +74,7 @@ namespace QL_ThuVIenHUIT_13.Helpers
             db.SaveChanges();
             return newNXB.MAXB;
         }
+
+
     }
 }

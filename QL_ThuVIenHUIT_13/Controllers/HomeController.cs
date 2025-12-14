@@ -13,19 +13,23 @@ namespace QL_ThuVIenHUIT_13.Controllers
     public class HomeController : Controller
     {
         CNPM_DATABASE_THUVIENEntities db = new CNPM_DATABASE_THUVIENEntities();
-
+        public ActionResult HuongDan_DK_The()
+        {
+            return View();
+        }
+        public ActionResult HuongDan_SD_PhongHop()
+        {
+            return View();
+        }
         public ActionResult Index()
         {
             HomeViewModel model = new HomeViewModel();
-
-            // 1. Lấy TIN TỨC (LoaiTin = 1), sắp xếp mới nhất
-            model.TinTucSuKien = db.TINTUCs
+            model.TinTucSuKien = db.TINTUC1
                                    .Where(x => x.LoaiTin == 1 && x.HienThi == true)
                                    .OrderByDescending(x => x.NgayDang)
                                    .ToList();
 
-            // 2. Lấy THÔNG BÁO (LoaiTin = 2)
-            model.ThongBao = db.TINTUCs
+            model.ThongBao = db.TINTUC1
                                .Where(x => x.LoaiTin == 2 && x.HienThi == true)
                                .OrderByDescending(x => x.NgayDang)
                                .ToList();

@@ -1,0 +1,134 @@
+﻿@model QL_ThuVIenHUIT_13.Models.PHIEU_MUONPHONG
+@{
+    ViewBag.Title = "Xem Phiếu Đặt Phòng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        background: #f2f2f2;
+        font-family: "Times New Roman", serif;
+    }
+
+    .paper {
+        width: 800px;
+        margin: 40px auto;
+        background: #fff;
+        border: 2px solid #000;
+        padding: 35px 45px;
+    }
+
+        .paper h2 {
+            text-align: center;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+    .sub-title {
+        text-align: center;
+        font-style: italic;
+        margin-bottom: 30px;
+    }
+
+    .info-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 16px;
+    }
+
+        .info-table td {
+            padding: 8px 5px;
+        }
+
+            .info-table td:first-child {
+                width: 30%;
+                font-weight: bold;
+            }
+
+    .line {
+        border-bottom: 1px dotted #000;
+        padding-bottom: 3px;
+    }
+
+    .footer {
+        margin-top: 40px;
+        display: flex;
+        justify-content: space-between;
+        text-align: center;
+    }
+
+    .actions {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+        .actions button {
+            padding: 8px 22px;
+            font-size: 15px;
+            margin: 0 10px;
+            border-radius: 5px;
+            border: 1px solid #000;
+            background: #eee;
+            cursor: pointer;
+        }
+
+            .actions button:hover {
+                background: #ddd;
+            }
+</style>
+
+<div class="paper">
+    <h2>Phiếu đặt phòng</h2>
+    <div class="sub-title">Xem lại thông tin trước khi xác nhận</div>
+
+    <table class="info-table">
+        <tr><td>Mã thẻ</td><td class="line">@Model.MATHE</td></tr>
+        <tr><td>Phòng</td><td class="line">@Model.MAPH</td></tr>
+        <tr>
+            <td>Ngày mượn</td>
+            <td class="line">@Model.NGAYMUON.Value.ToString("dd/MM/yyyy")</td>
+        </tr>
+        <tr>
+            <td>Thời gian</td>
+            <td class="line">
+                @Model.GIOMUON.Value.ToString(@"hh\:mm") - @Model.GIOTRA.Value.ToString(@"hh\:mm")
+            </td>
+        </tr>
+        <tr><td>Số người</td><td class="line">@Model.SL_NGUOITHAMGIA</td></tr>
+        <tr><td>Mục đích</td><td class="line">@Model.MUCDICH</td></tr>
+    </table>
+
+    <div class="footer">
+        <div><p><b>Người đặt phòng</b></p><p>(Ký, ghi rõ họ tên)</p></div>
+        <div><p><b>Quản lý thư viện</b></p><p>(Xác nhận)</p></div>
+    </div>
+
+    @if (ViewBag.Loi != null)
+    {
+        <p style="color:red; text-align:center; font-weight:bold; margin-top:15px">@ViewBag.Loi</p>
+    }
+
+    <div class="actions">
+        @if (ViewBag.Loi == null)
+        {
+            <form method="post" action="/Phong/XacNhan" style="display:inline">
+                @Html.HiddenFor(m => m.MATHE)
+                @Html.HiddenFor(m => m.MAPH)
+                @Html.HiddenFor(m => m.NGAYMUON)
+                @Html.HiddenFor(m => m.GIOMUON)
+                @Html.HiddenFor(m => m.GIOTRA)
+                @Html.HiddenFor(m => m.SL_NGUOITHAMGIA)
+                @Html.HiddenFor(m => m.MUCDICH)
+                <button type="submit">Xác nhận đặt phòng</button>
+            </form>
+        }
+        else
+        {
+            <button disabled style="opacity:0.6; cursor:not-allowed">Không thể xác nhận</button>
+        }
+
+        <form method="post" action="/Phong/DatPhong" style="display:inline">
+            <button type="submit">Quay lại</button>
+        </form>
+    </div>
+</div>

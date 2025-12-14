@@ -1,0 +1,130 @@
+﻿@model QL_ThuVIenHUIT_13.Models.PHIEU_MUONPHONG
+@{
+    ViewBag.Title = "Phiếu đặt phòng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        background: #f2f2f2;
+        font-family: Arial, sans-serif;
+    }
+
+    .paper {
+        width: 850px;
+        margin: 30px auto;
+        background: #fff;
+        border: 2px solid #000;
+        padding: 30px 40px;
+    }
+
+        .paper h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+
+    .form-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .form-table td {
+            padding: 8px 5px;
+            vertical-align: middle;
+        }
+
+            .form-table td:first-child {
+                width: 30%;
+                font-weight: bold;
+            }
+
+    input[type="text"], input[type="number"], input[type="date"], input[type="time"] {
+        width: 95%;
+        padding: 5px;
+    }
+
+    .submit-btn {
+        text-align: center;
+        margin-top: 25px;
+    }
+
+        .submit-btn button {
+            padding: 8px 25px;
+            font-size: 16px;
+            border-radius: 6px;
+            border: none;
+            background: #ddd;
+            cursor: pointer;
+        }
+
+            .submit-btn button:hover {
+                background: #ccc;
+            }
+</style>
+
+<div class="paper">
+    <h2>Phiếu đặt phòng</h2>
+
+    @if (ViewBag.ThongBao != null)
+    {
+        <p style="color:green;text-align:center">@ViewBag.ThongBao</p>
+    }
+
+    <form method="post" action="/Phong/XemPhieu">
+        <table class="form-table">
+            <tr>
+                <td>Mã sinh viên / Mã độc giả:</td>
+                <td>
+                    <input type="text" name="MATHE" value="@(Model == null ? "" : Model.MATHE)" required />
+                </td>
+            </tr>
+            <tr>
+                <td>Mục đích sử dụng:</td>
+                <td>
+                    <input type="text" name="MUCDICH" value="@(Model == null ? "" : Model.MUCDICH)" />
+                </td>
+            </tr>
+            <tr>
+                <td>Số người sử dụng:</td>
+                <td>
+                    <input type="number" name="SL_NGUOITHAMGIA" value="@Model?.SL_NGUOITHAMGIA" min="1" required />
+                </td>
+            </tr>
+            <tr>
+                <td>Ngày:</td>
+                <td><input type="date" name="NGAYMUON" value="@(Model?.NGAYMUON?.ToString("yyyy-MM-dd"))" required /></td>
+            </tr>
+            <tr>
+                <td>Giờ mượn:</td>
+                <td><input type="time" name="GIOMUON" value="@(Model?.GIOMUON?.ToString(@"hh\:mm"))" required /></td>
+            </tr>
+            <tr>
+                <td>Giờ trả:</td>
+                <td>
+                    <input type="time" name="GIOTRA" value="@(Model?.GIOTRA?.ToString(@"hh\:mm"))" required />
+                </td>
+            </tr>
+            <tr>
+                <td>Phòng: </td>
+                <td>
+                    @if (ViewBag.DsPhong != null)
+                    {
+                        foreach (var p in ViewBag.DsPhong)
+                        {
+                            <label>
+                                <input type="radio" name="MAPH" value="@p.MAPHONG" @(Model?.MAPH == p.MAPHONG ? "checked" : "") required />
+                                @p.MAPHONG 
+                            </label>
+                            <br />
+                        }
+                    }
+                </td>
+            </tr>
+        </table>
+
+        <div class="submit-btn">
+            <button type="submit">In phiếu (Xem trước)</button>
+        </div>
+    </form>
+</div>

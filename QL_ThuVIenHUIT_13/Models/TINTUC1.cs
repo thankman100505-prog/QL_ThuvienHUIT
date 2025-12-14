@@ -12,7 +12,7 @@ namespace QL_ThuVIenHUIT_13.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TINTUC
+    public partial class TINTUC1
     {
         public int MaTin { get; set; }
         public string TieuDe { get; set; }

@@ -119,6 +119,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PhongController.cs" />
     <Compile Include="Controllers\ReaderController.cs" />
     <Compile Include="Controllers\SachController.cs" />
     <Compile Include="Controllers\TinTucController.cs" />
@@ -194,7 +195,7 @@
     <Compile Include="Models\THETHUVIEN.cs">
       <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\TINTUC.cs">
+    <Compile Include="Models\TINTUC1.cs">
       <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -325,10 +326,18 @@
     <Content Include="Views\Sach\ThemSach.cshtml" />
     <Content Include="Views\Shared\_SidebarPartial.cshtml" />
     <Content Include="Views\TinTuc\ChiTiet.cshtml" />
+    <Content Include="Views\Home\HuongDan_DK_The.cshtml" />
+    <Content Include="Views\Home\HuongDan_SD_PhongHop.cshtml" />
+    <Content Include="Views\Phong\DatPhong.cshtml" />
+    <Content Include="Views\Phong\Index.cshtml" />
+    <Content Include="Views\Phong\LichSuDatPhong.cshtml" />
+    <Content Include="Views\Phong\SuaDatPhong.cshtml" />
+    <Content Include="Views\Phong\ThanhCong.cshtml" />
+    <Content Include="Views\Phong\XemPhieu.cshtml" />
+    <Content Include="Views\Phong\XoaDatPhong.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\MuonPhong\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -394,8 +403,8 @@
     </PropertyGroup>
     <Error Condition="!Exists('packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
     <Error Condition="!Exists('packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
-    <Error Condition="!Exists('packages\Microsoft.Net.Compilers.4.2.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Net.Compilers.4.2.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets'))" />
+    <Error Condition="!Exists('packages\Microsoft.Net.Compilers.4.2.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Net.Compilers.4.2.0\build\Microsoft.Net.Compilers.props'))" />
   </Target>
   <Import Project="packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
   <Import Project="packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets" Condition="Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" />

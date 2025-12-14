@@ -42,7 +42,7 @@ namespace QL_ThuVIenHUIT_13.Models
         public virtual DbSet<THETHUVIEN> THETHUVIENs { get; set; }
         public virtual DbSet<PHIEU_MUONPHONG> PHIEU_MUONPHONG { get; set; }
         public virtual DbSet<PHIEUMUON> PHIEUMUONs { get; set; }
-        public virtual DbSet<TINTUC> TINTUCs { get; set; }
+        public virtual DbSet<TINTUC1> TINTUC1 { get; set; }
     
         public virtual int AUTO_CREATE_ID_TACGIA(ObjectParameter mATG)
         {

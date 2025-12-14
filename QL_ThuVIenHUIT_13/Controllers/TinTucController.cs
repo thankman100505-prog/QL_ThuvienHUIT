@@ -13,7 +13,7 @@ namespace QL_ThuVIenHUIT_13.Controllers
 
         public ActionResult ChiTiet(string id)
         {
-            var baiViet = db.TINTUCs.FirstOrDefault(x => x.Link == id);
+            var baiViet = db.TINTUC1.FirstOrDefault(x => x.Link == id);
 
             if (baiViet == null)
             {
