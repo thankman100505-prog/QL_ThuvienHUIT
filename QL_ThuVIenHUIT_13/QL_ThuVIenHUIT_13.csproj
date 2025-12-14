@@ -46,6 +46,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -56,6 +59,12 @@
       <HintPath>packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\lib\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Web.Infrastructure.2.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -67,6 +76,27 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.Mvc.5.2.9\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.Razor.3.2.9\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -76,51 +106,12 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="Microsoft.Web.Infrastructure, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>packages\Microsoft.Web.Infrastructure.2.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
     <Reference Include="System.Net.Http">
     </Reference>
     <Reference Include="System.Net.Http.WebRequest">
     </Reference>
-    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>packages\Microsoft.AspNet.Mvc.5.2.9\lib\net45\System.Web.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Optimization">
-      <HintPath>packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>packages\Microsoft.AspNet.Razor.3.2.9\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="WebGrease">
-      <Private>True</Private>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
-    </Reference>
-    <Reference Include="Antlr3.Runtime">
-      <Private>True</Private>
-      <HintPath>packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -129,9 +120,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReaderController.cs" />
+    <Compile Include="Controllers\SachController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\DataHelper.cs" />
     <Compile Include="Models\BIASACH.cs">
       <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
     </Compile>
@@ -187,9 +180,6 @@
     <Compile Include="Models\sp_helpdiagrams_Result.cs">
       <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\TACGIA.cs">
       <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
     </Compile>
@@ -224,38 +214,54 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="images\AnhThuVien_SignIn.png" />
-    <Content Include="images\AnhThuVien_SignIn1.png" />
-    <Content Include="images\banner.jpg" />
-    <Content Include="images\banner2.jpg" />
-    <Content Include="images\banner3.jpg" />
-    <Content Include="images\hopthu.jpg" />
-    <Content Include="images\logo.jpg" />
-    <Content Include="images\news_hoithao.jpg" />
-    <Content Include="images\news_sinhvien.jpg" />
-    <Content Include="images\news_taphuan.jpg" />
-    <Content Include="images\news_tiepnhan.jpg" />
-    <Content Include="images\news_traogiai.jpg" />
-    <Content Include="images\notice_boya.jpg" />
-    <Content Include="images\notice_huongdan.jpg" />
-    <Content Include="images\notice_khoahoc.png" />
-    <Content Include="images\notice_lichnghi.jpg" />
-    <Content Include="images\notice_website.jpg" />
-    <Content Include="images\partner1.jpg" />
-    <Content Include="images\partner2.jpg" />
-    <Content Include="images\partner3.jpg" />
-    <Content Include="images\pic1.jpg" />
-    <Content Include="images\pic2.jpg" />
-    <Content Include="images\pic3.png" />
-    <Content Include="images\sach.jpg" />
-    <Content Include="images\sach_danhmuc2025.jpg" />
-    <Content Include="images\sach_doingan.jpg" />
-    <Content Include="images\sach_kinhte.jpg" />
-    <Content Include="images\sach_marketing.jpg" />
-    <Content Include="images\tapchi.jpg" />
-    <Content Include="images\tapchi_congthuong.jpg" />
-    <Content Include="images\tapchi_giaoduc.jpg" />
-    <Content Include="images\tapchi_sangche.jpg" />
+    <Content Include="Images\5.jpg" />
+    <Content Include="Images\banner.jpg" />
+    <Content Include="Images\banner2.jpg" />
+    <Content Include="Images\banner3.jpg" />
+    <Content Include="Images\Default.jpg" />
+    <Content Include="Images\hopthu.jpg" />
+    <Content Include="Images\logo.jpg" />
+    <Content Include="Images\news_hoithao.jpg" />
+    <Content Include="Images\news_sinhvien.jpg" />
+    <Content Include="Images\news_taphuan.jpg" />
+    <Content Include="Images\news_tiepnhan.jpg" />
+    <Content Include="Images\news_traogiai.jpg" />
+    <Content Include="Images\notice_baotri.jpg" />
+    <Content Include="Images\notice_boya.jpg" />
+    <Content Include="Images\notice_huongdan.jpg" />
+    <Content Include="Images\notice_khoahoc.png" />
+    <Content Include="Images\notice_lichnghi.jpg" />
+    <Content Include="Images\notice_website.jpg" />
+    <Content Include="Images\partner1.jpg" />
+    <Content Include="Images\partner2.jpg" />
+    <Content Include="Images\partner3.jpg" />
+    <Content Include="Images\pic1.jpg" />
+    <Content Include="Images\pic2.jpg" />
+    <Content Include="Images\pic3.png" />
+    <Content Include="Images\sach.jpg" />
+    <Content Include="Images\Sach1.jpg" />
+    <Content Include="Images\Sach11.jpg" />
+    <Content Include="Images\Sach12.jpg" />
+    <Content Include="Images\Sach13.jpg" />
+    <Content Include="Images\Sach14.jpg" />
+    <Content Include="Images\Sach17.jpg" />
+    <Content Include="Images\Sach18.jpg" />
+    <Content Include="Images\Sach19.jpg" />
+    <Content Include="Images\Sach2.jpg" />
+    <Content Include="Images\Sach3.jpg" />
+    <Content Include="Images\Sach4.jpg" />
+    <Content Include="Images\Sach5.jpg" />
+    <Content Include="Images\Sach6.jpg" />
+    <Content Include="Images\Sach7.jpg" />
+    <Content Include="Images\Sach9.jpg" />
+    <Content Include="Images\sach_danhmuc2025.jpg" />
+    <Content Include="Images\sach_doingan.jpg" />
+    <Content Include="Images\sach_kinhte.jpg" />
+    <Content Include="Images\sach_marketing.jpg" />
+    <Content Include="Images\tapchi.jpg" />
+    <Content Include="Images\tapchi_congthuong.jpg" />
+    <Content Include="Images\tapchi_giaoduc.jpg" />
+    <Content Include="Images\tapchi_sangche.jpg" />
     <Content Include="Models\CNPM_DATABASE_THUVIEN.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>CNPM_DATABASE_THUVIEN.edmx</DependentUpon>
@@ -266,12 +272,6 @@
       <DependentUpon>CNPM_DATABASE_THUVIEN.edmx</DependentUpon>
       <LastGenOutput>CNPM_DATABASE_THUVIEN.cs</LastGenOutput>
     </Content>
-    <Content Include="Scripts\bootstrap.bundle.js" />
-    <Content Include="Scripts\bootstrap.bundle.min.js" />
-    <Content Include="Scripts\bootstrap.esm.js" />
-    <Content Include="Scripts\bootstrap.esm.min.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <EntityDeploy Include="Models\CNPM_DATABASE_THUVIEN.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>CNPM_DATABASE_THUVIEN.Designer.cs</LastGenOutput>
@@ -279,6 +279,12 @@
     <Content Include="Models\CNPM_DATABASE_THUVIEN.edmx.diagram">
       <DependentUpon>CNPM_DATABASE_THUVIEN.edmx</DependentUpon>
     </Content>
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.esm.js" />
+    <Content Include="Scripts\bootstrap.esm.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
@@ -307,9 +313,18 @@
     <Content Include="Views\Reader\SignIn.cshtml" />
     <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Views\Home\RegisterSuccess.cshtml" />
+    <Content Include="Views\Sach\CapNhat.cshtml" />
+    <Content Include="Views\Sach\ChiTiet.cshtml" />
+    <Content Include="Views\Sach\Index.cshtml" />
+    <Content Include="Views\Sach\QuanLySach.cshtml" />
+    <Content Include="Views\Sach\ThemSach.cshtml" />
+    <Content Include="Views\Shared\_SidebarPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
@@ -337,9 +352,6 @@
     <Content Include="Scripts\bootstrap.bundle.js.map" />
     <Content Include="Scripts\jquery-3.7.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.7.0.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

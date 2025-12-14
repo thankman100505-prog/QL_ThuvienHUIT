@@ -19,7 +19,7 @@ namespace QL_ThuVIenHUIT_13.Models
         public Nullable<int> SLMUON { get; set; }
         public Nullable<decimal> TIENTHECHAN { get; set; }
     
-        public virtual PHIEUMUON PHIEUMUON { get; set; }
         public virtual QLSACH QLSACH { get; set; }
+        public virtual PHIEUMUON PHIEUMUON { get; set; }
     }
 }

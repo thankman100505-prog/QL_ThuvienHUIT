@@ -1,5 +1,5 @@
-﻿----- MẬT KHẨU MẶC ĐỊNH CHO TOÀN HỆ THỐNG LÀ 12345!!!!!!!!!!
-
+﻿﻿----- MẬT KHẨU MẶC ĐỊNH CHO TOÀN HỆ THỐNG LÀ 12345!!!!!!!!!!
+use master
 CREATE DATABASE CNPM_DATABASE_THUVIEN
 GO
  
@@ -44,6 +44,7 @@ CREATE TABLE QLSACH
 	NAMXB INT CHECK(NAMXB<=YEAR(GETDATE())),
 	SL INT CHECK(SL>=0),
 	TINHTRANG INT CHECK(TINHTRANG>=0),
+	MOTA NVARCHAR(MAX) DEFAULT N'Đang cập nhật nội dung giới thiệu...',
 	FOREIGN KEY (MATG) REFERENCES TACGIA (MATG),
 	FOREIGN KEY (MATHELOAI) REFERENCES THELOAI (MATHELOAI),
 	FOREIGN KEY (MAXB) REFERENCES NHAXUATBAN (MAXB),
@@ -107,33 +108,6 @@ CREATE TABLE THETHUVIEN
     CONSTRAINT CK_NGAYHETHAN CHECK (NGAYHETHAN > NGAYCAP)
 );
 
--------- TỰ ĐỘNG TẠO ACCOUNT SAU KHI HOÀN TẤT ĐĂNG KÍ THẺ THƯ VIỆN
-CREATE TRIGGER AUTO_CREATE_ACC_READER ON THETHUVIEN 
-AFTER INSERT 
-AS 
-BEGIN
-	DECLARE @MATHE CHAR(7);
-
-	DECLARE cur CURSOR FOR
-		SELECT MATHE
-		FROM THETHUVIEN;
-
-	OPEN cur;
-	FETCH NEXT FROM cur INTO @MATHE;
-
-	WHILE @@FETCH_STATUS = 0
-	BEGIN
-		-- Chỉ tạo tài khoản nếu chưa tồn tại
-		IF NOT EXISTS (SELECT 1 FROM TAIKHOAN WHERE USERNAME = @MATHE)
-		BEGIN
-			INSERT INTO TAIKHOAN (USERNAME, ROLE_ID)
-			VALUES (@MATHE, 3);   -- 3 = Reader
-		END
-
-		FETCH NEXT FROM cur INTO @MATHE;
-	END
-END
-
 --7) BẢNG NHÂN VIÊN
 CREATE TABLE QLNHANVIEN
 (
@@ -146,31 +120,6 @@ CREATE TABLE QLNHANVIEN
 );
 
 
-CREATE TRIGGER AUTO_CREATE_ACC_LIB ON QLNHANVIEN 
-AFTER INSERT 
-AS 
-BEGIN
-	DECLARE @MANV CHAR(7);
-
-	DECLARE cur CURSOR FOR
-		SELECT MANV
-		FROM QLNHANVIEN;
-
-	OPEN cur;
-	FETCH NEXT FROM cur INTO @MANV;
-
-	WHILE @@FETCH_STATUS = 0
-	BEGIN
-		-- Chỉ tạo tài khoản nếu chưa tồn tại
-		IF NOT EXISTS (SELECT 1 FROM TAIKHOAN WHERE USERNAME = @MANV)
-		BEGIN
-			INSERT INTO TAIKHOAN (USERNAME, ROLE_ID)
-			VALUES (@MANV, 2);  
-		END
-
-		FETCH NEXT FROM cur INTO @MANV;
-	END
-END
 
 -----==================== QUẢN LÝ CÁC THUỘC TÍNH VÀ BẢNG NGHIỆP VỤ TRONG THƯ VIỆN ========================
 -- 8. Phiếu mượn
@@ -235,47 +184,6 @@ CREATE TABLE PHIEU_MUONPHONG
 	FOREIGN KEY (MATHE) REFERENCES THETHUVIEN(MATHE)
 )
 
---------- TRIGGER 
------ MỖI KHI THỰC HIỆN MƯỢN SÁCH THÌ SỐ LƯỢNG SÁCH CÒN GIẢM
-CREATE TRIGGER UPDATE_SLC_SAUKHI_MUON ON CHITIETPM
-AFTER INSERT 
-AS
-BEGIN
-	DECLARE @SL INT,@MASACH CHAR(7);
-
-	DECLARE cur_add_slc CURSOR FOR
-		SELECT SLMUON,MASACH
-		FROM inserted;
-
-	OPEN cur_add_slc;
-	FETCH NEXT FROM cur_add_slc INTO @SL,@MASACH;
-
-	WHILE @@FETCH_STATUS = 0
-	BEGIN
-		UPDATE QLSACH
-		SET TINHTRANG=TINHTRANG-@SL
-		WHERE MASACH=@MASACH
-
-		FETCH NEXT FROM cur_add_slc INTO @SL, @MASACH;
-	END 
-	CLOSE cur_add_slc;
-    DEALLOCATE cur_add_slc;
-END
-
------ THỰC HIỆN TRẢ SÁCH THÌ SỐ LƯỢNG SÁCH CÒN TĂNG
-CREATE TRIGGER TRG_PHIEUTRA
-ON PHIEUTRA
-AFTER INSERT
-AS
-BEGIN
-    SET NOCOUNT ON;
-    UPDATE S
-    SET S.TINHTRANG = S.TINHTRANG + CT.SLMUON
-    FROM QLSACH S
-    INNER JOIN CHITIETPM CT ON S.MASACH = CT.MASACH
-    INNER JOIN inserted I ON CT.MAPM = I.MAPM;
-END;
-GO
 
 
 
@@ -330,26 +238,26 @@ INSERT INTO NHAXUATBAN VALUES
 
 
 INSERT INTO QLSACH VALUES
-('S000001', N'Think Python', 'TG00001', 'TL00001', 'NXB0005', 2015, 12, 12),
-('S000002', N'Computer Networks', 'TG00002', 'TL00001', 'NXB0007', 2011, 10, 9),
-('S000003', N'Deep Learning', 'TG00003', 'TL00001', 'NXB0006', 2016, 8, 8),
-('S000004', N'Neural Networks and Learning Machines', 'TG00004', 'TL00001', 'NXB0006', 2008, 7, 7),
-('S000005', N'Giáo trình Cơ sở dữ liệu', 'TG00005', 'TL00002', 'NXB0001', 2020, 20, 19),
-('S000006', N'Giáo trình Mạng máy tính', 'TG00010', 'TL00002', 'NXB0004', 2021, 15, 14),
-('S000007', N'Giáo trình Thuật toán', 'TG00011', 'TL00002', 'NXB0003', 2019, 10, 10),
-('S000008', N'Phân tích dữ liệu với Python', 'TG00006', 'TL00003', 'NXB0008', 2022, 12, 11),
-('S000009', N'Hướng dẫn lập trình C++', 'TG00009', 'TL00003', 'NXB0001', 2018, 18, 17),
-('S000010', N'Tài liệu học máy nâng cao', 'TG00004', 'TL00003', 'NXB0006', 2021, 9, 9),
-('S000011', N'Emotional Intelligence', 'TG00007', 'TL00004', 'NXB0006', 1995, 10, 9),
-('S000012', N'How to Win Friends and Influence People', 'TG00008', 'TL00004', 'NXB0010', 1936, 20, 20),
-('S000013', N'Sức mạnh tư duy tích cực', 'TG00012', 'TL00004', 'NXB0002', 2017, 25, 24),
-('S000014', N'Khóa luận ứng dụng AI trong xử lý ảnh', 'TG00013', 'TL00005', 'NXB0004', 2023, 3, 3),
-('S000015', N'Luận văn nhận diện chữ viết tay', 'TG00014', 'TL00005', 'NXB0004', 2022, 2, 2),
-('S000016', N'Khóa luận phân tích dữ liệu lớn', 'TG00012', 'TL00005', 'NXB0009', 2023, 4, 4),
-('S000017', N'Journal of Machine Learning Research – Vol 1', 'TG00003', 'TL00006', 'NXB0006', 2019, 5, 5),
-('S000018', N'Journal of Data Science – Vol 2', 'TG00006', 'TL00006', 'NXB0008', 2020, 6, 6),
-('S000019', N'Vietnam Journal of Science – Số 15', 'TG00009', 'TL00006', 'NXB0003', 2022, 4, 4),
-('S000020', N'International AI Review – Vol 5', 'TG00003', 'TL00006', 'NXB0006', 2021, 7, 7);
+('S000001', N'Think Python', 'TG00001', 'TL00001', 'NXB0005', 2015, 12, 12, N'Cuốn sách kinh điển về lập trình Python, phù hợp cho người mới bắt đầu tìm hiểu về tư duy lập trình.'),
+('S000002', N'Computer Networks', 'TG00002', 'TL00001', 'NXB0007', 2011, 10, 9, N'Giáo trình mạng máy tính căn bản, bao gồm mô hình OSI, TCP/IP và các giao thức mạng phổ biến.'),
+('S000003', N'Deep Learning', 'TG00003', 'TL00001', 'NXB0006', 2016, 8, 8, N'Tài liệu chuyên sâu về Deep Learning, cung cấp kiến thức nền tảng toán học và các kiến trúc mạng nơ-ron.'),
+('S000004', N'Neural Networks and Learning Machines', 'TG00004', 'TL00001', 'NXB0006', 2008, 7, 7, N'Tài liệu học thuật toàn diện về mạng nơ-ron, từ cơ bản đến nâng cao, bao gồm các giải thuật học máy.'),
+('S000005', N'Giáo trình Cơ sở dữ liệu', 'TG00005', 'TL00002', 'NXB0001', 2020, 20, 19, N'Cung cấp kiến thức nền tảng về hệ quản trị cơ sở dữ liệu, ngôn ngữ truy vấn SQL và thiết kế dữ liệu chuẩn hóa.'),
+('S000006', N'Giáo trình Mạng máy tính', 'TG00010', 'TL00002', 'NXB0004', 2021, 15, 14, N'Tài liệu giảng dạy về nguyên lý mạng, kiến trúc phân tầng và các kỹ thuật truyền thông số liệu.'),
+('S000007', N'Giáo trình Thuật toán', 'TG00011', 'TL00002', 'NXB0003', 2019, 10, 10, N'Tổng hợp các cấu trúc dữ liệu cơ bản và giải thuật quan trọng, kèm theo phân tích độ phức tạp.'),
+('S000008', N'Phân tích dữ liệu với Python', 'TG00006', 'TL00003', 'NXB0008', 2022, 12, 11, N'Hướng dẫn sử dụng thư viện Pandas, NumPy và Matplotlib để xử lý, trực quan hóa và khai phá dữ liệu.'),
+('S000009', N'Hướng dẫn lập trình C++', 'TG00009', 'TL00003', 'NXB0001', 2018, 18, 17, N'Sách hướng dẫn chi tiết về lập trình hướng đối tượng, quản lý bộ nhớ và các kỹ thuật tối ưu hóa trong C++.'),
+('S000010', N'Tài liệu học máy nâng cao', 'TG00004', 'TL00003', 'NXB0006', 2021, 9, 9, N'Tài liệu chuyên sâu dành cho nghiên cứu, tập trung vào các mô hình phức tạp và tối ưu hóa thuật toán.'),
+('S000011', N'Emotional Intelligence', 'TG00007', 'TL00004', 'NXB0006', 1995, 10, 9, N'Khám phá vai trò của trí tuệ cảm xúc (EQ) trong việc điều hướng xã hội và quản lý cảm xúc cá nhân.'),
+('S000012', N'How to Win Friends and Influence People', 'TG00008', 'TL00004', 'NXB0010', 1936, 20, 20, N'Cuốn sách nghệ thuật sống kinh điển, chia sẻ các nguyên tắc giao tiếp và xây dựng mối quan hệ.'),
+('S000013', N'Sức mạnh tư duy tích cực', 'TG00012', 'TL00004', 'NXB0002', 2017, 25, 24, N'Sách hướng dẫn về tư duy tích cực, giúp thay đổi thái độ sống và đạt được thành công trong công việc.'),
+('S000014', N'Khóa luận ứng dụng AI trong xử lý ảnh', 'TG00013', 'TL00005', 'NXB0004', 2023, 3, 3, N'Nghiên cứu ứng dụng Deep Learning và Computer Vision trong việc tự động hóa phân tích hình ảnh.'),
+('S000015', N'Luận văn nhận diện chữ viết tay', 'TG00014', 'TL00005', 'NXB0004', 2022, 2, 2, N'Đề tài nghiên cứu về các kỹ thuật nhận dạng mẫu (OCR) và xử lý ảnh để số hóa văn bản viết tay.'),
+('S000016', N'Khóa luận phân tích dữ liệu lớn', 'TG00012', 'TL00005', 'NXB0009', 2023, 4, 4, N'Nghiên cứu về các công nghệ lưu trữ và xử lý dữ liệu quy mô lớn (Big Data) như Hadoop và Spark.'),
+('S000017', N'Journal of Machine Learning Research – Vol 1', 'TG00003', 'TL00006', 'NXB0006', 2019, 5, 5, N'Tập hợp các bài báo nghiên cứu hàn lâm chất lượng cao về những tiến bộ mới nhất trong lĩnh vực học máy.'),
+('S000018', N'Journal of Data Science – Vol 2', 'TG00006', 'TL00006', 'NXB0008', 2020, 6, 6, N'Tạp chí chuyên ngành công bố các phương pháp luận và ứng dụng thực tiễn trong khoa học dữ liệu.'),
+('S000019', N'Vietnam Journal of Science – Số 15', 'TG00009', 'TL00006', 'NXB0003', 2022, 4, 4, N'Ấn phẩm khoa học công nghệ, đăng tải các công trình nghiên cứu và triển khai ứng dụng tại Việt Nam.'),
+('S000020', N'International AI Review – Vol 5', 'TG00003', 'TL00006', 'NXB0006', 2021, 7, 7, N'Tạp chí quốc tế tổng hợp các đánh giá và xu hướng phát triển mới nhất của trí tuệ nhân tạo toàn cầu.');
 
 INSERT INTO BIASACH VALUES
 ('S000001', 'Sach1.jpg'),
@@ -654,3 +562,101 @@ GO
 DECLARE @NEWID CHAR(7)
 EXEC AUTO_ID_PHIEUMUONPHONG @NEWID OUTPUT
 PRINT @NEWID
+--------- TRIGGER 
+----- MỖI KHI THỰC HIỆN MƯỢN SÁCH THÌ SỐ LƯỢNG SÁCH CÒN GIẢM
+CREATE TRIGGER UPDATE_SLC_SAUKHI_MUON ON CHITIETPM
+AFTER INSERT 
+AS
+BEGIN
+	DECLARE @SL INT,@MASACH CHAR(7);
+
+	DECLARE cur_add_slc CURSOR FOR
+		SELECT SLMUON,MASACH
+		FROM inserted;
+
+	OPEN cur_add_slc;
+	FETCH NEXT FROM cur_add_slc INTO @SL,@MASACH;
+
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		UPDATE QLSACH
+		SET TINHTRANG=TINHTRANG-@SL
+		WHERE MASACH=@MASACH
+
+		FETCH NEXT FROM cur_add_slc INTO @SL, @MASACH;
+	END 
+	CLOSE cur_add_slc;
+    DEALLOCATE cur_add_slc;
+END
+
+----- THỰC HIỆN TRẢ SÁCH THÌ SỐ LƯỢNG SÁCH CÒN TĂNG
+CREATE TRIGGER TRG_PHIEUTRA
+ON PHIEUTRA
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE S
+    SET S.TINHTRANG = S.TINHTRANG + CT.SLMUON
+    FROM QLSACH S
+    INNER JOIN CHITIETPM CT ON S.MASACH = CT.MASACH
+    INNER JOIN inserted I ON CT.MAPM = I.MAPM;
+END;
+GO
+
+-------- TỰ ĐỘNG TẠO ACCOUNT SAU KHI HOÀN TẤT ĐĂNG KÍ THẺ THƯ VIỆN
+CREATE TRIGGER AUTO_CREATE_ACC_READER ON THETHUVIEN 
+AFTER INSERT 
+AS 
+BEGIN
+	DECLARE @MATHE CHAR(7);
+
+	DECLARE cur CURSOR FOR
+		SELECT MATHE
+		FROM inserted;
+
+	OPEN cur;
+	FETCH NEXT FROM cur INTO @MATHE;
+
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		-- Chỉ tạo tài khoản nếu chưa tồn tại
+		IF NOT EXISTS (SELECT 1 FROM TAIKHOAN WHERE USERNAME = @MATHE)
+		BEGIN
+			INSERT INTO TAIKHOAN (USERNAME, ROLE_ID)
+			VALUES (@MATHE, 3);   -- 3 = Reader
+		END
+
+		FETCH NEXT FROM cur INTO @MATHE;
+	END
+	CLOSE cur
+	DEALLOCATE cur
+END
+
+CREATE TRIGGER AUTO_CREATE_ACC_LIB ON QLNHANVIEN 
+AFTER INSERT 
+AS 
+BEGIN
+	DECLARE @MANV CHAR(7);
+
+	DECLARE cur CURSOR FOR
+		SELECT MANV
+		FROM inserted;
+
+	OPEN cur;
+	FETCH NEXT FROM cur INTO @MANV;
+
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		-- Chỉ tạo tài khoản nếu chưa tồn tại
+		IF NOT EXISTS (SELECT 1 FROM TAIKHOAN WHERE USERNAME = @MANV)
+		BEGIN
+			INSERT INTO TAIKHOAN (USERNAME, ROLE_ID)
+			VALUES (@MANV, 2);  
+		END
+
+		FETCH NEXT FROM cur INTO @MANV;
+	END
+	CLOSE cur
+	DEALLOCATE cur
+END

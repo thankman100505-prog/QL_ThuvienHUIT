@@ -31,18 +31,17 @@ namespace QL_ThuVIenHUIT_13.Models
         public virtual DbSet<CHITIETPM> CHITIETPMs { get; set; }
         public virtual DbSet<DOCGIA> DOCGIAs { get; set; }
         public virtual DbSet<NHAXUATBAN> NHAXUATBANs { get; set; }
-        public virtual DbSet<PHIEU_MUONPHONG> PHIEU_MUONPHONG { get; set; }
-        public virtual DbSet<PHIEUMUON> PHIEUMUONs { get; set; }
         public virtual DbSet<PHIEUTRA> PHIEUTRAs { get; set; }
         public virtual DbSet<PHONGHOP> PHONGHOPs { get; set; }
         public virtual DbSet<QLNHANVIEN> QLNHANVIENs { get; set; }
         public virtual DbSet<QLSACH> QLSACHes { get; set; }
         public virtual DbSet<ROLE_USER> ROLE_USER { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TACGIA> TACGIAs { get; set; }
         public virtual DbSet<TAIKHOAN> TAIKHOANs { get; set; }
         public virtual DbSet<THELOAI> THELOAIs { get; set; }
         public virtual DbSet<THETHUVIEN> THETHUVIENs { get; set; }
+        public virtual DbSet<PHIEU_MUONPHONG> PHIEU_MUONPHONG { get; set; }
+        public virtual DbSet<PHIEUMUON> PHIEUMUONs { get; set; }
     
         public virtual int AUTO_CREATE_ID_TACGIA(ObjectParameter mATG)
         {

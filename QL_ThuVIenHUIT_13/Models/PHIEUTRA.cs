@@ -21,7 +21,7 @@ namespace QL_ThuVIenHUIT_13.Models
         public Nullable<decimal> TONG_TIENTHECHAN { get; set; }
         public Nullable<decimal> TIENPHAT { get; set; }
     
-        public virtual PHIEUMUON PHIEUMUON { get; set; }
         public virtual QLNHANVIEN QLNHANVIEN { get; set; }
+        public virtual PHIEUMUON PHIEUMUON { get; set; }
     }
 }
