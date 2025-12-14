@@ -17,8 +17,8 @@ namespace QL_ThuVIenHUIT_13.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public QLNHANVIEN()
         {
-            this.PHIEUMUONs = new HashSet<PHIEUMUON>();
             this.PHIEUTRAs = new HashSet<PHIEUTRA>();
+            this.PHIEUMUONs = new HashSet<PHIEUMUON>();
         }
     
         public string MANV { get; set; }
@@ -29,8 +29,8 @@ namespace QL_ThuVIenHUIT_13.Models
         public string MAIL { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PHIEUMUON> PHIEUMUONs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PHIEUTRA> PHIEUTRAs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PHIEUMUON> PHIEUMUONs { get; set; }
     }
 }

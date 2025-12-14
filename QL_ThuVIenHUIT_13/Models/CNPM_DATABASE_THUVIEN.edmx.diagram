@@ -4,37 +4,36 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4476ad7830f04a19bac2171e2826eaf5" Name="Diagram1" ZoomLevel="93">
+      <Diagram DiagramId="4476ad7830f04a19bac2171e2826eaf5" Name="Diagram1" ZoomLevel="74">
         <EntityTypeShape EntityType="CNPM_DATABASE_THUVIENModel.BIASACH" Width="1.5" PointX="5.25" PointY="7.125" />
         <EntityTypeShape EntityType="CNPM_DATABASE_THUVIENModel.CHITIETPM" Width="1.5" PointX="5.25" PointY="3.875" />
         <EntityTypeShape EntityType="CNPM_DATABASE_THUVIENModel.DOCGIA" Width="1.5" PointX="1.5" PointY="16.5" />
         <EntityTypeShape EntityType="CNPM_DATABASE_THUVIENModel.NHAXUATBAN" Width="1.5" PointX="0.75" PointY="4" />
-        <EntityTypeShape EntityType="CNPM_DATABASE_THUVIENModel.PHIEU_MUONPHONG" Width="1.5" PointX="3" PointY="8.375" />
-        <EntityTypeShape EntityType="CNPM_DATABASE_THUVIENModel.PHIEUMUON" Width="1.5" PointX="3" PointY="12.125" />
         <EntityTypeShape EntityType="CNPM_DATABASE_THUVIENModel.PHIEUTRA" Width="1.5" PointX="5.25" PointY="16" />
         <EntityTypeShape EntityType="CNPM_DATABASE_THUVIENModel.PHONGHOP" Width="1.5" PointX="0.75" PointY="23.75" />
         <EntityTypeShape EntityType="CNPM_DATABASE_THUVIENModel.QLNHANVIEN" Width="1.5" PointX="0.75" PointY="19.875" />
         <EntityTypeShape EntityType="CNPM_DATABASE_THUVIENModel.QLSACH" Width="1.5" PointX="3" PointY="3.25" />
         <EntityTypeShape EntityType="CNPM_DATABASE_THUVIENModel.ROLE_USER" Width="1.5" PointX="7.75" PointY="2.625" />
-        <EntityTypeShape EntityType="CNPM_DATABASE_THUVIENModel.sysdiagram" Width="1.5" PointX="7.75" PointY="5.5" />
         <EntityTypeShape EntityType="CNPM_DATABASE_THUVIENModel.TACGIA" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="CNPM_DATABASE_THUVIENModel.TAIKHOAN" Width="1.5" PointX="10" PointY="2.625" />
         <EntityTypeShape EntityType="CNPM_DATABASE_THUVIENModel.THELOAI" Width="1.5" PointX="0.75" PointY="7.5" />
         <EntityTypeShape EntityType="CNPM_DATABASE_THUVIENModel.THETHUVIEN" Width="1.5" PointX="0.75" PointY="10.5" />
         <AssociationConnector Association="CNPM_DATABASE_THUVIENModel.FK__BIASACH__MASACH__4BAC3F29" />
-        <AssociationConnector Association="CNPM_DATABASE_THUVIENModel.FK__CHITIETPM__MAPM__6E01572D" />
         <AssociationConnector Association="CNPM_DATABASE_THUVIENModel.FK__CHITIETPM__MASAC__6EF57B66" />
         <AssociationConnector Association="CNPM_DATABASE_THUVIENModel.FK__THETHUVIEN__MADG__5AEE82B9" />
         <AssociationConnector Association="CNPM_DATABASE_THUVIENModel.FK__QLSACH__MAXB__47DBAE45" />
-        <AssociationConnector Association="CNPM_DATABASE_THUVIENModel.FK__PHIEU_MUO__MATHE__02FC7413" />
-        <AssociationConnector Association="CNPM_DATABASE_THUVIENModel.FK__PHIEU_MUON__MAPH__02084FDA" />
-        <AssociationConnector Association="CNPM_DATABASE_THUVIENModel.FK__PHIEUMUON__MANV__693CA210" />
-        <AssociationConnector Association="CNPM_DATABASE_THUVIENModel.FK__PHIEUMUON__MATHE__68487DD7" />
-        <AssociationConnector Association="CNPM_DATABASE_THUVIENModel.FK__PHIEUTRA__MAPM__76969D2E" />
         <AssociationConnector Association="CNPM_DATABASE_THUVIENModel.FK__PHIEUTRA__MANV__778AC167" />
         <AssociationConnector Association="CNPM_DATABASE_THUVIENModel.FK__QLSACH__MATG__45F365D3" />
         <AssociationConnector Association="CNPM_DATABASE_THUVIENModel.FK__QLSACH__MATHELOA__46E78A0C" />
         <AssociationConnector Association="CNPM_DATABASE_THUVIENModel.FK__TAIKHOAN__ROLE_I__52593CB8" />
+        <EntityTypeShape EntityType="CNPM_DATABASE_THUVIENModel.PHIEU_MUONPHONG" Width="1.5" PointX="4" PointY="19.625" />
+        <EntityTypeShape EntityType="CNPM_DATABASE_THUVIENModel.PHIEUMUON" Width="1.5" PointX="3" PointY="12.125" />
+        <AssociationConnector Association="CNPM_DATABASE_THUVIENModel.FK__CHITIETPM__MAPM__7F2BE32F" />
+        <AssociationConnector Association="CNPM_DATABASE_THUVIENModel.FK__PHIEU_MUO__MATHE__14270015" />
+        <AssociationConnector Association="CNPM_DATABASE_THUVIENModel.FK__PHIEU_MUON__MAPH__1332DBDC" />
+        <AssociationConnector Association="CNPM_DATABASE_THUVIENModel.FK__PHIEUMUON__MANV__7A672E12" />
+        <AssociationConnector Association="CNPM_DATABASE_THUVIENModel.FK__PHIEUMUON__MATHE__797309D9" />
+        <AssociationConnector Association="CNPM_DATABASE_THUVIENModel.FK__PHIEUTRA__MAPM__07C12930" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

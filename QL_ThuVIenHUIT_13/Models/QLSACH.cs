@@ -28,6 +28,7 @@ namespace QL_ThuVIenHUIT_13.Models
         public Nullable<int> NAMXB { get; set; }
         public Nullable<int> SL { get; set; }
         public Nullable<int> TINHTRANG { get; set; }
+        public string MOTA { get; set; }
     
         public virtual BIASACH BIASACH { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

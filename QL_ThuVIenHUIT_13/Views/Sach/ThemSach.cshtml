@@ -1,0 +1,74 @@
+﻿@model QL_ThuVIenHUIT_13.Models.QLSACH
+
+@{
+    ViewBag.Title = "Thêm Sách Mới";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="card shadow border-0">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0 text-uppercase fw-bold">Nhập sách mới (Tự động thêm Tác giả/NXB)</h4>
+        </div>
+
+        <div class="card-body p-4">
+            @using (Html.BeginForm("ThemSach", "Sach", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Tên Sách</label>
+                        @Html.EditorFor(model => model.TENSACH, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Tên Tác Giả</label>
+                            <input type="text" name="tenTacGia" class="form-control" placeholder="Nhập tên tác giả..." required />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Tên Thể Loại</label>
+                            <input type="text" name="tenTheLoai" class="form-control" placeholder="Nhập tên thể loại..." required />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Tên Nhà Xuất Bản</label>
+                            <input type="text" name="tenNXB" class="form-control" placeholder="Nhập tên NXB..." required />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Năm Xuất Bản</label>
+                            @Html.EditorFor(model => model.NAMXB, new { htmlAttributes = new { @class = "form-control", type = "number", Value = DateTime.Now.Year } })
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Số Lượng Nhập</label>
+                        @Html.EditorFor(model => model.SL, new { htmlAttributes = new { @class = "form-control", type = "number", min = "1", Value = "10" } })
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Giới Thiệu Sách</label>
+                    @Html.TextAreaFor(model => model.MOTA, new { @class = "form-control", rows = "5", placeholder = "Nhập tóm tắt nội dung sách..." })
+                </div>
+                <div class="col-lg-4">
+                    <div class="card bg-light">
+                        <div class="card-body text-center">
+                            <label class="form-label fw-bold">Ảnh Bìa</label>
+                            <input type="file" name="fileAnh" class="form-control mt-2" accept="image/*" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                <div class="mt-4 text-center">
+                    <a href="@Url.Action("Index")" class="btn btn-secondary">Quay lại</a>
+                    <button type="submit" class="btn btn-primary px-5">Lưu Sách</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
