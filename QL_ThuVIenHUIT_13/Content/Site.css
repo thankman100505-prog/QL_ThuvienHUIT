@@ -604,3 +604,33 @@ function nextJournalPage() {
 function prevJournalPage() {
     if (currentJournalPage > 1) switchJournalPage(currentJournalPage - 1);
 }
+
+.dropdown-menu-huit {
+    display: none !important;
+    position: absolute;
+    background-color: #333;
+    padding: 0;
+    border: none;
+    min-width: 220px;
+    z-index: 9999;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    margin-top: 0;
+}
+
+.dropdown:hover .dropdown-menu-huit {
+    display: block !important;
+}
+
+.dropdown-menu-huit .dropdown-item {
+    color: #fff !important;
+    padding: 12px 20px;
+    border-bottom: 1px solid #444;
+    transition: all 0.2s;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+    .dropdown-menu-huit .dropdown-item:hover {
+        background-color: #555;
+        color: #ffcc00 !important;
+    }

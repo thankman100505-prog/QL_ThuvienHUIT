@@ -121,6 +121,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReaderController.cs" />
     <Compile Include="Controllers\SachController.cs" />
+    <Compile Include="Controllers\TinTucController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -149,6 +150,7 @@
     <Compile Include="Models\DOCGIA.cs">
       <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\NHAXUATBAN.cs">
       <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
     </Compile>
@@ -190,6 +192,9 @@
       <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\THETHUVIEN.cs">
+      <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TINTUC.cs">
       <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -319,9 +324,11 @@
     <Content Include="Views\Sach\QuanLySach.cshtml" />
     <Content Include="Views\Sach\ThemSach.cshtml" />
     <Content Include="Views\Shared\_SidebarPartial.cshtml" />
+    <Content Include="Views\TinTuc\ChiTiet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\MuonPhong\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

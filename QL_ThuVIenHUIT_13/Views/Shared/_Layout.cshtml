@@ -66,11 +66,33 @@
             <ul style="margin-top:10px">
                 <li><a href="@Url.Action("Index","Home")" class="active">TRANG CHỦ</a></li>
                 <li><a href="#">GIỚI THIỆU <i class="fas fa-caret-down"></i></a></li>
-                <li><a href="#">DỊCH VỤ <i class="fas fa-caret-down"></i></a></li>
+                <li class="dropdown">
+                    <a href="#">
+                        DỊCH VỤ <i class="fas fa-caret-down"></i>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-huit">
+                        <li>
+                            <a class="dropdown-item" href="@Url.Action("Index", "MuonPhong")">MƯỢN PHÒNG</a>
+                        </li>
+                    </ul>
+                </li>
                 <li><a href="#">TÀI NGUYÊN <i class="fas fa-caret-down"></i></a></li>
-                <li><a href="#">HƯỚNG DẪN <i class="fas fa-caret-down"></i></a></li>
+                <li class="dropdown">
+                    <a href="#">
+                        HƯỚNG DẪN <i class="fas fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-huit">
+                        <li>
+                            <a class="dropdown-item" href="#">HƯỚNG DẪN ĐĂNG KÝ THẺ THƯ VIỆN</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">HƯỚNG DẪN MƯỢN PHÒNG</a>
+                        </li>
+                    </ul>
+                </li>
                 <li><a href="#">VĂN BẢN <i class="fas fa-caret-down"></i></a></li>
-                <li><a href="#">SÁCH <i class="fas fa-caret-down"></i></a></li>
+                <li><a href="@Url.Action("Index","Sach")">SÁCH </a></li>
             </ul>
         </div>
     </nav>

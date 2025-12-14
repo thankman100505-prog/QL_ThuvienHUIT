@@ -154,7 +154,20 @@
           <Property Name="NGAYHETHAN" Type="date" />
           <Property Name="TRANGTHAI" Type="nvarchar" MaxLength="20" />
         </EntityType>
-        <Association Name="FK__BIASACH__MASACH__5EBF139D">
+        <EntityType Name="TINTUC">
+          <Key>
+            <PropertyRef Name="MaTin" />
+          </Key>
+          <Property Name="MaTin" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TieuDe" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="MoTaNgan" Type="nvarchar" MaxLength="500" />
+          <Property Name="HinhAnh" Type="nvarchar" MaxLength="255" />
+          <Property Name="NgayDang" Type="datetime" />
+          <Property Name="LoaiTin" Type="int" />
+          <Property Name="HienThi" Type="bit" />
+          <Property Name="Link" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <Association Name="FK__BIASACH__MASACH__4CA06362">
           <End Role="QLSACH" Type="Self.QLSACH" Multiplicity="1" />
           <End Role="BIASACH" Type="Self.BIASACH" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -166,7 +179,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CHITIETPM__MAPM__7F2BE32F">
+        <Association Name="FK__CHITIETPM__MAPM__6D0D32F4">
           <End Role="PHIEUMUON" Type="Self.PHIEUMUON" Multiplicity="1" />
           <End Role="CHITIETPM" Type="Self.CHITIETPM" Multiplicity="*" />
           <ReferentialConstraint>
@@ -178,7 +191,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CHITIETPM__MASAC__00200768">
+        <Association Name="FK__CHITIETPM__MASAC__6E01572D">
           <End Role="QLSACH" Type="Self.QLSACH" Multiplicity="1" />
           <End Role="CHITIETPM" Type="Self.CHITIETPM" Multiplicity="*" />
           <ReferentialConstraint>
@@ -190,7 +203,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PHIEU_MUO__MATHE__14270015">
+        <Association Name="FK__PHIEU_MUO__MATHE__02084FDA">
           <End Role="THETHUVIEN" Type="Self.THETHUVIEN" Multiplicity="1" />
           <End Role="PHIEU_MUONPHONG" Type="Self.PHIEU_MUONPHONG" Multiplicity="*" />
           <ReferentialConstraint>
@@ -202,7 +215,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PHIEU_MUON__MAPH__1332DBDC">
+        <Association Name="FK__PHIEU_MUON__MAPH__01142BA1">
           <End Role="PHONGHOP" Type="Self.PHONGHOP" Multiplicity="1" />
           <End Role="PHIEU_MUONPHONG" Type="Self.PHIEU_MUONPHONG" Multiplicity="*" />
           <ReferentialConstraint>
@@ -214,7 +227,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PHIEUMUON__MANV__7A672E12">
+        <Association Name="FK__PHIEUMUON__MANV__68487DD7">
           <End Role="QLNHANVIEN" Type="Self.QLNHANVIEN" Multiplicity="1" />
           <End Role="PHIEUMUON" Type="Self.PHIEUMUON" Multiplicity="*" />
           <ReferentialConstraint>
@@ -226,7 +239,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PHIEUMUON__MATHE__797309D9">
+        <Association Name="FK__PHIEUMUON__MATHE__6754599E">
           <End Role="THETHUVIEN" Type="Self.THETHUVIEN" Multiplicity="1" />
           <End Role="PHIEUMUON" Type="Self.PHIEUMUON" Multiplicity="*" />
           <ReferentialConstraint>
@@ -238,7 +251,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PHIEUTRA__MANV__08B54D69">
+        <Association Name="FK__PHIEUTRA__MANV__76969D2E">
           <End Role="QLNHANVIEN" Type="Self.QLNHANVIEN" Multiplicity="1" />
           <End Role="PHIEUTRA" Type="Self.PHIEUTRA" Multiplicity="*" />
           <ReferentialConstraint>
@@ -250,7 +263,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PHIEUTRA__MAPM__07C12930">
+        <Association Name="FK__PHIEUTRA__MAPM__75A278F5">
           <End Role="PHIEUMUON" Type="Self.PHIEUMUON" Multiplicity="1" />
           <End Role="PHIEUTRA" Type="Self.PHIEUTRA" Multiplicity="*" />
           <ReferentialConstraint>
@@ -262,7 +275,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__QLSACH__MATG__59063A47">
+        <Association Name="FK__QLSACH__MATG__46E78A0C">
           <End Role="TACGIA" Type="Self.TACGIA" Multiplicity="0..1" />
           <End Role="QLSACH" Type="Self.QLSACH" Multiplicity="*" />
           <ReferentialConstraint>
@@ -274,7 +287,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__QLSACH__MATHELOA__59FA5E80">
+        <Association Name="FK__QLSACH__MATHELOA__47DBAE45">
           <End Role="THELOAI" Type="Self.THELOAI" Multiplicity="0..1" />
           <End Role="QLSACH" Type="Self.QLSACH" Multiplicity="*" />
           <ReferentialConstraint>
@@ -286,7 +299,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__QLSACH__MAXB__5AEE82B9">
+        <Association Name="FK__QLSACH__MAXB__48CFD27E">
           <End Role="NHAXUATBAN" Type="Self.NHAXUATBAN" Multiplicity="0..1" />
           <End Role="QLSACH" Type="Self.QLSACH" Multiplicity="*" />
           <ReferentialConstraint>
@@ -298,7 +311,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TAIKHOAN__ROLE_I__656C112C">
+        <Association Name="FK__TAIKHOAN__ROLE_I__534D60F1">
           <End Role="ROLE_USER" Type="Self.ROLE_USER" Multiplicity="0..1" />
           <End Role="TAIKHOAN" Type="Self.TAIKHOAN" Multiplicity="*" />
           <ReferentialConstraint>
@@ -310,7 +323,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__THETHUVIEN__MADG__6E01572D">
+        <Association Name="FK__THETHUVIEN__MADG__5BE2A6F2">
           <End Role="DOCGIA" Type="Self.DOCGIA" Multiplicity="0..1" />
           <End Role="THETHUVIEN" Type="Self.THETHUVIEN" Multiplicity="*" />
           <ReferentialConstraint>
@@ -338,59 +351,60 @@
           <EntitySet Name="TAIKHOAN" EntityType="Self.TAIKHOAN" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="THELOAI" EntityType="Self.THELOAI" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="THETHUVIEN" EntityType="Self.THETHUVIEN" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__BIASACH__MASACH__5EBF139D" Association="Self.FK__BIASACH__MASACH__5EBF139D">
+          <EntitySet Name="TINTUC" EntityType="Self.TINTUC" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__BIASACH__MASACH__4CA06362" Association="Self.FK__BIASACH__MASACH__4CA06362">
             <End Role="QLSACH" EntitySet="QLSACH" />
             <End Role="BIASACH" EntitySet="BIASACH" />
           </AssociationSet>
-          <AssociationSet Name="FK__CHITIETPM__MAPM__7F2BE32F" Association="Self.FK__CHITIETPM__MAPM__7F2BE32F">
+          <AssociationSet Name="FK__CHITIETPM__MAPM__6D0D32F4" Association="Self.FK__CHITIETPM__MAPM__6D0D32F4">
             <End Role="PHIEUMUON" EntitySet="PHIEUMUON" />
             <End Role="CHITIETPM" EntitySet="CHITIETPM" />
           </AssociationSet>
-          <AssociationSet Name="FK__CHITIETPM__MASAC__00200768" Association="Self.FK__CHITIETPM__MASAC__00200768">
+          <AssociationSet Name="FK__CHITIETPM__MASAC__6E01572D" Association="Self.FK__CHITIETPM__MASAC__6E01572D">
             <End Role="QLSACH" EntitySet="QLSACH" />
             <End Role="CHITIETPM" EntitySet="CHITIETPM" />
           </AssociationSet>
-          <AssociationSet Name="FK__PHIEU_MUO__MATHE__14270015" Association="Self.FK__PHIEU_MUO__MATHE__14270015">
+          <AssociationSet Name="FK__PHIEU_MUO__MATHE__02084FDA" Association="Self.FK__PHIEU_MUO__MATHE__02084FDA">
             <End Role="THETHUVIEN" EntitySet="THETHUVIEN" />
             <End Role="PHIEU_MUONPHONG" EntitySet="PHIEU_MUONPHONG" />
           </AssociationSet>
-          <AssociationSet Name="FK__PHIEU_MUON__MAPH__1332DBDC" Association="Self.FK__PHIEU_MUON__MAPH__1332DBDC">
+          <AssociationSet Name="FK__PHIEU_MUON__MAPH__01142BA1" Association="Self.FK__PHIEU_MUON__MAPH__01142BA1">
             <End Role="PHONGHOP" EntitySet="PHONGHOP" />
             <End Role="PHIEU_MUONPHONG" EntitySet="PHIEU_MUONPHONG" />
           </AssociationSet>
-          <AssociationSet Name="FK__PHIEUMUON__MANV__7A672E12" Association="Self.FK__PHIEUMUON__MANV__7A672E12">
+          <AssociationSet Name="FK__PHIEUMUON__MANV__68487DD7" Association="Self.FK__PHIEUMUON__MANV__68487DD7">
             <End Role="QLNHANVIEN" EntitySet="QLNHANVIEN" />
             <End Role="PHIEUMUON" EntitySet="PHIEUMUON" />
           </AssociationSet>
-          <AssociationSet Name="FK__PHIEUMUON__MATHE__797309D9" Association="Self.FK__PHIEUMUON__MATHE__797309D9">
+          <AssociationSet Name="FK__PHIEUMUON__MATHE__6754599E" Association="Self.FK__PHIEUMUON__MATHE__6754599E">
             <End Role="THETHUVIEN" EntitySet="THETHUVIEN" />
             <End Role="PHIEUMUON" EntitySet="PHIEUMUON" />
           </AssociationSet>
-          <AssociationSet Name="FK__PHIEUTRA__MANV__08B54D69" Association="Self.FK__PHIEUTRA__MANV__08B54D69">
+          <AssociationSet Name="FK__PHIEUTRA__MANV__76969D2E" Association="Self.FK__PHIEUTRA__MANV__76969D2E">
             <End Role="QLNHANVIEN" EntitySet="QLNHANVIEN" />
             <End Role="PHIEUTRA" EntitySet="PHIEUTRA" />
           </AssociationSet>
-          <AssociationSet Name="FK__PHIEUTRA__MAPM__07C12930" Association="Self.FK__PHIEUTRA__MAPM__07C12930">
+          <AssociationSet Name="FK__PHIEUTRA__MAPM__75A278F5" Association="Self.FK__PHIEUTRA__MAPM__75A278F5">
             <End Role="PHIEUMUON" EntitySet="PHIEUMUON" />
             <End Role="PHIEUTRA" EntitySet="PHIEUTRA" />
           </AssociationSet>
-          <AssociationSet Name="FK__QLSACH__MATG__59063A47" Association="Self.FK__QLSACH__MATG__59063A47">
+          <AssociationSet Name="FK__QLSACH__MATG__46E78A0C" Association="Self.FK__QLSACH__MATG__46E78A0C">
             <End Role="TACGIA" EntitySet="TACGIA" />
             <End Role="QLSACH" EntitySet="QLSACH" />
           </AssociationSet>
-          <AssociationSet Name="FK__QLSACH__MATHELOA__59FA5E80" Association="Self.FK__QLSACH__MATHELOA__59FA5E80">
+          <AssociationSet Name="FK__QLSACH__MATHELOA__47DBAE45" Association="Self.FK__QLSACH__MATHELOA__47DBAE45">
             <End Role="THELOAI" EntitySet="THELOAI" />
             <End Role="QLSACH" EntitySet="QLSACH" />
           </AssociationSet>
-          <AssociationSet Name="FK__QLSACH__MAXB__5AEE82B9" Association="Self.FK__QLSACH__MAXB__5AEE82B9">
+          <AssociationSet Name="FK__QLSACH__MAXB__48CFD27E" Association="Self.FK__QLSACH__MAXB__48CFD27E">
             <End Role="NHAXUATBAN" EntitySet="NHAXUATBAN" />
             <End Role="QLSACH" EntitySet="QLSACH" />
           </AssociationSet>
-          <AssociationSet Name="FK__TAIKHOAN__ROLE_I__656C112C" Association="Self.FK__TAIKHOAN__ROLE_I__656C112C">
+          <AssociationSet Name="FK__TAIKHOAN__ROLE_I__534D60F1" Association="Self.FK__TAIKHOAN__ROLE_I__534D60F1">
             <End Role="ROLE_USER" EntitySet="ROLE_USER" />
             <End Role="TAIKHOAN" EntitySet="TAIKHOAN" />
           </AssociationSet>
-          <AssociationSet Name="FK__THETHUVIEN__MADG__6E01572D" Association="Self.FK__THETHUVIEN__MADG__6E01572D">
+          <AssociationSet Name="FK__THETHUVIEN__MADG__5BE2A6F2" Association="Self.FK__THETHUVIEN__MADG__5BE2A6F2">
             <End Role="DOCGIA" EntitySet="DOCGIA" />
             <End Role="THETHUVIEN" EntitySet="THETHUVIEN" />
           </AssociationSet>
@@ -531,6 +545,7 @@
             <End Role="PHIEUMUON" EntitySet="PHIEUMUONs" />
             <End Role="PHIEUTRA" EntitySet="PHIEUTRAs" />
           </AssociationSet>
+          <EntitySet Name="TINTUCs" EntityType="CNPM_DATABASE_THUVIENModel.TINTUC" />
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -888,6 +903,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="TINTUC">
+          <Key>
+            <PropertyRef Name="MaTin" />
+          </Key>
+          <Property Name="MaTin" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TieuDe" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MoTaNgan" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="HinhAnh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="NgayDang" Type="DateTime" Precision="3" />
+          <Property Name="LoaiTin" Type="Int32" />
+          <Property Name="HienThi" Type="Boolean" />
+          <Property Name="Link" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1054,6 +1082,20 @@
                 <ScalarProperty Name="MANV" ColumnName="MANV" />
                 <ScalarProperty Name="MATHE" ColumnName="MATHE" />
                 <ScalarProperty Name="MAPM" ColumnName="MAPM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TINTUCs">
+            <EntityTypeMapping TypeName="CNPM_DATABASE_THUVIENModel.TINTUC">
+              <MappingFragment StoreEntitySet="TINTUC">
+                <ScalarProperty Name="Link" ColumnName="Link" />
+                <ScalarProperty Name="HienThi" ColumnName="HienThi" />
+                <ScalarProperty Name="LoaiTin" ColumnName="LoaiTin" />
+                <ScalarProperty Name="NgayDang" ColumnName="NgayDang" />
+                <ScalarProperty Name="HinhAnh" ColumnName="HinhAnh" />
+                <ScalarProperty Name="MoTaNgan" ColumnName="MoTaNgan" />
+                <ScalarProperty Name="TieuDe" ColumnName="TieuDe" />
+                <ScalarProperty Name="MaTin" ColumnName="MaTin" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

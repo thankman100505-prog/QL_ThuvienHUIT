@@ -6,14 +6,31 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Security.Cryptography;
 
 namespace QL_ThuVIenHUIT_13.Controllers
 {
     public class HomeController : Controller
     {
+        CNPM_DATABASE_THUVIENEntities db = new CNPM_DATABASE_THUVIENEntities();
+
         public ActionResult Index()
         {
-            return View();
+            HomeViewModel model = new HomeViewModel();
+
+            // 1. Lấy TIN TỨC (LoaiTin = 1), sắp xếp mới nhất
+            model.TinTucSuKien = db.TINTUCs
+                                   .Where(x => x.LoaiTin == 1 && x.HienThi == true)
+                                   .OrderByDescending(x => x.NgayDang)
+                                   .ToList();
+
+            // 2. Lấy THÔNG BÁO (LoaiTin = 2)
+            model.ThongBao = db.TINTUCs
+                               .Where(x => x.LoaiTin == 2 && x.HienThi == true)
+                               .OrderByDescending(x => x.NgayDang)
+                               .ToList();
+
+            return View(model);
         }
 
         public ActionResult About()
@@ -29,8 +46,6 @@ namespace QL_ThuVIenHUIT_13.Controllers
 
             return View();
         }
-
-        private CNPM_DATABASE_THUVIENEntities db = new CNPM_DATABASE_THUVIENEntities();
 
         // GET: /Registration/Register
         [HttpGet]

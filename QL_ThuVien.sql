@@ -195,7 +195,86 @@ CREATE TABLE PHIEU_MUONPHONG
 --DROP TABLE THETHUVIEN
 --DROP TABLE DOCGIA
 --DROP TABLE TAIKHOAN
+CREATE TABLE TINTUC (
+    MaTin INT IDENTITY(1,1) PRIMARY KEY,
+    TieuDe NVARCHAR(255) NOT NULL,
+    MoTaNgan NVARCHAR(500),
+    HinhAnh NVARCHAR(255),
+    NgayDang DATETIME DEFAULT GETDATE(),
+    LoaiTin INT, 
+    HienThi BIT DEFAULT 1,
+	Link VARCHAR(500),
+);
 
+
+INSERT INTO TINTUC (TieuDe, MoTaNgan, HinhAnh, NgayDang, LoaiTin, HienThi, Link) VALUES 
+-- [LINK THẬT 1] User cung cấp
+(N'Thư viện Trường ĐH Công Thương TP. HCM tiếp nhận hơn 1.000 quyển sách ngoại văn', 
+ N'Ngày sách và Văn hóa đọc Việt Nam năm 2025 - Lan tỏa tri thức', 
+ 'news_tiepnhan.jpg', '2025-04-20', 1, 1, 
+ 'https://thuvien.huit.edu.vn/News/NewDetail/thu-vien-truong-dai-hoc-cong-thuong-tp-hcm-tiep-nhan-hon-1-000-quyen-sach-ngoai-van-tu-gs-tran-huu-dung-va-chuong-trinh-books4vn-cua-ts-vo-ta-han'),
+
+-- [LINK THẬT 2] User cung cấp
+(N'Trao giải Cuộc thi "Đại sứ văn hóa đọc HUIT" và "Xếp sách nghệ thuật"', 
+ N'Ngày sách đồng hành cùng sinh viên - Tôn vinh văn hóa đọc', 
+ 'news_traogiai.jpg', '2024-04-21', 1, 1, 
+ 'https://thuvien.huit.edu.vn/News/NewDetail/trao-giai-cuoc-thi-dai-su-van-hoa-doc-huit-va-xep-sach-nghe-thuat'),
+
+-- [LINK THẬT 3] Ngày hội đọc sách (Vy tìm thấy trên web HUIT)
+(N'Sinh viên HUIT hào hứng tham gia ngày hội đọc sách', 
+ N'Hoạt động thường niên thu hút đông đảo sinh viên tham gia', 
+ 'news_sinhvien.jpg', '2024-11-20', 1, 1, 
+ 'https://thuvien.huit.edu.vn/News/NewDetail/ngay-sach-dong-hanh-cung-sinh-vien-2024'),
+
+-- [LINK GIẢ ĐỊNH] Chuẩn cấu trúc web HUIT
+(N'Hội thảo khoa học: Ứng dụng AI trong quản lý thư viện số', 
+ N'Cập nhật xu hướng công nghệ mới tháng 12/2024', 
+ 'news_hoithao.jpg', '2024-12-15', 1, 1, 
+ 'https://thuvien.huit.edu.vn/News/NewDetail/hoi-thao-khoa-hoc-ung-dung-ai-trong-quan-ly-thu-vien-so'),
+
+(N'Tập huấn kỹ năng tra cứu tài liệu trên CSDL ScienceDirect', 
+ N'Hướng dẫn kỹ năng thông tin chuyên sâu cho giảng viên và sinh viên', 
+ 'news_taphuan.jpg', '2024-10-05', 1, 1, 
+ 'https://thuvien.huit.edu.vn/News/NewDetail/tap-huan-ky-nang-tra-cuu-tai-lieu-tren-csdl-sciencedirect'),
+
+(N'Triển lãm sách chào mừng năm học mới 2024-2025', 
+ N'Giới thiệu hàng loạt giáo trình và tài liệu tham khảo mới nhất', 
+ 'banner.jpg', '2024-09-05', 1, 1, 
+ 'https://thuvien.huit.edu.vn/News/NewDetail/trien-lam-sach-chao-mung-nam-hoc-moi-2024-2025');
+
+-- --- 2. THÔNG BÁO (LoaiTin = 2) ---
+INSERT INTO TINTUC (TieuDe, MoTaNgan, HinhAnh, NgayDang, LoaiTin, HienThi, Link) VALUES 
+-- [LINK THẬT] Hướng dẫn CSDL (Vy tìm thấy tương tự)
+(N'Hướng dẫn sử dụng & tra cứu các nguồn CSDL Thư viện HUIT', 
+ N'Thông báo dùng thử Cơ sở dữ liệu EBSCO miễn phí', 
+ 'notice_huongdan.jpg', '2025-01-10', 2, 1, 
+ 'https://thuvien.huit.edu.vn/News/NewDetail/huong-dan-su-dung-tra-cuu-cac-nguon-csdl-thu-vien-huit'),
+
+-- [LINK GIẢ ĐỊNH] Các tin còn lại theo cấu trúc chuẩn
+(N'Giáo trình Hán ngữ BOYA - Tài liệu học tập mới', 
+ N'Thông báo: Thư viện vừa bổ sung bộ giáo trình ngoại ngữ mới', 
+ 'notice_boya.jpg', '2025-01-05', 2, 1, 
+ 'https://thuvien.huit.edu.vn/News/NewDetail/giao-trinh-han-ngu-boya-tai-lieu-hoc-tap-moi'),
+
+(N'Ra mắt giao diện Website Thư viện mới thân thiện hơn', 
+ N'Nâng cấp hệ thống tìm kiếm tài liệu và trải nghiệm người dùng', 
+ 'notice_website.jpg', '2024-12-30', 2, 1, 
+ 'https://thuvien.huit.edu.vn/News/NewDetail/ra-mat-giao-dien-website-thu-vien-moi-than-thien-hon'),
+
+(N'Thông báo lịch nghỉ Lễ Quốc khánh 02/09', 
+ N'Thời gian nghỉ lễ và thời gian phục vụ trở lại: 05/09', 
+ 'notice_lichnghi.jpg', '2024-08-30', 2, 1, 
+ 'https://thuvien.huit.edu.vn/News/NewDetail/thong-bao-lich-nghi-le-quoc-khanh-02-09'),
+
+(N'Thông báo bảo trì hệ thống mượn trả sách tự động', 
+ N'Dự kiến hoàn thành trong 24h để nâng cấp phần mềm', 
+ 'notice_baotri.jpg', '2024-08-15', 2, 1, 
+ 'https://thuvien.huit.edu.vn/News/NewDetail/thong-bao-bao-tri-he-thong-muon-tra-sach-tu-dong'),
+
+(N'Mở lớp hướng dẫn kỹ năng thông tin cho tân sinh viên K14', 
+ N'Đăng ký trực tiếp tại quầy thông tin thư viện', 
+ 'notice_khoahoc.png', '2024-08-01', 2, 1, 
+ 'https://thuvien.huit.edu.vn/News/NewDetail/mo-lop-huong-dan-ky-nang-thong-tin-cho-tan-sinh-vien-k14');
 
 ------- THÊM DỮ LIỆU
 INSERT INTO TACGIA VALUES
