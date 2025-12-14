@@ -118,6 +118,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\MuonSachController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PhongController.cs" />
     <Compile Include="Controllers\ReaderController.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="Models\PHIEUMUON.cs">
       <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PhieuMuonViewModel.cs" />
     <Compile Include="Models\PHIEUTRA.cs">
       <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
     </Compile>
@@ -335,6 +337,8 @@
     <Content Include="Views\Phong\ThanhCong.cshtml" />
     <Content Include="Views\Phong\XemPhieu.cshtml" />
     <Content Include="Views\Phong\XoaDatPhong.cshtml" />
+    <Content Include="Views\MuonSach\Index.cshtml" />
+    <Content Include="Views\MuonSach\ChiTietPhieu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
