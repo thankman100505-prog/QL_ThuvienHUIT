@@ -1,6 +1,10 @@
-﻿using System;
+﻿using QL_ThuVIenHUIT_13.Models;
+using System;
 using System.Linq;
-using QL_ThuVIenHUIT_13.Models;
+using System.Net;
+using System.Net.Mail;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace QL_ThuVIenHUIT_13.Helpers
 {
@@ -74,7 +78,43 @@ namespace QL_ThuVIenHUIT_13.Helpers
             db.SaveChanges();
             return newNXB.MAXB;
         }
+        public static string GenerateRandomPassword(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            Random random = new Random();
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+        public static void SendEmailToUser(string toEmail, string newPassword)
+        {
+            string fromEmail = "loc375682@gmail.com";
+            string passwordApp = "xhnt vcwb wcvu jukq";
 
+            MailMessage mail = new MailMessage();
+            mail.To.Add(toEmail);
+            mail.From = new MailAddress(fromEmail);
+            mail.Subject = "[Thư viện HUIT] - Cấp lại mật khẩu mới";
+            mail.Body = $"Chào bạn,\n\nMật khẩu mới để đăng nhập vào hệ thống thư viện của bạn là: {newPassword}\n\nVui lòng đăng nhập và đổi lại mật khẩu ngay.";
+            mail.IsBodyHtml = false;
 
+            SmtpClient smtp = new SmtpClient("smtp.gmail.com");
+            smtp.EnableSsl = true;
+            smtp.Port = 587;
+            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smtp.Credentials = new NetworkCredential(fromEmail, passwordApp);
+
+            smtp.Send(mail);
+        }
+        public static byte[] HashPassword(string Password)
+        {
+            byte[] passwordBytes = Encoding.UTF8.GetBytes(Password);
+            byte[] hashedBytes;
+
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                hashedBytes = sha256.ComputeHash(passwordBytes);
+            }
+            return hashedBytes;
+        }
     }
 }

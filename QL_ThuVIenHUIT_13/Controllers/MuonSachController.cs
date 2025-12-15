@@ -1,9 +1,10 @@
 ﻿using QL_ThuVIenHUIT_13.Models;
-using QL_ThuVIenHUIT_13.Helpers; 
+using QL_ThuVIenHUIT_13.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Data.Entity;
 
 namespace QL_ThuVIenHUIT_13.Controllers
 {
@@ -12,46 +13,37 @@ namespace QL_ThuVIenHUIT_13.Controllers
         private CNPM_DATABASE_THUVIENEntities db = new CNPM_DATABASE_THUVIENEntities();
         public ActionResult Index()
         {
+            if (Session["User_info"] == null || Session["Role"] == null)
+                return RedirectToAction("SignIn", "User");
+
             if (Session["DsSachMuon"] == null)
             {
                 Session["DsSachMuon"] = new List<SachMuonTam>();
             }
-            var listSach = db.QLSACHes
-                             .Where(s => s.SL > 0)
-                             .OrderBy(s => s.TENSACH) 
-                             .Select(s => new {
-                                 MASACH = s.MASACH,
-                                 HIENTHI = s.TENSACH + " - " + s.TACGIA.TENTG + " (Còn: " + s.SL + ")"
-                             })
-                             .ToList();
-            ViewBag.ListSach = new SelectList(listSach, "MASACH", "HIENTHI");
-
             return View();
         }
         [HttpGet]
         public JsonResult TimKiemSach(string tuKhoa)
         {
-            db.Configuration.ProxyCreationEnabled = false; 
-
+            db.Configuration.ProxyCreationEnabled = false;
             var query = db.QLSACHes.AsQueryable();
 
             if (!string.IsNullOrEmpty(tuKhoa))
             {
                 query = query.Where(s => s.TENSACH.Contains(tuKhoa) || s.MASACH.Contains(tuKhoa));
             }
-            var data = query.OrderBy(s => s.TENSACH)
-                            .Take(20) 
+            var data = query.Where(s => s.TINHTRANG > 0)
+                            .OrderBy(s => s.TENSACH)
+                            .Take(20)
                             .Select(s => new {
                                 s.MASACH,
                                 s.TENSACH,
-                                s.SL,
-                                TENTG = s.TACGIA.TENTG 
+                                SL_TON = s.TINHTRANG, 
+                                TENTG = s.TACGIA.TENTG
                             }).ToList();
 
             return Json(new { data = data }, JsonRequestBehavior.AllowGet);
         }
-
-        // 3. THÊM SÁCH VÀO GIỎ
         [HttpPost]
         public JsonResult ThemSachAjax(string maSach)
         {
@@ -62,16 +54,11 @@ namespace QL_ThuVIenHUIT_13.Controllers
 
                 var sach = db.QLSACHes.Find(maSach);
                 if (sach == null) return Json(new { status = false, msg = "Không tìm thấy sách!" });
-
-                // Kiểm tra tồn kho
-                if (sach.SL < 1) return Json(new { status = false, msg = "Sách này đã hết hàng!" });
-
-                // Kiểm tra sách đã có trong giỏ chưa
+                if ((sach.TINHTRANG ?? 0) < 1) return Json(new { status = false, msg = "Sách này đã hết!" });
                 var item = lst.FirstOrDefault(x => x.MaSach == maSach);
                 if (item != null)
                 {
-                    // Nếu tổng số mượn > số tồn -> Báo lỗi
-                    if (item.SoLuong >= sach.SL)
+                    if (item.SoLuong >= sach.TINHTRANG)
                     {
                         return Json(new { status = false, msg = "Số lượng mượn vượt quá tồn kho!" });
                     }
@@ -84,7 +71,7 @@ namespace QL_ThuVIenHUIT_13.Controllers
                         MaSach = sach.MASACH,
                         TenSach = sach.TENSACH,
                         SoLuong = 1,
-                        TienTheChan = 10000 // Giả định
+                        TienTheChan = 0 
                     });
                 }
 
@@ -96,29 +83,23 @@ namespace QL_ThuVIenHUIT_13.Controllers
                 return Json(new { status = false, msg = ex.Message });
             }
         }
-
-        // 4. KIỂM TRA ĐỘC GIẢ (Xử lý Ajax)
         [HttpPost]
         public JsonResult KiemTraDocGia(string maThe)
         {
-            var dg = db.THETHUVIENs.Find(maThe);
-            if (dg != null)
+            var the = db.THETHUVIENs.Include(t => t.DOCGIA).FirstOrDefault(t => t.MATHE == maThe);
+            if (the != null)
             {
-                // Kiểm tra hạn thẻ (Ví dụ: Nếu ngày hết hạn < hôm nay -> Hết hạn)
-                bool conHan = dg.NGAYHETHAN >= DateTime.Now;
-                string trangThai = conHan ? "" : " (ĐÃ HẾT HẠN)";
-
+                bool conHan = the.NGAYHETHAN >= DateTime.Now;
                 return Json(new
                 {
                     status = true,
-                    ten = dg.DOCGIA.TENDG + trangThai,
-                    han = dg.NGAYHETHAN.Value.ToString("dd/MM/yyyy")
+                    ten = the.DOCGIA.TENDG,
+                    trangThai = conHan ? "Hợp lệ" : "Hết hạn",
+                    isValid = conHan
                 });
             }
             return Json(new { status = false, message = "Mã thẻ không tồn tại!" });
         }
-
-        // 5. XÓA SÁCH KHỎI GIỎ
         public ActionResult XoaSach(string maSach)
         {
             var lst = Session["DsSachMuon"] as List<SachMuonTam>;
@@ -129,57 +110,54 @@ namespace QL_ThuVIenHUIT_13.Controllers
             }
             return RedirectToAction("Index");
         }
-
-        // 6. LƯU PHIẾU MƯỢN (Submit Form)
         [HttpPost]
         public ActionResult LuuPhieu(string maThe)
         {
             var lst = Session["DsSachMuon"] as List<SachMuonTam>;
             if (lst == null || lst.Count == 0)
             {
-                return Content("<script>alert('Giỏ sách trống!'); window.location.href='/MuonSach/Index';</script>");
+                return Content("<script>alert('Chưa chọn sách nào!'); window.location.href='/MuonSach/Index';</script>");
             }
-            string maNV = Session["MANV"] as string ?? "NV00001";
+            string maNV = "";
+            if (Session["User_info"] is QLNHANVIEN nv) maNV = nv.MANV;
+            else maNV = "ADMIN";
 
             using (var transaction = db.Database.BeginTransaction())
             {
                 try
                 {
-                    // A. Tạo phiếu
                     PHIEUMUON pm = new PHIEUMUON();
                     pm.MAPM = DataHelper.GenerateNewID(db, "PHIEUMUON", "MAPM", "PM", 5);
                     pm.MATHE = maThe;
                     pm.MANV = maNV;
                     pm.NgayMuon = DateTime.Now;
                     pm.NgayDenHan = DateTime.Now.AddDays(7);
-
-                    if (pm.NgayDenHan <= pm.NgayMuon) pm.NgayDenHan = pm.NgayMuon.Value.AddDays(1);
+                    pm.TINHTRANG = 0; 
 
                     db.PHIEUMUONs.Add(pm);
-                    db.SaveChanges(); // Lưu để có MAPM
-
-                    // B. Tạo chi tiết & Trừ tồn kho
+                    db.SaveChanges(); 
                     foreach (var item in lst)
                     {
+
                         CHITIETPM ct = new CHITIETPM();
                         ct.MAPM = pm.MAPM;
                         ct.MASACH = item.MaSach;
                         ct.SLMUON = item.SoLuong;
-                        ct.TIENTHECHAN = item.TienTheChan * item.SoLuong;
+                        ct.TIENTHECHAN = item.TienTheChan;
+                        ct.TINHTRANG = 0; 
 
                         db.CHITIETPMs.Add(ct);
                         var sach = db.QLSACHes.Find(item.MaSach);
                         if (sach != null)
                         {
-                            sach.SL -= item.SoLuong;
-                            sach.TINHTRANG = sach.SL; 
+                            sach.TINHTRANG = (sach.TINHTRANG ?? 0) - item.SoLuong;
+                            if (sach.TINHTRANG < 0) throw new Exception("Sách " + sach.TENSACH + " không đủ số lượng!");
                         }
                     }
 
                     db.SaveChanges();
                     transaction.Commit();
                     Session["DsSachMuon"] = null;
-                    Session["DsSachMuon"] = null; // Xóa giỏ
                     return RedirectToAction("ChiTietPhieu", new { id = pm.MAPM });
                 }
                 catch (Exception ex)
@@ -189,16 +167,13 @@ namespace QL_ThuVIenHUIT_13.Controllers
                 }
             }
         }
+
         public ActionResult ChiTietPhieu(string id)
         {
-            if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
             var phieu = db.PHIEUMUONs.Include("THETHUVIEN.DOCGIA")
                                      .Include("QLNHANVIEN")
                                      .Include("CHITIETPMs.QLSACH")
                                      .FirstOrDefault(p => p.MAPM == id);
-
-            if (phieu == null) return HttpNotFound();
-
             return View(phieu);
         }
     }

@@ -12,15 +12,16 @@ namespace QL_ThuVIenHUIT_13.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class CHITIETPM
+    public partial class VIPHAM
     {
+        public int MAVP { get; set; }
         public string MAPM { get; set; }
         public string MASACH { get; set; }
-        public Nullable<int> SLMUON { get; set; }
-        public Nullable<decimal> TIENTHECHAN { get; set; }
-        public Nullable<int> TINHTRANG { get; set; }
+        public string HINHTHUCVP { get; set; }
+        public string CHITIETVP { get; set; }
+        public Nullable<decimal> SOTIENPHAT { get; set; }
+        public Nullable<System.DateTime> NGAYGHINHAN { get; set; }
     
-        public virtual QLSACH QLSACH { get; set; }
         public virtual PHIEUMUON PHIEUMUON { get; set; }
     }
 }

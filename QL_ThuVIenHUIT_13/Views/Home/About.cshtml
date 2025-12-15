@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "Giới thiệu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row align-items-center mb-5">
+        <div class="col-md-6">
+            <h6 class="text-primary fw-bold text-uppercase">Về chúng tôi</h6>
+            <h2 class="fw-bold mb-4" style="font-family: 'Montserrat', sans-serif;">TRUNG TÂM THÔNG TIN - THƯ VIỆN HUIT</h2>
+            <p class="text-muted">
+                Thư viện trường Đại học Công Thương TP.HCM là nơi lưu trữ nguồn tri thức khổng lồ, phục vụ nhu cầu học tập và nghiên cứu của hàng ngàn sinh viên và giảng viên.
+            </p>
+            <p class="text-muted">
+                Với hệ thống quản lý hiện đại, chúng tôi cam kết mang lại trải nghiệm tra cứu, mượn trả sách nhanh chóng và thuận tiện nhất.
+            </p>
+            <ul class="list-unstyled mt-3">
+                <li class="mb-2"><i class="fa fa-check-circle text-success me-2"></i> Hơn 36,666 đầu sách các loại.</li>
+                <li class="mb-2"><i class="fa fa-check-circle text-success me-2"></i> Không gian đọc thoáng mát, hiện đại.</li>
+                <li class="mb-2"><i class="fa fa-check-circle text-success me-2"></i> Hệ thống tra cứu trực tuyến 24/7.</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <img src="~/images/banner-library.jpg" class="img-fluid rounded shadow" alt="Thư viện HUIT"
+                 style="width: 100%; height: 350px; object-fit: cover;">
+        </div>
+    </div>
+
+    <hr class="my-5" />
+
+    <div class="text-center mb-5">
+        <h6 class="text-primary fw-bold text-uppercase">Đội ngũ phát triển</h6>
+        <h2 class="fw-bold" style="font-family: 'Montserrat', sans-serif;">NHÓM THỰC HIỆN ĐỒ ÁN</h2>
+        <p class="text-muted w-75 mx-auto">
+            Hệ thống được xây dựng và phát triển bởi sinh viên Khoa Công nghệ Thông tin - HUIT.
+        </p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm text-center p-4 hover-top">
+                <div class="mx-auto mb-3" style="width: 120px; height: 120px; border-radius: 50%; overflow: hidden; border: 3px solid #0e56a0;">
+                    <img src="~/images/Default.jpg" alt="Mẫn" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=Lộc&background=0e56a0&color=fff&size=128'" />
+                </div>
+                <h4 class="fw-bold mb-1">Vy siu cấp vip pro</h4>
+                <p class="text-primary fw-bold small">Trưởng nhóm / Backend Dev</p>
+                <p class="text-muted small">
+                    MSSV: 2001230<br />
+                </p>
+                <div class="mt-auto">
+                    <a href="#" class="btn btn-outline-primary btn-sm rounded-pill px-3"><i class="fa fa-envelope me-1"></i> Liên hệ</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm text-center p-4 hover-top">
+                <div class="mx-auto mb-3" style="width: 120px; height: 120px; border-radius: 50%; overflow: hidden; border: 3px solid #e91e63;">
+                    <img src="~/images/avatar-Vy.jpg" alt="Vy" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=Vy&background=e91e63&color=fff&size=128'" />
+                </div>
+                <h4 class="fw-bold mb-1">Vy</h4>
+                <p class="text-danger fw-bold small">Frontend Dev / Tester</p>
+                <p class="text-muted small">
+                    MSSV: 2001xxxxxx<br />
+                    Chịu trách nhiệm: Thiết kế giao diện (UI/UX), Quản lý sách, Kiểm thử hệ thống.
+                </p>
+                <div class="mt-auto">
+                    <a href="#" class="btn btn-outline-danger btn-sm rounded-pill px-3"><i class="fa fa-envelope me-1"></i> Liên hệ</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-top {
+        transition: transform 0.3s ease;
+    }
+
+        .hover-top:hover {
+            transform: translateY(-10px);
+        }
+</style>

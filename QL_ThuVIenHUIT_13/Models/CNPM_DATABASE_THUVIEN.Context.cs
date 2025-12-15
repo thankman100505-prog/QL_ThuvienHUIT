@@ -43,6 +43,8 @@ namespace QL_ThuVIenHUIT_13.Models
         public virtual DbSet<PHIEU_MUONPHONG> PHIEU_MUONPHONG { get; set; }
         public virtual DbSet<PHIEUMUON> PHIEUMUONs { get; set; }
         public virtual DbSet<TINTUC1> TINTUC1 { get; set; }
+        public virtual DbSet<VIPHAM> VIPHAMs { get; set; }
+        public virtual DbSet<THAMSO> THAMSOes { get; set; }
     
         public virtual int AUTO_CREATE_ID_TACGIA(ObjectParameter mATG)
         {
@@ -195,6 +197,85 @@ namespace QL_ThuVIenHUIT_13.Models
         public virtual int sp_upgraddiagrams()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
+        }
+    
+        public virtual int AUTO_CREATE_ID_TACGIA1(ObjectParameter mATG)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AUTO_CREATE_ID_TACGIA1", mATG);
+        }
+    
+        public virtual int AUTO_ID_DOCGIA1(ObjectParameter nEWID)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AUTO_ID_DOCGIA1", nEWID);
+        }
+    
+        public virtual int AUTO_ID_NHANVIEN1(ObjectParameter nEWID)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AUTO_ID_NHANVIEN1", nEWID);
+        }
+    
+        public virtual int AUTO_ID_NXB1(ObjectParameter nEWID)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AUTO_ID_NXB1", nEWID);
+        }
+    
+        public virtual int AUTO_ID_PHIEUMUONPHONG1(ObjectParameter nEWID)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AUTO_ID_PHIEUMUONPHONG1", nEWID);
+        }
+    
+        public virtual int AUTO_ID_PHIEUTRA1(ObjectParameter nEWID)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AUTO_ID_PHIEUTRA1", nEWID);
+        }
+    
+        public virtual int AUTO_ID_PHONG1(ObjectParameter nEWID)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AUTO_ID_PHONG1", nEWID);
+        }
+    
+        public virtual int AUTO_ID_SACH1(ObjectParameter nEWID)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AUTO_ID_SACH1", nEWID);
+        }
+    
+        public virtual int AUTO_ID_THELOAI1(ObjectParameter nEWID)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AUTO_ID_THELOAI1", nEWID);
+        }
+    
+        public virtual int AUTO_ID_THETHUVIEN1(ObjectParameter nEWID)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AUTO_ID_THETHUVIEN1", nEWID);
+        }
+    
+        public virtual int SP_REGISTER_DOCGIA(string tENDG, string kHOA, string lOP, string dIACHI, string sODT, string mAIL, ObjectParameter mATHE_OUT)
+        {
+            var tENDGParameter = tENDG != null ?
+                new ObjectParameter("TENDG", tENDG) :
+                new ObjectParameter("TENDG", typeof(string));
+    
+            var kHOAParameter = kHOA != null ?
+                new ObjectParameter("KHOA", kHOA) :
+                new ObjectParameter("KHOA", typeof(string));
+    
+            var lOPParameter = lOP != null ?
+                new ObjectParameter("LOP", lOP) :
+                new ObjectParameter("LOP", typeof(string));
+    
+            var dIACHIParameter = dIACHI != null ?
+                new ObjectParameter("DIACHI", dIACHI) :
+                new ObjectParameter("DIACHI", typeof(string));
+    
+            var sODTParameter = sODT != null ?
+                new ObjectParameter("SODT", sODT) :
+                new ObjectParameter("SODT", typeof(string));
+    
+            var mAILParameter = mAIL != null ?
+                new ObjectParameter("MAIL", mAIL) :
+                new ObjectParameter("MAIL", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_REGISTER_DOCGIA", tENDGParameter, kHOAParameter, lOPParameter, dIACHIParameter, sODTParameter, mAILParameter, mATHE_OUT);
         }
     }
 }

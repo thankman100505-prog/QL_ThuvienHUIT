@@ -121,9 +121,9 @@
     <Compile Include="Controllers\MuonSachController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PhongController.cs" />
-    <Compile Include="Controllers\ReaderController.cs" />
     <Compile Include="Controllers\SachController.cs" />
     <Compile Include="Controllers\TinTucController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -191,6 +191,9 @@
     <Compile Include="Models\TAIKHOAN.cs">
       <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\THAMSO.cs">
+      <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\THELOAI.cs">
       <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
     </Compile>
@@ -198,6 +201,10 @@
       <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TINTUC1.cs">
+      <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserProfileVM.cs" />
+    <Compile Include="Models\VIPHAM.cs">
       <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -315,12 +322,10 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Reader\SignIn.cshtml" />
-    <Content Include="Views\Home\Register.cshtml" />
-    <Content Include="Views\Home\RegisterSuccess.cshtml" />
+    <Content Include="Views\User\SignIn.cshtml" />
+    <Content Include="Views\User\Register.cshtml" />
+    <Content Include="Views\User\RegisterSuccess.cshtml" />
     <Content Include="Views\Sach\CapNhat.cshtml" />
     <Content Include="Views\Sach\ChiTiet.cshtml" />
     <Content Include="Views\Sach\Index.cshtml" />
@@ -339,6 +344,11 @@
     <Content Include="Views\Phong\XoaDatPhong.cshtml" />
     <Content Include="Views\MuonSach\Index.cshtml" />
     <Content Include="Views\MuonSach\ChiTietPhieu.cshtml" />
+    <Content Include="Views\User\ForgotPassword.cshtml" />
+    <Content Include="Views\User\ChangePassword.cshtml" />
+    <Content Include="Views\User\ProfileUser.cshtml" />
+    <Content Include="Views\User\EditProfile.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,22 +1,23 @@
-﻿﻿﻿----- MẬT KHẨU MẶC ĐỊNH CHO TOÀN HỆ THỐNG LÀ 12345!!!!!!!!!!
-use master
+﻿USE master
+IF DB_ID('CNPM_DATABASE_THUVIEN') IS NOT NULL
+BEGIN
+    DROP DATABASE CNPM_DATABASE_THUVIEN
+END
+GO
+
 CREATE DATABASE CNPM_DATABASE_THUVIEN
 GO
- 
 USE CNPM_DATABASE_THUVIEN
---use master
---DROP DATABASE CNPM_DATABASE_THUVIEN
------==================== QUẢN LÝ CÁC THUỘC TÍNH VÀ BẢNG SÁCH ========================
---1) Tạo bảng tác giả
+GO
+
 CREATE TABLE TACGIA
 (
-	MATG CHAR(7) PRIMARY KEY,
-	TENTG NVARCHAR(50)NOT NULL,
-	NGAYSINH DATE CHECK(NGAYSINH<GETDATE()),
-	QUOCTICH NVARCHAR(50) DEFAULT N'Việt Nam'
+    MATG CHAR(7) PRIMARY KEY,
+    TENTG NVARCHAR(50) NOT NULL,
+    NGAYSINH DATE CHECK(NGAYSINH < GETDATE()),
+    QUOCTICH NVARCHAR(50) DEFAULT N'Việt Nam'
 )
 
---2) Tạo bảng THELOAI
 CREATE TABLE THELOAI
 (
     MATHELOAI CHAR(7) PRIMARY KEY,
@@ -24,7 +25,6 @@ CREATE TABLE THELOAI
     MOTA NVARCHAR(255) DEFAULT N'Chưa có mô tả'
 );
 
---3) Tạo bảng NHAXUATBAN
 CREATE TABLE NHAXUATBAN
 (
     MAXB CHAR(7) PRIMARY KEY,
@@ -33,169 +33,30 @@ CREATE TABLE NHAXUATBAN
     SDT CHAR(10) CHECK (SDT LIKE '%[0-9]%')
 );
 
---4) Bảng Quản Lý Sách
 CREATE TABLE QLSACH
 (
-	MASACH CHAR(7) PRIMARY KEY,
-	TENSACH NVARCHAR(50)NOT NULL,
-	MATG CHAR(7),
-	MATHELOAI CHAR(7),
-	MAXB CHAR(7),
-	NAMXB INT CHECK(NAMXB<=YEAR(GETDATE())),
-	SL INT CHECK(SL>=0),
-	TINHTRANG INT CHECK(TINHTRANG>=0),
-	MOTA NVARCHAR(MAX) DEFAULT N'Đang cập nhật nội dung giới thiệu...',
-	FOREIGN KEY (MATG) REFERENCES TACGIA (MATG),
-	FOREIGN KEY (MATHELOAI) REFERENCES THELOAI (MATHELOAI),
-	FOREIGN KEY (MAXB) REFERENCES NHAXUATBAN (MAXB),
-	CONSTRAINT CK_TINHTRANG CHECK (TINHTRANG <= SL)
+    MASACH CHAR(7) PRIMARY KEY,
+    TENSACH NVARCHAR(50)NOT NULL,
+    MATG CHAR(7),
+    MATHELOAI CHAR(7),
+    MAXB CHAR(7),
+    NAMXB INT CHECK(NAMXB <= YEAR(GETDATE())),
+    SL INT CHECK(SL >= 0),
+    TINHTRANG INT CHECK(TINHTRANG >= 0),
+    MOTA NVARCHAR(MAX) DEFAULT N'Đang cập nhật nội dung giới thiệu...',
+    FOREIGN KEY (MATG) REFERENCES TACGIA (MATG),
+    FOREIGN KEY (MATHELOAI) REFERENCES THELOAI (MATHELOAI),
+    FOREIGN KEY (MAXB) REFERENCES NHAXUATBAN (MAXB),
+    CONSTRAINT CK_TINHTRANG CHECK (TINHTRANG <= SL)
 )
 
 CREATE TABLE BIASACH
 (
-	MASACH CHAR(7) PRIMARY KEY,
-	URL_ANH NVARCHAR(100),
-	FOREIGN KEY (MASACH) REFERENCES QLSACH(MASACH)
+    MASACH CHAR(7) PRIMARY KEY,
+    URL_ANH NVARCHAR(100),
+    FOREIGN KEY (MASACH) REFERENCES QLSACH(MASACH)
 )
 
------==================== QUẢN LÝ CÁC THUỘC TÍNH VÀ BẢNG NGƯỜI ĐỌC VÀ NHÂN VIÊN (ACTOR) ========================
-
-CREATE TABLE ROLE_USER
-(
-	ROLE_ID INT IDENTITY(1,1) PRIMARY KEY,
-	ROLE_NAME NVARCHAR(20) UNIQUE, 
-	DESCRIPT NVARCHAR(200)
-)
-
-INSERT INTO ROLE_USER VALUES
-(N'Admin',N'Toàn quyền trên DB'),
-(N'Librarian',N'Quản lý độc giả, sách, mượn trả sách, phòng họp'),
-(N'Reader',N'Xem sách, mượn sách, phòng họp')
-
-
-CREATE TABLE TAIKHOAN
-(
-	USERNAME CHAR(7) PRIMARY KEY, -- LÀ MÃ THẺ THƯ VIỆN HOẶC MÃ NHÂN VIÊN
-	PASS VARBINARY(64) DEFAULT HASHBYTES('SHA2_256', '12345'),
-	ROLE_ID INT,
-	FOREIGN KEY (ROLE_ID) REFERENCES ROLE_USER(ROLE_ID)
-)
-
---5) Đọc Giả
-CREATE TABLE DOCGIA
-(
-    MADG CHAR(7) PRIMARY KEY,
-    TENDG NVARCHAR(30) NOT NULL,
-	---NẾU LÀ ĐỘC GIẢ BÊN NGOÀI THÌ BỎ TRỐNG KHOA VÀ LỚP
-    KHOA NVARCHAR(50), 
-    LOP NVARCHAR(50),
-    DIACHI NVARCHAR(100),
-    SODT CHAR(10) CHECK (SODT NOT LIKE '%[^0-9]%'),
-);
-
-ALTER TABLE DOCGIA
-ADD MAIL NVARCHAR(100) UNIQUE CHECK (MAIL LIKE '%@%') 
-
--- 6) Thẻ thư viện
-CREATE TABLE THETHUVIEN
-(
-    MATHE CHAR(7) PRIMARY KEY,
-    MADG CHAR(7) NULL,
-    NGAYCAP DATE,
-    NGAYHETHAN DATE,
-    TRANGTHAI NVARCHAR(20) DEFAULT N'Hoạt động',
-    FOREIGN KEY (MADG) REFERENCES DOCGIA (MADG),
-    CONSTRAINT CK_NGAYHETHAN CHECK (NGAYHETHAN > NGAYCAP)
-);
-
---7) BẢNG NHÂN VIÊN
-CREATE TABLE QLNHANVIEN
-(
-    MANV CHAR(7) PRIMARY KEY,                          
-    TENNV NVARCHAR(50) NOT NULL,                        
-    NGSINH DATE CHECK (NGSINH < GETDATE()),              
-    CHUCVU NVARCHAR(50) NOT NULL,
-    SDIENTHOAI CHAR(10) UNIQUE CHECK (SDIENTHOAI LIKE '0%'), 
-    MAIL NVARCHAR(100) UNIQUE CHECK (MAIL LIKE '%@%')       
-);
-
-
-
------==================== QUẢN LÝ CÁC THUỘC TÍNH VÀ BẢNG NGHIỆP VỤ TRONG THƯ VIỆN ========================
--- 8. Phiếu mượn
-CREATE TABLE PHIEUMUON
-(
-    MAPM CHAR(7) PRIMARY KEY,
-    MATHE CHAR(7) NOT NULL,
-    MANV CHAR(7) NOT NULL,
-    NgayMuon DATE DEFAULT GETDATE(),
-    NgayDenHan DATE,
-    FOREIGN KEY (MATHE) REFERENCES THETHUVIEN(MATHE),
-    FOREIGN KEY (MANV) REFERENCES QLNHANVIEN(MANV),
-    CONSTRAINT CK_NgayHan CHECK (NgayDenHan > NgayMuon)
-);
-
---9. CT PHIẾU MƯỢN
-CREATE TABLE CHITIETPM
-( MAPM CHAR(7),
-  MASACH CHAR(7) NOT NULL,
-  SLMUON INT CHECK (SLMUON >0),
-  TIENTHECHAN MONEY,
-  PRIMARY KEY (MAPM,MASACH),
-  FOREIGN KEY (MAPM) REFERENCES PHIEUMUON (MAPM),
-  FOREIGN KEY (MASACH) REFERENCES QLSACH (MASACH)
-);
-
---10)Phiếu trả
-
-CREATE TABLE PHIEUTRA
-( MAPT CHAR(7) PRIMARY KEY,
-  MAPM CHAR(7) NOT NULL UNIQUE,
-  MANV CHAR(7) NOT NULL,
-  NGAYTRA DATE DEFAULT GETDATE(),
-  TONG_TIENTHECHAN MONEY CHECK (TONG_TIENTHECHAN>0),
-  TIENPHAT MONEY DEFAULT 0 CHECK (TIENPHAT >=0),
-  FOREIGN KEY (MAPM) REFERENCES PHIEUMUON (MAPM),
-  FOREIGN KEY (MANV) REFERENCES QLNHANVIEN (MANV)
-);
-
-
--- QUẢN LÝ PHÒNG HỌP
-CREATE TABLE PHONGHOP
-(
-	MAPHONG CHAR(7) NOT NULL PRIMARY KEY,
-	VITRI NVARCHAR(20) NOT NULL CHECK (VITRI IN (N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tầng 4')),
-	SL_NGUOITOIDA INT CHECK (SL_NGUOITOIDA>0),
-	TINHTRANG INT CHECK (TINHTRANG=0 OR TINHTRANG=1)--TINHTRANG=0 TỨC ĐANG CÓ NGƯỜI MƯỢN CÒN TINHTRANG=1 TỨC KHÔNG CÓ AI MƯỢN PHÒNG
-)
-
--- PHIẾU MƯỢN PHÒNG
-CREATE TABLE PHIEU_MUONPHONG
-(
-	MAPHIEU CHAR(7) NOT NULL PRIMARY KEY,
-	MATHE CHAR(7) NOT NULL,--CHỈ CÓ ĐỘC GIẢ ĐÃ ĐĂNG KÍ HOẶC SINH VIÊN MỚI ĐƯỢC MƯỢN PHÒNG
-	MAPH CHAR(7) NOT NULL,
-	NGAYMUON DATE,
-	GIOMUON TIME,
-	GIOTRA TIME,
-	SL_NGUOITHAMGIA INT CHECK (SL_NGUOITHAMGIA>0),
-	MUCDICH NVARCHAR(500),
-	TIENPHAT MONEY DEFAULT 0 CHECK (TIENPHAT >=0),
-	FOREIGN KEY(MAPH) REFERENCES PHONGHOP(MAPHONG),
-	FOREIGN KEY (MATHE) REFERENCES THETHUVIEN(MATHE)
-)
-select * from docgia
-
-
-
---DROP TABLE PHIEU_MUONPHONG
---DROP TABLE PHONGHOP
---DROP TABLE PHIEUTRA
---DROP TABLE CHITIETPM
---DROP TABLE PHIEUMUON
---DROP TABLE THETHUVIEN
---DROP TABLE DOCGIA
---DROP TABLE TAIKHOAN
 CREATE TABLE TINTUC (
     MaTin INT IDENTITY(1,1) PRIMARY KEY,
     TieuDe NVARCHAR(255) NOT NULL,
@@ -204,80 +65,143 @@ CREATE TABLE TINTUC (
     NgayDang DATETIME DEFAULT GETDATE(),
     LoaiTin INT, 
     HienThi BIT DEFAULT 1,
-	Link VARCHAR(500),
+    Link VARCHAR(500),
 );
 
+CREATE TABLE ROLE_USER
+(
+    ROLE_ID INT IDENTITY(1,1) PRIMARY KEY,
+    ROLE_NAME NVARCHAR(20) UNIQUE, 
+    DESCRIPT NVARCHAR(200)
+)
 
-INSERT INTO TINTUC (TieuDe, MoTaNgan, HinhAnh, NgayDang, LoaiTin, HienThi, Link) VALUES 
--- [LINK THẬT 1] User cung cấp
-(N'Thư viện Trường ĐH Công Thương TP. HCM tiếp nhận hơn 1.000 quyển sách ngoại văn', 
- N'Ngày sách và Văn hóa đọc Việt Nam năm 2025 - Lan tỏa tri thức', 
- 'news_tiepnhan.jpg', '2025-04-20', 1, 1, 
- 'https://thuvien.huit.edu.vn/News/NewDetail/thu-vien-truong-dai-hoc-cong-thuong-tp-hcm-tiep-nhan-hon-1-000-quyen-sach-ngoai-van-tu-gs-tran-huu-dung-va-chuong-trinh-books4vn-cua-ts-vo-ta-han'),
+CREATE TABLE TAIKHOAN
+(
+    USERNAME CHAR(7) PRIMARY KEY, 
+    PASS VARBINARY(64) DEFAULT HASHBYTES('SHA2_256', '12345'),
+    ROLE_ID INT,
+    FOREIGN KEY (ROLE_ID) REFERENCES ROLE_USER(ROLE_ID)
+)
 
--- [LINK THẬT 2] User cung cấp
-(N'Trao giải Cuộc thi "Đại sứ văn hóa đọc HUIT" và "Xếp sách nghệ thuật"', 
- N'Ngày sách đồng hành cùng sinh viên - Tôn vinh văn hóa đọc', 
- 'news_traogiai.jpg', '2024-04-21', 1, 1, 
- 'https://thuvien.huit.edu.vn/News/NewDetail/trao-giai-cuoc-thi-dai-su-van-hoa-doc-huit-va-xep-sach-nghe-thuat'),
+CREATE TABLE DOCGIA
+(
+    MADG CHAR(7) PRIMARY KEY,
+    TENDG NVARCHAR(30) NOT NULL,
+    KHOA NVARCHAR(50), 
+    LOP NVARCHAR(50),
+    DIACHI NVARCHAR(100),
+    SODT CHAR(10) UNIQUE CHECK (SODT NOT LIKE '%[^0-9]%'),
+    MAIL NVARCHAR(100) UNIQUE CHECK (MAIL LIKE '%@%') 
+);
 
--- [LINK THẬT 3] Ngày hội đọc sách (Vy tìm thấy trên web HUIT)
-(N'Sinh viên HUIT hào hứng tham gia ngày hội đọc sách', 
- N'Hoạt động thường niên thu hút đông đảo sinh viên tham gia', 
- 'news_sinhvien.jpg', '2024-11-20', 1, 1, 
- 'https://thuvien.huit.edu.vn/News/NewDetail/ngay-sach-dong-hanh-cung-sinh-vien-2024'),
+CREATE TABLE THETHUVIEN
+(
+    MATHE CHAR(7) PRIMARY KEY,
+    MADG CHAR(7) NULL UNIQUE,
+    NGAYCAP DATE,
+    NGAYHETHAN DATE,
+    TRANGTHAI NVARCHAR(20) DEFAULT N'Hoạt động',
+    FOREIGN KEY (MADG) REFERENCES DOCGIA (MADG),
+    CONSTRAINT CK_NGAYHETHAN CHECK (NGAYHETHAN > NGAYCAP)
+);
 
--- [LINK GIẢ ĐỊNH] Chuẩn cấu trúc web HUIT
-(N'Hội thảo khoa học: Ứng dụng AI trong quản lý thư viện số', 
- N'Cập nhật xu hướng công nghệ mới tháng 12/2024', 
- 'news_hoithao.jpg', '2024-12-15', 1, 1, 
- 'https://thuvien.huit.edu.vn/News/NewDetail/hoi-thao-khoa-hoc-ung-dung-ai-trong-quan-ly-thu-vien-so'),
+CREATE TABLE QLNHANVIEN
+(
+    MANV CHAR(7) PRIMARY KEY,                       
+    TENNV NVARCHAR(50) NOT NULL,                        
+    NGSINH DATE CHECK (NGSINH < GETDATE()),               
+    CHUCVU NVARCHAR(50) NOT NULL,
+    SDIENTHOAI CHAR(10) UNIQUE CHECK (SDIENTHOAI LIKE '0%'), 
+    MAIL NVARCHAR(100) UNIQUE CHECK (MAIL LIKE '%@%')        
+);
 
-(N'Tập huấn kỹ năng tra cứu tài liệu trên CSDL ScienceDirect', 
- N'Hướng dẫn kỹ năng thông tin chuyên sâu cho giảng viên và sinh viên', 
- 'news_taphuan.jpg', '2024-10-05', 1, 1, 
- 'https://thuvien.huit.edu.vn/News/NewDetail/tap-huan-ky-nang-tra-cuu-tai-lieu-tren-csdl-sciencedirect'),
+CREATE TABLE PHIEUMUON
+(
+    MAPM CHAR(7) PRIMARY KEY,
+    MATHE CHAR(7) NOT NULL,
+    MANV CHAR(7) NOT NULL,
+    NgayMuon DATE DEFAULT GETDATE(),
+    NgayDenHan DATE,
+    TINHTRANG INT DEFAULT 0,
+    FOREIGN KEY (MATHE) REFERENCES THETHUVIEN(MATHE),
+    FOREIGN KEY (MANV) REFERENCES QLNHANVIEN(MANV),
+    CONSTRAINT CK_NgayHan CHECK (NgayDenHan > NgayMuon)
+);
 
-(N'Triển lãm sách chào mừng năm học mới 2024-2025', 
- N'Giới thiệu hàng loạt giáo trình và tài liệu tham khảo mới nhất', 
- 'banner.jpg', '2024-09-05', 1, 1, 
- 'https://thuvien.huit.edu.vn/News/NewDetail/trien-lam-sach-chao-mung-nam-hoc-moi-2024-2025');
+CREATE TABLE CHITIETPM
+( 
+    MAPM CHAR(7),
+    MASACH CHAR(7) NOT NULL,
+    SLMUON INT CHECK (SLMUON > 0),
+    TIENTHECHAN MONEY,
+    TINHTRANG INT DEFAULT 0,
+    PRIMARY KEY (MAPM,MASACH),
+    FOREIGN KEY (MAPM) REFERENCES PHIEUMUON (MAPM),
+    FOREIGN KEY (MASACH) REFERENCES QLSACH (MASACH)
+);
 
--- --- 2. THÔNG BÁO (LoaiTin = 2) ---
-INSERT INTO TINTUC (TieuDe, MoTaNgan, HinhAnh, NgayDang, LoaiTin, HienThi, Link) VALUES 
--- [LINK THẬT] Hướng dẫn CSDL (Vy tìm thấy tương tự)
-(N'Hướng dẫn sử dụng & tra cứu các nguồn CSDL Thư viện HUIT', 
- N'Thông báo dùng thử Cơ sở dữ liệu EBSCO miễn phí', 
- 'notice_huongdan.jpg', '2025-01-10', 2, 1, 
- 'https://thuvien.huit.edu.vn/News/NewDetail/huong-dan-su-dung-tra-cuu-cac-nguon-csdl-thu-vien-huit'),
+CREATE TABLE PHIEUTRA
+( 
+    MAPT CHAR(7) PRIMARY KEY,
+    MAPM CHAR(7) NOT NULL UNIQUE,
+    MANV CHAR(7) NOT NULL,
+    NGAYTRA DATE DEFAULT GETDATE(),
+    TONG_TIENTHECHAN MONEY CHECK (TONG_TIENTHECHAN >= 0),
+    TIENPHAT MONEY DEFAULT 0 CHECK (TIENPHAT >= 0),
+    FOREIGN KEY (MAPM) REFERENCES PHIEUMUON (MAPM),
+    FOREIGN KEY (MANV) REFERENCES QLNHANVIEN (MANV)
+);
 
--- [LINK GIẢ ĐỊNH] Các tin còn lại theo cấu trúc chuẩn
-(N'Giáo trình Hán ngữ BOYA - Tài liệu học tập mới', 
- N'Thông báo: Thư viện vừa bổ sung bộ giáo trình ngoại ngữ mới', 
- 'notice_boya.jpg', '2025-01-05', 2, 1, 
- 'https://thuvien.huit.edu.vn/News/NewDetail/giao-trinh-han-ngu-boya-tai-lieu-hoc-tap-moi'),
+CREATE TABLE VIPHAM
+(
+    MAVP INT IDENTITY(1,1) PRIMARY KEY,
+    MAPM CHAR(7) NOT NULL, 
+    MASACH CHAR(7) NULL, 
+    HINHTHUCVP NVARCHAR(50) NOT NULL CHECK (HINHTHUCVP IN (N'Trễ hẹn',N'Hỏng sách',N'Mất sách')),
+    CHITIETVP NVARCHAR(500),
+    SOTIENPHAT MONEY CHECK (SOTIENPHAT >= 0),
+    NGAYGHINHAN DATE DEFAULT GETDATE(),
+    FOREIGN KEY (MAPM) REFERENCES PHIEUMUON (MAPM)
+);
 
-(N'Ra mắt giao diện Website Thư viện mới thân thiện hơn', 
- N'Nâng cấp hệ thống tìm kiếm tài liệu và trải nghiệm người dùng', 
- 'notice_website.jpg', '2024-12-30', 2, 1, 
- 'https://thuvien.huit.edu.vn/News/NewDetail/ra-mat-giao-dien-website-thu-vien-moi-than-thien-hon'),
+CREATE TABLE PHONGHOP
+(
+    MAPHONG CHAR(7) NOT NULL PRIMARY KEY,
+    VITRI NVARCHAR(20) NOT NULL CHECK (VITRI IN (N'Tầng 1',N'Tầng 2',N'Tầng 3',N'Tầng 4')),
+    SL_NGUOITOIDA INT CHECK (SL_NGUOITOIDA > 0),
+    TINHTRANG INT CHECK (TINHTRANG = 0 OR TINHTRANG = 1)
+)
 
-(N'Thông báo lịch nghỉ Lễ Quốc khánh 02/09', 
- N'Thời gian nghỉ lễ và thời gian phục vụ trở lại: 05/09', 
- 'notice_lichnghi.jpg', '2024-08-30', 2, 1, 
- 'https://thuvien.huit.edu.vn/News/NewDetail/thong-bao-lich-nghi-le-quoc-khanh-02-09'),
+CREATE TABLE PHIEU_MUONPHONG
+(
+    MAPHIEU CHAR(7) NOT NULL PRIMARY KEY,
+    MATHE CHAR(7) NOT NULL,
+    MAPH CHAR(7) NOT NULL,
+    NGAYMUON DATE,
+    GIOMUON TIME,
+    GIOTRA TIME,
+    SL_NGUOITHAMGIA INT CHECK (SL_NGUOITHAMGIA > 0),
+    MUCDICH NVARCHAR(500),
+    TIENPHAT MONEY DEFAULT 0 CHECK (TIENPHAT >= 0),
+    TINHTRANG INT DEFAULT 0,
+    GHICHU_NV NVARCHAR(200),
+    FOREIGN KEY(MAPH) REFERENCES PHONGHOP(MAPHONG),
+    FOREIGN KEY (MATHE) REFERENCES THETHUVIEN(MATHE)
+)
+GO
 
-(N'Thông báo bảo trì hệ thống mượn trả sách tự động', 
- N'Dự kiến hoàn thành trong 24h để nâng cấp phần mềm', 
- 'notice_baotri.jpg', '2024-08-15', 2, 1, 
- 'https://thuvien.huit.edu.vn/News/NewDetail/thong-bao-bao-tri-he-thong-muon-tra-sach-tu-dong'),
+CREATE TABLE THAMSO (
+    TENTHAMSO VARCHAR(50) PRIMARY KEY, 
+    GIATRI INT,                        
+    MOTA NVARCHAR(200)                 
+);
 
-(N'Mở lớp hướng dẫn kỹ năng thông tin cho tân sinh viên K14', 
- N'Đăng ký trực tiếp tại quầy thông tin thư viện', 
- 'notice_khoahoc.png', '2024-08-01', 2, 1, 
- 'https://thuvien.huit.edu.vn/News/NewDetail/mo-lop-huong-dan-ky-nang-thong-tin-cho-tan-sinh-vien-k14');
+INSERT INTO ROLE_USER VALUES
+(N'Admin',N'Toàn quyền trên DB'),
+(N'Librarian',N'Quản lý độc giả, sách, mượn trả sách, phòng họp'),
+(N'Reader',N'Xem sách, mượn sách, phòng họp')
+GO
 
-------- THÊM DỮ LIỆU
 INSERT INTO TACGIA VALUES
 ('TG00001', N'Allen B. Downey', '1970-01-01', N'Mỹ'),
 ('TG00002', N'Andrew S. Tanenbaum', '1944-03-16', N'Hà Lan'),
@@ -294,7 +218,6 @@ INSERT INTO TACGIA VALUES
 ('TG00013', N'Huỳnh Hữu Tuấn', '1989-08-18', N'Việt Nam'),
 ('TG00014', N'Nguyễn Hoàng Dũng', '1990-04-04', N'Việt Nam'),
 ('TG00015', N'Elon Musk', '1971-06-28', N'Mỹ');
-
 
 INSERT INTO THELOAI VALUES
 ('TL00001', N'Sách chuyên ngành', N'Sách phục vụ nghiên cứu'),
@@ -315,7 +238,6 @@ INSERT INTO NHAXUATBAN VALUES
 ('NXB0008', N'NXB DataSci Press', N'Singapore', '0066123456'),
 ('NXB0009', N'NXB Kinh Tế', N'Hà Nội', '0243688011'),
 ('NXB0010', N'NXB Tự Lực', N'TP.HCM', '0284562391');
-
 
 INSERT INTO QLSACH VALUES
 ('S000001', N'Think Python', 'TG00001', 'TL00001', 'NXB0005', 2015, 12, 12, N'Cuốn sách kinh điển về lập trình Python, phù hợp cho người mới bắt đầu tìm hiểu về tư duy lập trình.'),
@@ -340,26 +262,11 @@ INSERT INTO QLSACH VALUES
 ('S000020', N'International AI Review – Vol 5', 'TG00003', 'TL00006', 'NXB0006', 2021, 7, 7, N'Tạp chí quốc tế tổng hợp các đánh giá và xu hướng phát triển mới nhất của trí tuệ nhân tạo toàn cầu.');
 
 INSERT INTO BIASACH VALUES
-('S000001', 'Sach1.jpg'),
-('S000002', 'Sach2.jpg'),
-('S000003', 'Sach3.jpg'),
-('S000004', 'Sach4.jpg'),
-('S000005', 'Sach5.jpg'),
-('S000006','Sach6jpg'),
-('S000007','Sach7.jpg'),
-('S000008','Sach8.jpg'),
-('S000009', 'Sach9.jpg'),
-('S000010', 'Sach10.jpg'),
-('S000011', 'Sach11.jpg'),
-('S000012', 'Sach12.jpg'),
-('S000013', 'Sach13.jpg'),
-('S000014', 'Sach14.jpg'),
-('S000015', 'Sach15.jpg'),
-('S000016', 'Sach16.jpg'),
-('S000017', 'Sach17.jpg'),
-('S000018', 'Sach18.jpg'),
-('S000019', 'Sach19.jpg'),
-('S000020', 'Sach20.jpg');
+('S000001', 'Sach1.jpg'), ('S000002', 'Sach2.jpg'), ('S000003', 'Sach3.jpg'), ('S000004', 'Sach4.jpg'),
+('S000005', 'Sach5.jpg'), ('S000006','Sach6jpg'), ('S000007','Sach7.jpg'), ('S000008','Sach8.jpg'),
+('S000009', 'Sach9.jpg'), ('S000010', 'Sach10.jpg'), ('S000011', 'Sach11.jpg'), ('S000012', 'Sach12.jpg'),
+('S000013', 'Sach13.jpg'), ('S000014', 'Sach14.jpg'), ('S000015', 'Sach15.jpg'), ('S000016', 'Sach16.jpg'),
+('S000017', 'Sach17.jpg'), ('S000018', 'Sach18.jpg'), ('S000019', 'Sach19.jpg'), ('S000020', 'Sach20.jpg');
 
 INSERT INTO DOCGIA VALUES
 ('DG00001',N'Đỗ Thành Trung',N'Khoa Công Nghệ Thông Tin',N'14DHTH12',N'TP.HCM','0912345678','dothanhtrunf@gmail.com'),
@@ -372,7 +279,6 @@ INSERT INTO DOCGIA VALUES
 ('DG00008',N'Bùi Thị Lan',N'Khoa Sinh học và Môi trường',N'12DHMT',N'TP.HCM','0354450010','buithilan@gmail.com'),
 ('DG00009',N'Đỗ Mạnh Quân',N'Khoa Công nghệ May và Thời trang',N'14DHTT',N'Long An','0990126641','doquan123@gmail.com'),
 ('DG00010',N'Phan Thị Thảo',N'Khoa Lý Luận Chính Trị',N'15DGCT',N'Bến Tre','0901254337','janny11@gmail.com');
-
 
 INSERT INTO THETHUVIEN VALUES
 ('TH00001','DG00001','2025-01-15','2027-01-15',N'Hoạt động'),
@@ -392,284 +298,229 @@ INSERT INTO QLNHANVIEN VALUES
 ('NV00003',N'Lê Văn C','1988-03-15',N'Thủ thư','0911444555','vanc@gmail.com');
 
 INSERT INTO PHIEUMUON VALUES
-('PM00001','TH00001','NV00001','2023-10-01','2023-10-15'),
-('PM00002','TH00002','NV00002','2023-06-01','2023-06-15'),
-('PM00003','TH00003','NV00003','2023-07-15','2023-07-30');
+('PM00001','TH00001','NV00001','2023-10-01','2023-10-15', 1),
+('PM00002','TH00002','NV00002','2023-06-01','2023-06-15', 0),
+('PM00003','TH00003','NV00003','2023-07-15','2023-07-30', 0);
 
 INSERT INTO CHITIETPM VALUES
-('PM00001','S000001',2,20000),
-('PM00001','S000002',1,10000),
-('PM00002','S000003',1,10000),
-('PM00003','S000001',1,10000),
-('PM00003','S000004',3,30000);
+('PM00001','S000001',2,20000, 1),
+('PM00001','S000002',1,10000, 1),
+('PM00002','S000003',1,10000, 0),
+('PM00003','S000001',1,10000, 0),
+('PM00003','S000004',3,30000, 0);
 
 INSERT INTO PHIEUTRA VALUES
 ('PT00001','PM00001','NV00001','2023-10-14',30000,0),
 ('PT00002','PM00002','NV00003','2023-06-11',10000,200000),
 ('PT00003','PM00003','NV00002','2023-08-02',40000,100000);
 
+INSERT INTO VIPHAM (MAPM, MASACH, HINHTHUCVP, CHITIETVP, SOTIENPHAT) VALUES
+('PM00003', NULL, N'Trễ hẹn', N'Trả trễ 3 ngày so với ngày đến hạn (30/07/2023).', 30000),
+('PM00002', 'S000003', N'Hỏng sách', N'Bị ướt và rách 2 trang đầu sách Deep Learning.', 170000);
+
 INSERT INTO PHONGHOP VALUES 
 ('PH00001',N'Tầng 3',10,1),
 ('PH00002',N'Tầng 3',8,1),
 ('PH00003',N'Tầng 3',12,1),
-('PH00004',N'Tầng 3',8,1)
+('PH00004',N'Tầng 3',8,1);
 
 INSERT INTO PHIEU_MUONPHONG VALUES
-('MP00001','TH00001','PH00001','2025/02/11','09:50:00','10:50:00',6,N'Họp nhóm',0),
-('MP00002','TH00002','PH00001','2025/10/14','12:30:00','13:50:00',6,N'Họp nhóm và thảo luận đồ án với giảng viên hướng dẫn',0),
-('MP00003','TH00001','PH00001','2025/02/11','09:50:00','10:50:00',6,N'Báo cáo đồ án cuối kì online',0),
-('MP00004','TH00001','PH00001','2025/02/11','09:50:00','10:50:00',6,N'Họp nhóm',0)
+('MP00001','TH00001','PH00001','2025/02/11','09:50:00','10:50:00',6,N'Họp nhóm',0,0, NULL),
+('MP00002','TH00002','PH00001','2025/10/14','12:30:00','13:50:00',6,N'Họp nhóm và thảo luận đồ án với giảng viên hướng dẫn',0,0, NULL),
+('MP00003','TH00001','PH00001','2025/02/11','09:50:00','10:50:00',6,N'Báo cáo đồ án cuối kì online',0,0, NULL),
+('MP00004','TH00001','PH00001','2025/02/11','09:50:00','10:50:00',6,N'Họp nhóm',0,0, NULL);
 
---- TẠO TÀI KHOẢN ADMIN
---- TÀI KHOẢN READER SẼ TỰ ĐỘNG ĐƯỢC TẠO KHI THÊM THETHUVIEN
---- TÀI KHOẢN LIBRARIAN SẼ ĐƯỢC TỰ ĐỘNG TẠO KHI THÊM NHANVIEN
 INSERT INTO TAIKHOAN VALUES 
-('admin',   HASHBYTES('SHA2_256', '12345'), 1)
+('admin', HASHBYTES('SHA2_256', '12345'), 1)
+GO
 
+INSERT INTO TINTUC (TieuDe, MoTaNgan, HinhAnh, NgayDang, LoaiTin, HienThi, Link) VALUES 
+(N'Thư viện Trường ĐH Công Thương TP. HCM tiếp nhận hơn 1.000 quyển sách ngoại văn', 
+ N'Ngày sách và Văn hóa đọc Việt Nam năm 2025 - Lan tỏa tri thức', 
+ 'news_tiepnhan.jpg', '2025-04-20', 1, 1, 
+ 'https://thuvien.huit.edu.vn/News/NewDetail/tiep-nhan-sach-ngoai-van'),
+(N'Trao giải Cuộc thi "Đại sứ văn hóa đọc HUIT" và "Xếp sách nghệ thuật"', 
+ N'Ngày sách đồng hành cùng sinh viên - Tôn vinh văn hóa đọc', 
+ 'news_traogiai.jpg', '2024-04-21', 1, 1, 
+ 'https://thuvien.huit.edu.vn/News/NewDetail/trao-giai-dai-su-van-hoa-doc'),
+(N'Hướng dẫn sử dụng & tra cứu các nguồn CSDL Thư viện HUIT', 
+ N'Thông báo dùng thử Cơ sở dữ liệu EBSCO miễn phí', 
+ 'notice_huongdan.jpg', '2025-01-10', 2, 1, 
+ 'https://thuvien.huit.edu.vn/News/NewDetail/huong-dan-tra-cuu-csdl');
+GO
+INSERT INTO THAMSO VALUES ('SoSachToiDa', 5, N'Số sách tối đa được mượn');
+INSERT INTO THAMSO VALUES ('SoNgayMuon', 7, N'Số ngày được phép mượn');
+INSERT INTO THAMSO VALUES ('TienPhat', 5000, N'Tiền phạt quá hạn mỗi ngày (VNĐ)');
 
-SELECT * FROM [TACGIA];
-SELECT * FROM [THELOAI];
-SELECT * FROM [NHAXUATBAN];
-SELECT * FROM [QLSACH];
-SELECT * FROM [DOCGIA];
-SELECT * FROM [THETHUVIEN];
-SELECT * FROM [QLNHANVIEN];
-SELECT * FROM [PHIEUMUON];
-SELECT * FROM [CHITIETPM];
-SELECT * FROM [PHIEUTRA];
-SELECT * FROM [PHONGHOP];
-SELECT * FROM [PHIEU_MUONPHONG];
-SELECT * FROM [TAIKHOAN];
-
-------==============================STORE PROCEDURE ==============================
------ TẠO MÃ TÁC GIẢ TỰ ĐỘNG
-CREATE  PROCEDURE AUTO_CREATE_ID_TACGIA @MATG CHAR(7) OUTPUT
+CREATE PROCEDURE SP_REGISTER_DOCGIA
+    @TENDG NVARCHAR(30),
+    @KHOA NVARCHAR(50) = NULL,
+    @LOP NVARCHAR(50) = NULL,
+    @DIACHI NVARCHAR(100),
+    @SODT CHAR(10),
+    @MAIL NVARCHAR(100),
+    @MATHE_OUT CHAR(7) OUTPUT
 AS
 BEGIN
-	DECLARE @MAX_ID INT;
+    SET NOCOUNT ON;
 
-    -- Lấy số lớn nhất hiện có
-    SELECT @MAX_ID = MAX(CAST(SUBSTRING(MATG, 3, 5) AS INT))
-    FROM TACGIA;
+    IF EXISTS (SELECT 1 FROM DOCGIA WHERE SODT = @SODT)
+    BEGIN
+        THROW 50001, N'Số điện thoại này đã tồn tại trong hệ thống! Vui lòng kiểm tra lại.', 1;
+        RETURN;
+    END
 
-    -- Nếu bảng rỗng
-    IF @MAX_ID IS NULL
-        SET @MAX_ID = 0;
+    IF EXISTS (SELECT 1 FROM DOCGIA WHERE MAIL = @MAIL)
+    BEGIN
+        THROW 50002, N'Email này đã được đăng ký bởi người khác!', 1;
+        RETURN;
+    END
 
-    -- +1 và tạo mã mới
+    DECLARE @MADG CHAR(7);
+    EXEC AUTO_ID_DOCGIA @MADG OUTPUT;
+
+    INSERT INTO DOCGIA (MADG, TENDG, KHOA, LOP, DIACHI, SODT, MAIL)
+    VALUES (@MADG, @TENDG, @KHOA, @LOP, @DIACHI, @SODT, @MAIL);
+
+    DECLARE @MATHE CHAR(7);
+    EXEC AUTO_ID_THETHUVIEN @MATHE OUTPUT;
+     
+    DECLARE @NGAYCAP DATE = GETDATE();
+    DECLARE @NGAYHETHAN DATE = DATEADD(YEAR, 2, @NGAYCAP);
+
+    INSERT INTO THETHUVIEN (MATHE, MADG, NGAYCAP, NGAYHETHAN, TRANGTHAI)
+    VALUES (@MATHE, @MADG, @NGAYCAP, @NGAYHETHAN, N'Hoạt động');
+
+    SET @MATHE_OUT = @MATHE;
+END
+GO
+
+CREATE PROCEDURE AUTO_CREATE_ID_TACGIA @MATG CHAR(7) OUTPUT
+AS
+BEGIN
+    DECLARE @MAX_ID INT;
+    SELECT @MAX_ID = MAX(CAST(SUBSTRING(MATG, 3, 5) AS INT)) FROM TACGIA;
+    IF @MAX_ID IS NULL SET @MAX_ID = 0;
     SET @MATG = 'TG' + RIGHT('00000' + CAST(@MAX_ID + 1 AS VARCHAR(5)), 5);
 END
+GO
 
-DECLARE @NEWID CHAR(7)
-EXEC AUTO_CREATE_ID_TACGIA @NEWID OUTPUT
-PRINT @NEWID
-
------ TẠO MÃ THỂ LOẠI TỰ ĐỘNG
 CREATE PROCEDURE AUTO_ID_THELOAI @NEWID CHAR(7) OUTPUT
 AS
 BEGIN
     DECLARE @MAX_ID INT;
-
-    SELECT @MAX_ID = MAX(CAST(SUBSTRING(MATHELOAI, 3, 5) AS INT))
-    FROM THELOAI;
-
+    SELECT @MAX_ID = MAX(CAST(SUBSTRING(MATHELOAI, 3, 5) AS INT)) FROM THELOAI;
     IF @MAX_ID IS NULL SET @MAX_ID = 0;
-
     SET @NEWID = 'TL' + RIGHT('00000' + CAST(@MAX_ID + 1 AS VARCHAR(5)), 5);
 END;
 GO
-
-DECLARE @NEWID CHAR(7)
-EXEC AUTO_ID_THELOAI @NEWID OUTPUT
-PRINT @NEWID
-
------ TẠO MÃ NHÀ XUẤT BẢN TỰ ĐỘNG
 
 CREATE PROCEDURE AUTO_ID_NXB @NEWID CHAR(7) OUTPUT
 AS
 BEGIN
     DECLARE @MAX_ID INT;
-
-    SELECT @MAX_ID = MAX(CAST(SUBSTRING(MAXB, 4, 4) AS INT))
-    FROM NHAXUATBAN;
-
+    SELECT @MAX_ID = MAX(CAST(SUBSTRING(MAXB, 4, 4) AS INT)) FROM NHAXUATBAN;
     IF @MAX_ID IS NULL SET @MAX_ID = 0;
-
     SET @NEWID = 'NXB' + RIGHT('0000' + CAST(@MAX_ID + 1 AS VARCHAR(4)), 4);
 END;
 GO
 
-DECLARE @NEWID CHAR(7)
-EXEC AUTO_ID_NXB @NEWID OUTPUT
-PRINT @NEWID
-
------ TẠO MÃ SÁCH TỰ ĐỘNG
 CREATE PROCEDURE AUTO_ID_SACH @NEWID CHAR(7) OUTPUT
 AS
 BEGIN
     DECLARE @MAX_ID INT;
-
-    SELECT @MAX_ID = MAX(CAST(SUBSTRING(MASACH, 2, 6) AS INT))
-    FROM QLSACH;
-
+    SELECT @MAX_ID = MAX(CAST(SUBSTRING(MASACH, 2, 6) AS INT)) FROM QLSACH;
     IF @MAX_ID IS NULL SET @MAX_ID = 0;
-
     SET @NEWID = 'S' + RIGHT('000000' + CAST(@MAX_ID + 1 AS VARCHAR(6)), 6);
 END;
 GO
 
-
-DECLARE @NEWID CHAR(7)
-EXEC AUTO_ID_SACH @NEWID OUTPUT
-PRINT @NEWID
-
------ TẠO MÃ ĐỘC GIẢ TỰ ĐỘNG
 CREATE PROCEDURE AUTO_ID_DOCGIA @NEWID CHAR(7) OUTPUT
 AS
 BEGIN
     DECLARE @MAX_ID INT;
-
-    SELECT @MAX_ID = MAX(CAST(SUBSTRING(MADG, 3, 5) AS INT))
-    FROM DOCGIA;
-
+    SELECT @MAX_ID = MAX(CAST(SUBSTRING(MADG, 3, 5) AS INT)) FROM DOCGIA;
     IF @MAX_ID IS NULL SET @MAX_ID = 0;
-
     SET @NEWID = 'DG' + RIGHT('00000' + CAST(@MAX_ID + 1 AS VARCHAR(5)), 5);
 END;
 GO
 
-
-DECLARE @NEWID CHAR(7)
-EXEC AUTO_ID_DOCGIA @NEWID OUTPUT
-PRINT @NEWID
-
------ TẠO MÃ THẺ THƯ VIỆN TỰ ĐỘNG
 CREATE PROCEDURE AUTO_ID_THETHUVIEN @NEWID CHAR(7) OUTPUT
 AS
 BEGIN
     DECLARE @MAX_ID INT;
-
-    SELECT @MAX_ID = MAX(CAST(SUBSTRING(MATHE, 3, 5) AS INT))
-    FROM THETHUVIEN;
-
+    SELECT @MAX_ID = MAX(CAST(SUBSTRING(MATHE, 3, 5) AS INT)) FROM THETHUVIEN;
     IF @MAX_ID IS NULL SET @MAX_ID = 0;
-
     SET @NEWID = 'TH' + RIGHT('00000' + CAST(@MAX_ID + 1 AS VARCHAR(5)), 5);
 END;
 GO
 
-
-DECLARE @NEWID CHAR(7)
-EXEC AUTO_ID_THETHUVIEN @NEWID OUTPUT
-PRINT @NEWID
-
------ TẠO MÃ NHÂN VIÊN TỰ ĐỘNG
 CREATE PROCEDURE AUTO_ID_NHANVIEN @NEWID CHAR(7) OUTPUT
 AS
 BEGIN
     DECLARE @MAX_ID INT;
-
-    SELECT @MAX_ID = MAX(CAST(SUBSTRING(MANV, 3, 5) AS INT))
-    FROM QLNHANVIEN;
-
+    SELECT @MAX_ID = MAX(CAST(SUBSTRING(MANV, 3, 5) AS INT)) FROM QLNHANVIEN;
     IF @MAX_ID IS NULL SET @MAX_ID = 0;
-
     SET @NEWID = 'NV' + RIGHT('00000' + CAST(@MAX_ID + 1 AS VARCHAR(5)), 5);
 END;
 GO
 
-
-DECLARE @NEWID CHAR(7)
-EXEC AUTO_ID_NHANVIEN @NEWID OUTPUT
-PRINT @NEWID
-
------ TẠO MÃ PHIẾU TRẢ TỰ ĐỘNG
 CREATE PROCEDURE AUTO_ID_PHIEUTRA @NEWID CHAR(7) OUTPUT
 AS
 BEGIN
     DECLARE @MAX_ID INT;
-
-    SELECT @MAX_ID = MAX(CAST(SUBSTRING(MAPT, 3, 5) AS INT))
-    FROM PHIEUTRA;
-
+    SELECT @MAX_ID = MAX(CAST(SUBSTRING(MAPT, 3, 5) AS INT)) FROM PHIEUTRA;
     IF @MAX_ID IS NULL SET @MAX_ID = 0;
-
     SET @NEWID = 'PT' + RIGHT('00000' + CAST(@MAX_ID + 1 AS VARCHAR(5)), 5);
 END;
 GO
 
-
-DECLARE @NEWID CHAR(7)
-EXEC AUTO_ID_PHIEUTRA @NEWID OUTPUT
-PRINT @NEWID
-
------ TẠO MÃ PHÒNG TỰ ĐỘNG
 CREATE PROCEDURE AUTO_ID_PHONG @NEWID CHAR(7) OUTPUT
 AS
 BEGIN
     DECLARE @MAX_ID INT;
-
-    SELECT @MAX_ID = MAX(CAST(SUBSTRING(MAPHONG, 3, 5) AS INT))
-    FROM PHONGHOP;
-
+    SELECT @MAX_ID = MAX(CAST(SUBSTRING(MAPHONG, 3, 5) AS INT)) FROM PHONGHOP;
     IF @MAX_ID IS NULL SET @MAX_ID = 0;
-
     SET @NEWID = 'PH' + RIGHT('00000' + CAST(@MAX_ID + 1 AS VARCHAR(5)), 5);
 END;
 GO
 
-
-DECLARE @NEWID CHAR(7)
-EXEC AUTO_ID_PHONG @NEWID OUTPUT
-PRINT @NEWID
-
------ TẠO MÃ PHIẾU MƯỢN PHÒNG TỰ ĐỘNG
 CREATE PROCEDURE AUTO_ID_PHIEUMUONPHONG @NEWID CHAR(7) OUTPUT
 AS
 BEGIN
     DECLARE @MAX_ID INT;
-
-    SELECT @MAX_ID = MAX(CAST(SUBSTRING(MAPHIEU, 3, 5) AS INT))
-    FROM PHIEU_MUONPHONG;
-
+    SELECT @MAX_ID = MAX(CAST(SUBSTRING(MAPHIEU, 3, 5) AS INT)) FROM PHIEU_MUONPHONG;
     IF @MAX_ID IS NULL SET @MAX_ID = 0;
-
     SET @NEWID = 'MP' + RIGHT('00000' + CAST(@MAX_ID + 1 AS VARCHAR(5)), 5);
 END;
 GO
 
-
-DECLARE @NEWID CHAR(7)
-EXEC AUTO_ID_PHIEUMUONPHONG @NEWID OUTPUT
-PRINT @NEWID
---------- TRIGGER 
------ MỖI KHI THỰC HIỆN MƯỢN SÁCH THÌ SỐ LƯỢNG SÁCH CÒN GIẢM
 CREATE TRIGGER UPDATE_SLC_SAUKHI_MUON ON CHITIETPM
 AFTER INSERT 
 AS
 BEGIN
-	DECLARE @SL INT,@MASACH CHAR(7);
+    DECLARE @SL INT, @MASACH CHAR(7);
 
-	DECLARE cur_add_slc CURSOR FOR
-		SELECT SLMUON,MASACH
-		FROM inserted;
+    DECLARE cur_add_slc CURSOR FOR
+        SELECT SLMUON, MASACH
+        FROM inserted;
 
-	OPEN cur_add_slc;
-	FETCH NEXT FROM cur_add_slc INTO @SL,@MASACH;
+    OPEN cur_add_slc;
+    FETCH NEXT FROM cur_add_slc INTO @SL, @MASACH;
 
-	WHILE @@FETCH_STATUS = 0
-	BEGIN
-		UPDATE QLSACH
-		SET TINHTRANG=TINHTRANG-@SL
-		WHERE MASACH=@MASACH
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        UPDATE QLSACH
+        SET TINHTRANG = TINHTRANG - @SL
+        WHERE MASACH = @MASACH
 
-		FETCH NEXT FROM cur_add_slc INTO @SL, @MASACH;
-	END 
-	CLOSE cur_add_slc;
+        FETCH NEXT FROM cur_add_slc INTO @SL, @MASACH;
+    END 
+    CLOSE cur_add_slc;
     DEALLOCATE cur_add_slc;
 END
+GO
 
------ THỰC HIỆN TRẢ SÁCH THÌ SỐ LƯỢNG SÁCH CÒN TĂNG
 CREATE TRIGGER TRG_PHIEUTRA
 ON PHIEUTRA
 AFTER INSERT
@@ -684,59 +535,58 @@ BEGIN
 END;
 GO
 
--------- TỰ ĐỘNG TẠO ACCOUNT SAU KHI HOÀN TẤT ĐĂNG KÍ THẺ THƯ VIỆN
 CREATE TRIGGER AUTO_CREATE_ACC_READER ON THETHUVIEN 
 AFTER INSERT 
 AS 
 BEGIN
-	DECLARE @MATHE CHAR(7);
+    DECLARE @MATHE CHAR(7);
 
-	DECLARE cur CURSOR FOR
-		SELECT MATHE
-		FROM inserted;
+    DECLARE cur CURSOR FOR
+        SELECT MATHE
+        FROM inserted;
 
-	OPEN cur;
-	FETCH NEXT FROM cur INTO @MATHE;
+    OPEN cur;
+    FETCH NEXT FROM cur INTO @MATHE;
 
-	WHILE @@FETCH_STATUS = 0
-	BEGIN
-		-- Chỉ tạo tài khoản nếu chưa tồn tại
-		IF NOT EXISTS (SELECT 1 FROM TAIKHOAN WHERE USERNAME = @MATHE)
-		BEGIN
-			INSERT INTO TAIKHOAN (USERNAME, ROLE_ID)
-			VALUES (@MATHE, 3);   -- 3 = Reader
-		END
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        IF NOT EXISTS (SELECT 1 FROM TAIKHOAN WHERE USERNAME = @MATHE)
+        BEGIN
+            INSERT INTO TAIKHOAN (USERNAME, ROLE_ID)
+            VALUES (@MATHE, 3);
+        END
 
-		FETCH NEXT FROM cur INTO @MATHE;
-	END
-	CLOSE cur
-	DEALLOCATE cur
+        FETCH NEXT FROM cur INTO @MATHE;
+    END
+    CLOSE cur
+    DEALLOCATE cur
 END
+GO
 
 CREATE TRIGGER AUTO_CREATE_ACC_LIB ON QLNHANVIEN 
 AFTER INSERT 
 AS 
 BEGIN
-	DECLARE @MANV CHAR(7);
+    DECLARE @MANV CHAR(7);
 
-	DECLARE cur CURSOR FOR
-		SELECT MANV
-		FROM inserted;
+    DECLARE cur CURSOR FOR
+        SELECT MANV
+        FROM inserted;
 
-	OPEN cur;
-	FETCH NEXT FROM cur INTO @MANV;
+    OPEN cur;
+    FETCH NEXT FROM cur INTO @MANV;
 
-	WHILE @@FETCH_STATUS = 0
-	BEGIN
-		-- Chỉ tạo tài khoản nếu chưa tồn tại
-		IF NOT EXISTS (SELECT 1 FROM TAIKHOAN WHERE USERNAME = @MANV)
-		BEGIN
-			INSERT INTO TAIKHOAN (USERNAME, ROLE_ID)
-			VALUES (@MANV, 2);  
-		END
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        IF NOT EXISTS (SELECT 1 FROM TAIKHOAN WHERE USERNAME = @MANV)
+        BEGIN
+            INSERT INTO TAIKHOAN (USERNAME, ROLE_ID)
+            VALUES (@MANV, 2);
+        END
 
-		FETCH NEXT FROM cur INTO @MANV;
-	END
-	CLOSE cur
-	DEALLOCATE cur
+        FETCH NEXT FROM cur INTO @MANV;
+    END
+    CLOSE cur
+    DEALLOCATE cur
 END
+GO

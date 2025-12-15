@@ -12,15 +12,10 @@ namespace QL_ThuVIenHUIT_13.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class CHITIETPM
+    public partial class THAMSO
     {
-        public string MAPM { get; set; }
-        public string MASACH { get; set; }
-        public Nullable<int> SLMUON { get; set; }
-        public Nullable<decimal> TIENTHECHAN { get; set; }
-        public Nullable<int> TINHTRANG { get; set; }
-    
-        public virtual QLSACH QLSACH { get; set; }
-        public virtual PHIEUMUON PHIEUMUON { get; set; }
+        public string TENTHAMSO { get; set; }
+        public Nullable<int> GIATRI { get; set; }
+        public string MOTA { get; set; }
     }
 }

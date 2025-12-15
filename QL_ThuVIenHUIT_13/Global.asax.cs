@@ -26,26 +26,42 @@ namespace QL_ThuVIenHUIT_13
 
             if (ck != null)
             {
-                Session["Username"] = ck["Username"];
-                string Username = ck["Username"];
-                TAIKHOAN tk = db.TAIKHOANs.FirstOrDefault(x => x.USERNAME == Username);
-                Session["User_info"] = null;
-                if (tk.USERNAME.StartsWith("TH"))
+                string username = ck["Username"];
+                TAIKHOAN tk = db.TAIKHOANs.FirstOrDefault(x => x.USERNAME == username);
+                if (tk != null)
                 {
-                    Session["User_info"] = db.THETHUVIENs.FirstOrDefault(x => x.MATHE == tk.USERNAME);
-                    DOCGIA dg = db.DOCGIAs.FirstOrDefault(x => x.MADG == tk.USERNAME);
-                    Session["NameDisplay"] = dg.TENDG;
-                }
+                    Session["Username"] = tk.USERNAME;
+                    Session["Role"] = tk.ROLE_ID;
+                    Session["User_info"] = null;
+                    if (tk.ROLE_ID == 3)
+                    {
+                        var theThuVien = db.THETHUVIENs.FirstOrDefault(x => x.MATHE == tk.USERNAME);
 
-                else if (tk.USERNAME.StartsWith("NV"))
-                {
-                    QLNHANVIEN nv = db.QLNHANVIENs.FirstOrDefault(x => x.MANV == tk.USERNAME);
-                    Session["User_info"] = nv;
-                    Session["NameDisplay"] = nv.TENNV;
-                }
-                else
-                {
-                    Session["NameDisplay"] = "Admin";
+                        if (theThuVien != null)
+                        {
+                            Session["User_info"] = theThuVien;
+                            DOCGIA dg = db.DOCGIAs.FirstOrDefault(x => x.MADG == theThuVien.MADG);
+
+                            if (dg != null)
+                            {
+                                Session["NameDisplay"] = dg.TENDG;
+                                Session["DocGia_Info"] = dg;
+                            }
+                        }
+                    }
+                    else if (tk.ROLE_ID == 2) 
+                    {
+                        QLNHANVIEN nv = db.QLNHANVIENs.FirstOrDefault(x => x.MANV == tk.USERNAME);
+                        if (nv != null)
+                        {
+                            Session["User_info"] = nv;
+                            Session["NameDisplay"] = nv.TENNV;
+                        }
+                    }
+                    else
+                    {
+                        Session["NameDisplay"] = "Quản Trị Viên";
+                    }
                 }
             }
         }

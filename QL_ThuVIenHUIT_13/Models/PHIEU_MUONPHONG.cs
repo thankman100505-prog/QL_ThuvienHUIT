@@ -23,6 +23,8 @@ namespace QL_ThuVIenHUIT_13.Models
         public string MUCDICH { get; set; }
         public Nullable<decimal> TIENPHAT { get; set; }
         public Nullable<System.TimeSpan> GIOTRA { get; set; }
+        public Nullable<int> TINHTRANG { get; set; }
+        public string GHICHU_NV { get; set; }
     
         public virtual THETHUVIEN THETHUVIEN { get; set; }
         public virtual PHONGHOP PHONGHOP { get; set; }

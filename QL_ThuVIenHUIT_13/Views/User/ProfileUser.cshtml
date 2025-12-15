@@ -1,0 +1,133 @@
+﻿@model QL_ThuVIenHUIT_13.Models.UserProfileVM
+
+@{
+    ViewBag.Title = "Thông tin tài khoản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .profile-card {
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        border: none;
+        overflow: hidden;
+    }
+
+    .profile-header {
+        background: linear-gradient(135deg, #0e56a0, #0b4580);
+        padding: 40px 20px;
+        text-align: center;
+        color: white;
+    }
+
+    .avatar-circle {
+        width: 100px;
+        height: 100px;
+        background-color: white;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        color: #0e56a0;
+        border: 4px solid rgba(255,255,255,0.3);
+        margin-bottom: 10px;
+        text-transform: uppercase;
+    }
+
+    .profile-label {
+        font-weight: 600;
+        color: #555;
+    }
+
+    .profile-value {
+        color: #333;
+        font-weight: 500;
+    }
+
+    .list-group-item {
+        border: none;
+        border-bottom: 1px solid #f0f0f0;
+        padding: 15px 20px;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+
+            <div class="card profile-card">
+                <div class="profile-header">
+                    <div class="avatar-circle">
+                        @(Model.HoTen != null ? Model.HoTen.Substring(0, 1) : "U")
+                    </div>
+                    <h3 class="mb-1">@Model.HoTen</h3>
+                    <span class="badge bg-light text-primary rounded-pill px-3">
+                        @Model.RoleName
+                    </span>
+                </div>
+
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="profile-label"><i class="bi bi-card-heading me-2"></i>Mã số</span>
+                            <span class="profile-value">@Model.MaSo</span>
+                        </li>
+
+                        @if (Model.NgaySinh != null)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="profile-label"><i class="bi bi-calendar-event me-2"></i>Ngày sinh</span>
+                                <span class="profile-value">@Model.NgaySinh.Value.ToString("dd/MM/yyyy")</span>
+                            </li>
+                        }
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="profile-label"><i class="bi bi-telephone me-2"></i>Số điện thoại</span>
+                            <span class="profile-value">@Model.SDT</span>
+                        </li>
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="profile-label"><i class="bi bi-envelope me-2"></i>Email</span>
+                            <span class="profile-value">@Model.Email</span>
+                        </li>
+
+                        @if (!string.IsNullOrEmpty(Model.Khoa))
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="profile-label"><i class="bi bi-building me-2"></i>Khoa</span>
+                                <span class="profile-value">@Model.Khoa</span>
+                            </li>
+                        }
+
+                        @if (!string.IsNullOrEmpty(Model.Lop))
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="profile-label"><i class="bi bi-people me-2"></i>Lớp</span>
+                                <span class="profile-value">@Model.Lop</span>
+                            </li>
+                        }
+
+                        @if (Model.NgayHetHan != null)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center bg-light">
+                                <span class="profile-label text-danger"><i class="bi bi-clock-history me-2"></i>Ngày hết hạn thẻ</span>
+                                <span class="profile-value text-danger fw-bold">@Model.NgayHetHan.Value.ToString("dd/MM/yyyy")</span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div class="card-footer bg-white p-3 text-center">
+                    <a href="@Url.Action("ChangePassword", "User")" class="btn btn-outline-primary rounded-pill px-4 me-2">
+                        <i class="bi bi-key"></i> Đổi mật khẩu
+                    </a>
+                    <a href="@Url.Action("EditProfile", "User")" class="btn btn-primary rounded-pill px-4">
+                            <i class="bi bi-pencil-square"></i> Cập nhật
+                        </a> 
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

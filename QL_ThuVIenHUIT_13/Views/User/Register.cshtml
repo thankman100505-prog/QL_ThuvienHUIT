@@ -1,0 +1,113 @@
+﻿@model QL_ThuVIenHUIT_13.Models.Registration
+@{
+    ViewBag.Title = "Đăng ký thẻ thư viện";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container mt-4 mb-5">
+        <h3 class="text-center mb-4" style="color:#0e56a0; font-weight:bold">ĐĂNG KÝ MỞ THẺ THƯ VIỆN</h3>
+        @using (Html.BeginForm("RegisterSubmit", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header fw-bold text-white" style="background-color:#0e56a0">THÔNG TIN CHUNG</div>
+                <div class="card-body row g-3">
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.HoTen, new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.HoTen, new { @class = "form-control", placeholder = "Nhập họ và tên đầy đủ" })
+                        @Html.ValidationMessageFor(m => m.HoTen, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.CMND, new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.CMND, new { @class = "form-control", placeholder = "CMND / CCCD / Thẻ SV" })
+                        @Html.ValidationMessageFor(m => m.CMND, "", new { @class = "text-danger" })
+                    </div>
+
+                </div>
+            </div>
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header fw-bold text-white" style="background-color:#0e56a0">THÔNG TIN LIÊN HỆ</div>
+                <div class="card-body row g-3">
+
+                    <div class="col-md-12">
+                        @Html.LabelFor(m => m.DiaChi, new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.DiaChi, new { @class = "form-control", placeholder = "Số nhà, đường, phường/xã..." })
+                        @Html.ValidationMessageFor(m => m.DiaChi, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.DoiTuong, new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.DoiTuong, new { @class = "form-control", placeholder = "Sinh viên / CBGV / Khác" })
+                    </div>
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.Khoa, new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.Khoa, new { @class = "form-control", placeholder = "Khoa CNTT / Kinh tế..." })
+                    </div>
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.Email, new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.DienThoai, new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.DienThoai, new { @class = "form-control", type = "tel" })
+                        @Html.ValidationMessageFor(m => m.DienThoai, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-12">
+                        @Html.LabelFor(m => m.GhiChu, new { @class = "form-label fw-bold" })
+                        @Html.TextAreaFor(m => m.GhiChu, new { @class = "form-control", rows = 3 })
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header fw-bold text-white" style="background-color:#0e56a0">THÔNG TIN TÀI KHOẢN</div>
+                <div class="card-body row g-3">
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.MatKhau, new { @class = "form-label fw-bold" })
+                        @Html.PasswordFor(m => m.MatKhau, new { @class = "form-control", placeholder = "Nhập mật khẩu" })
+                        @Html.ValidationMessageFor(m => m.MatKhau, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.NhapLaiMatKhau, new { @class = "form-label fw-bold" })
+                        @Html.PasswordFor(m => m.NhapLaiMatKhau, new { @class = "form-control", placeholder = "Nhập lại mật khẩu" })
+                        @Html.ValidationMessageFor(m => m.NhapLaiMatKhau, "", new { @class = "text-danger" })
+                    </div>
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="col-12">
+                            <div class="alert alert-danger text-center">@ViewBag.Error</div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary px-5" style="background-color:#0e56a0; border:none; border-radius:20px">Đăng ký</button>
+                <a href="@Url.Action("SignIn", "User")" class="btn btn-secondary ms-2" style="border-radius:20px">Hủy</a>
+            </div>
+        }
+    </div>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

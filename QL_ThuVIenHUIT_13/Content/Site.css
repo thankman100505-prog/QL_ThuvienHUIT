@@ -6,11 +6,20 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     background-color: #fff;
-    color: #333;
+    color: #333; 
+    font-size: 15px; 
+    line-height: 1.6; 
 }
-
+h1, h2, h3, h4, h5, h6,
+.site-titles h2,
+.site-titles h3,
+.navbar-brand,
+.menu a {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700; /* Độ đậm */
+}
 a {
     text-decoration: none;
     color: inherit;
@@ -27,8 +36,9 @@ h2, h3, h4 {
 }
 
 .container {
-    width: 1200px;
-    max-width: 100%;
+    width: 1200px; 
+    max-width: 1200px;
+    width: 100%;
     margin: 0 auto;
     padding: 0 15px;
 }
@@ -145,12 +155,13 @@ h2, h3, h4 {
 }
 
 .search-input {
-    flex-grow: 1;
+    width: 100%;
     border: none;
     border-radius: 4px;
-    padding: 8px 10px 8px 35px;
+    padding: 8px 10px 8px 35px; 
     outline: none;
     font-size: 14px;
+    height: 100%; 
 }
 
 .search-icon {
@@ -290,7 +301,7 @@ h2, h3, h4 {
     color: #0099ff;
     margin-bottom: 4px;
     display: flex;
-    align-items: top;
+    align-items:top;
     gap: 6px;
 }
 
@@ -501,110 +512,6 @@ footer {
     font-size: 12px;
     color: #888;
 }
-
-<script >
-// --- LOGIC PHÂN TRANG CHO PHẦN THÔNG BÁO ---
-let currentNoticePage = 1;
-const totalNoticePages = 3;
-
-function switchNoticePage(pageNum) {
-    currentNoticePage = pageNum;
-    // 1. Ẩn tất cả các trang thông báo for (let i = 1; i <= totalNoticePages; i++)
-
-{
-    // Ẩn nội dung let page = document.getElementById('notice-page-' + i);
-    if(page) page.style.display = 'none';
-    // Bỏ active ở nút bấm let btn = document.getElementById('n-btn-' + i);
-    if(btn) btn.classList.remove('active');
-}
-
-// 2. Hiện trang được chọn
-let selectedPage = document.getElementById('notice-page-' + pageNum);
-if(selectedPage) selectedPage.style.display = 'block';
-
-let selectedBtn = document.getElementById('n-btn-' + pageNum);
-if(selectedBtn) selectedBtn.classList.add('active');
-}
-
-function nextNoticePage() {
-    if (currentNoticePage < totalNoticePages)
-
-{
-    switchNoticePage(currentNoticePage + 1);
-}
-
-}
-
-function prevNoticePage() {
-    if (currentNoticePage > 1)
-
-{
-    switchNoticePage(currentNoticePage - 1);
-}
-
-}
-</script >
-let currentBookPage = 1;
-const totalBookPages = 2; // Số lượng trang sách bạn tạo
-
-function switchBookPage(pageNum) {
-    currentBookPage = pageNum;
-    // 1. Ẩn hết các trang sách for (let i = 1; i <= totalBookPages; i++)
-
-{
-    let page = document.getElementById('book-page-' + i);
-    if(page) page.style.display = 'none';
-    let btn = document.getElementById('b-btn-' + i);
-    if(btn) btn.classList.remove('active');
-}
-
-// 2. Hiện trang được chọn
-let selectedPage = document.getElementById('book-page-' + pageNum);
-if(selectedPage) selectedPage.style.display = 'block';
-
-let selectedBtn = document.getElementById('b-btn-' + pageNum);
-if(selectedBtn) selectedBtn.classList.add('active');
-}
-
-function nextBookPage() {
-    if (currentBookPage < totalBookPages) switchBookPage(currentBookPage + 1);
-}
-
-function prevBookPage() {
-    if (currentBookPage > 1) switchBookPage(currentBookPage - 1);
-}
-
-
-let currentJournalPage = 1;
-const totalJournalPages = 2; // Số lượng trang tạp chí
-
-function switchJournalPage(pageNum) {
-    currentJournalPage = pageNum;
-    // 1. Ẩn hết các trang tạp chí for (let i = 1; i <= totalJournalPages; i++)
-
-{
-    let page = document.getElementById('journal-page-' + i);
-    if(page) page.style.display = 'none';
-    let btn = document.getElementById('j-btn-' + i);
-    if(btn) btn.classList.remove('active');
-}
-
-// 2. Hiện trang được chọn
-let selectedPage = document.getElementById('journal-page-' + pageNum);
-if(selectedPage) selectedPage.style.display = 'block';
-
-let selectedBtn = document.getElementById('j-btn-' + pageNum);
-if(selectedBtn) selectedBtn.classList.add('active');
-}
-
-function nextJournalPage() {
-    if (currentJournalPage < totalJournalPages) switchJournalPage(currentJournalPage + 1);
-}
-
-function prevJournalPage() {
-    if (currentJournalPage > 1) switchJournalPage(currentJournalPage - 1);
-}
-
 .dropdown-menu-huit {
     display: none !important;
     position: absolute;
@@ -640,56 +547,72 @@ function prevJournalPage() {
 /* --- MENU --- */
 .menu {
     width: 100%;
-    height: 38px;
-    margin: 0; /*bắt buộc phải có*/
-    padding: 0; /*bắt buộc phải có*/
-    padding-left: 60px;
     background-color: black;
+    height: 40px; 
 }
-
+    .menu .container {
+        height: 100%;
+    }
     .menu ul {
         list-style: none;
-        margin: 0 auto; /*bắt buộc phải có*/
-        padding: 0; /*bắt buộc phải có*/
-        background-color:black;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center; 
+        height: 100%; 
+        gap: 0; 
     }
 
-    .menu ul li {
-        position: relative;
-        width: 150px;
-        z-index: 30;
-        float:left;
+        .menu ul li {
+            position: relative;
+           
+            width: auto;
+            z-index: 30;
+            float: left;
+        }
 
-    }
+            .menu ul li a {
+                display: flex;
+                align-items: center;
+                height: 100%;
+                padding: 0 20px; 
+                background-color: black;
+                color: white;
+                font-size: 14px;
+                font-weight: bold;
+                text-decoration: none;
+                text-transform: uppercase;
+                white-space: nowrap; 
+                transition: background 0.3s;
+            }
 
-.menu ul li a {
-    display: block;
-    background-color: black;
-    color: white;
-    font-size: 15px;
-    margin-top:5px;
-    line-height: 30px;
-    justify-items:center;
-    text-decoration: none;
-    text-transform: uppercase;
-    padding-left: 15px;
-}
+                .menu ul li a:hover {
+                    background-color: #333;
+                    color: #ffcc00;
+                }
+            .menu ul li ul {
+                display: none; 
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 200px; 
+                background-color: #222;
+                flex-direction: column; 
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                z-index: 1000;
+            }
 
-.menu ul li a:hover {
-    background-color: grey;
-    color: white;
-}
+                .menu ul li ul li {
+                    width: 100% !important;
+                    height: auto;
+                }
 
-.menu ul ul {
-    position: absolute;
-    left: 0;
-    top: 100%;
-}
-
-.menu ul ul {
-    visibility: hidden;
-}
-
-.menu ul li:hover > ul {
-    visibility: visible;
-}
+                    .menu ul li ul li a {
+                        padding: 10px 15px;
+                        font-size: 13px;
+                        justify-content: flex-start;
+                        border-bottom: 1px solid #333;
+                    }
+            .menu ul li:hover > ul {
+                display: flex;
+            }

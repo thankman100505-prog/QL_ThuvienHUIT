@@ -19,6 +19,7 @@ namespace QL_ThuVIenHUIT_13.Models
         {
             this.CHITIETPMs = new HashSet<CHITIETPM>();
             this.PHIEUTRAs = new HashSet<PHIEUTRA>();
+            this.VIPHAMs = new HashSet<VIPHAM>();
         }
     
         public string MAPM { get; set; }
@@ -26,6 +27,7 @@ namespace QL_ThuVIenHUIT_13.Models
         public string MANV { get; set; }
         public Nullable<System.DateTime> NgayMuon { get; set; }
         public Nullable<System.DateTime> NgayDenHan { get; set; }
+        public Nullable<int> TINHTRANG { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CHITIETPM> CHITIETPMs { get; set; }
@@ -33,5 +35,7 @@ namespace QL_ThuVIenHUIT_13.Models
         public virtual THETHUVIEN THETHUVIEN { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PHIEUTRA> PHIEUTRAs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VIPHAM> VIPHAMs { get; set; }
     }
 }
