@@ -1,0 +1,62 @@
+﻿@model IEnumerable<QL_ThuVIenHUIT_13.Models.QLNHANVIEN>
+@{
+    ViewBag.Title = "Quản lý Nhân sự";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+        <h3 class="fw-bold text-danger m-0"><i class="fa fa-users-cog me-2"></i> QUẢN LÝ NHÂN SỰ</h3>
+        <a href="@Url.Action("Create")" class="btn btn-success fw-bold"><i class="fa fa-plus-circle"></i> Thêm nhân viên</a>
+    </div>
+
+    <div class="card bg-light mb-4 shadow-sm">
+        <div class="card-body py-3">
+            <form method="get" class="row g-2">
+                <div class="col-md-10">
+                    <input type="text" name="search" class="form-control" placeholder="Nhập tên hoặc mã nhân viên..." value="@ViewBag.Search">
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-primary w-100 fw-bold"><i class="fa fa-search"></i> Tìm kiếm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="table-responsive shadow-sm rounded">
+        <table class="table table-hover align-middle mb-0 bg-white">
+            <thead class="bg-primary text-white">
+                <tr>
+                    <th>Mã NV</th>
+                    <th>Họ và Tên</th>
+                    <th>Chức vụ</th>
+                    <th>Liên hệ</th>
+                    <th>Ngày sinh</th>
+                    <th class="text-center">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="fw-bold text-secondary">@item.MANV</td>
+                        <td class="fw-bold text-primary">@item.TENNV</td>
+                        <td><span class="badge bg-info text-dark">@item.CHUCVU</span></td>
+                        <td>
+                            <div class="small"><i class="fa fa-phone me-1"></i> @item.SDIENTHOAI</div>
+                            <div class="small text-muted"><i class="fa fa-envelope me-1"></i> @item.MAIL</div>
+                        </td>
+                        <td>@string.Format("{0:dd/MM/yyyy}", item.NGSINH)</td>
+                        <td class="text-center">
+                            <a href="@Url.Action("Edit", new { id = item.MANV })" class="btn btn-sm btn-warning me-1" title="Sửa"><i class="fa fa-edit"></i></a>
+
+                            <form action="@Url.Action("Delete", new { id = item.MANV })" method="post" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn xóa nhân viên @item.TENNV không? Hành động này cũng sẽ xóa tài khoản đăng nhập.');">
+                                <button type="submit" class="btn btn-sm btn-danger" title="Xóa"><i class="fa fa-trash"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

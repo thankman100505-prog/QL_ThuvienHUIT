@@ -1,0 +1,243 @@
+﻿@{
+    ViewBag.Title = "Báo cáo Thống kê";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body bg-light py-2">
+            <form action="@Url.Action("Stats", "StaffManager")" method="get" id="filterForm">
+                <div class="row align-items-center g-2">
+
+                    <div class="col-lg-2 border-end">
+                        <h5 class="fw-bold text-primary m-0">THỐNG KÊ</h5>
+                        <small class="text-muted fw-bold">@ViewBag.TimeLabel</small>
+                    </div>
+
+                    <div class="col-lg-5 d-flex align-items-center bg-white p-1 rounded border" id="groupDropdown">
+                        <span class="small fw-bold text-muted mx-2">Kỳ:</span>
+                        <select name="year" id="ddlYear" class="form-select form-select-sm me-1 fw-bold text-primary border-0" onchange="onDropdownChange()">
+                            @for (int y = DateTime.Now.Year; y >= 2020; y--)
+                            {
+                                <option value="@y" @(ViewBag.SelectedYear == y ? "selected" : "")>Năm @y</option>
+                            }
+                        </select>
+                        <select name="quarter" id="ddlQuarter" class="form-select form-select-sm me-1 border-0" onchange="onQuarterChange()">
+                            <option value="">-- Quý --</option>
+                            <option value="1" @(ViewBag.SelectedQuarter == 1 ? "selected" : "")>Quý 1</option>
+                            <option value="2" @(ViewBag.SelectedQuarter == 2 ? "selected" : "")>Quý 2</option>
+                            <option value="3" @(ViewBag.SelectedQuarter == 3 ? "selected" : "")>Quý 3</option>
+                            <option value="4" @(ViewBag.SelectedQuarter == 4 ? "selected" : "")>Quý 4</option>
+                        </select>
+                        <select name="month" id="ddlMonth" class="form-select form-select-sm border-0" onchange="onMonthChange()">
+                            <option value="">-- Tháng --</option>
+                            @for (int m = 1; m <= 12; m++)
+                            {
+                                <option value="@m" @(ViewBag.SelectedMonth == m ? "selected" : "")>Tháng @m</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-lg-4 d-flex align-items-center bg-white p-1 rounded border ms-2" id="groupDate">
+                        <span class="small fw-bold text-muted mx-2">Hoặc:</span>
+                        <input type="date" name="fromDate" id="txtFrom" class="form-control form-control-sm border-0"
+                               value="@ViewBag.FromDate" onchange="onDateChange()">
+                        <span class="mx-1">-</span>
+                        <input type="date" name="toDate" id="txtTo" class="form-control form-control-sm border-0"
+                               value="@ViewBag.ToDate" onchange="onDateChange()">
+                    </div>
+
+                    <div class="col-lg-2 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary btn-sm fw-bold me-1" title="Xem báo cáo trên web">
+                            <i class="fa fa-search"></i> Xem
+                        </button>
+
+                        <button type="submit" formaction="@Url.Action("ExportToExcel", "StaffManager")" class="btn btn-success btn-sm fw-bold me-1" title="Tải file Excel">
+                            <i class="fa fa-file-excel"></i> Xuất
+                        </button>
+
+                        <button type="button" class="btn btn-secondary btn-sm" title="Đặt lại" onclick="resetForm()">
+                            <i class="fa fa-sync"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-uppercase mb-1 small text-white-50">Tổng Kho Sách</h6>
+                    <h2 class="fw-bold mb-0">@ViewBag.TongSach</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-uppercase mb-1 small text-white-50">Độc Giả</h6>
+                    <h2 class="fw-bold mb-0">@ViewBag.TongDocGia</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-dark bg-warning shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-uppercase mb-1 small text-dark-50">Lượt Mượn</h6>
+                    <h2 class="fw-bold mb-0">@ViewBag.LuotMuonMoi</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-danger shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-uppercase mb-1 small text-white-50">Doanh Thu Phạt</h6>
+                    <h2 class="fw-bold mb-0">@string.Format("{0:N0}", ViewBag.DoanhThuPhat)</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-4 h-100">
+                <div class="card-header bg-white fw-bold py-3 text-primary border-bottom">
+                    <i class="fa fa-chart-area me-1"></i> BIỂU ĐỒ MƯỢN SÁCH
+                </div>
+                <div class="card-body">
+                    <div class="chart-area" style="height: 320px;">
+                        <canvas id="myAreaChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4 h-100">
+                <div class="card-header bg-white fw-bold py-3 text-primary">Top Sách Hot</div>
+                <div class="card-body p-0">
+                    <table class="table table-hover mb-0">
+                        <tbody>
+                            @if (ViewBag.TopSach != null)
+                            {
+                                foreach (var item in ViewBag.TopSach)
+                                {
+                                    <tr><td class="ps-3">@item.TenSach</td><td class="text-end pe-3"><span class="badge bg-primary">@item.LuotMuon</span></td></tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var labels = @Html.Raw(ViewBag.ChartLabelsStr ?? "[]");
+            var dataStr = "@Html.Raw(ViewBag.ChartDataStr ?? "")";
+            var dataArray = dataStr.length > 0 ? dataStr.split(',').map(Number) : [];
+
+            var ctx = document.getElementById("myAreaChart");
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: "Lượt phiếu",
+                            lineTension: 0.3,
+                            backgroundColor: "rgba(78, 115, 223, 0.05)",
+                            borderColor: "rgba(78, 115, 223, 1)",
+                            pointRadius: 3,
+                            pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                            pointBorderColor: "rgba(78, 115, 223, 1)",
+                            pointHoverRadius: 5,
+                            pointHitRadius: 10,
+                            pointBorderWidth: 2,
+                            data: dataArray,
+                            fill: true
+                        }],
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        layout: { padding: 10 },
+                        scales: {
+                            y: { beginAtZero: true, ticks: { precision: 0 } }
+                        },
+                        plugins: { legend: { display: false } }
+                    }
+                });
+            }
+            initFormState();
+        });
+
+        var isCustomMode = @(ViewBag.IsCustomDate != null && (bool)ViewBag.IsCustomDate ? "true" : "false");
+
+        function initFormState() {
+            if (isCustomMode) {
+                toggleInputs('date');
+            } else {
+                var hasDropdownVal = document.getElementById('ddlMonth').value || document.getElementById('ddlQuarter').value;
+                if(hasDropdownVal) toggleInputs('dropdown');
+            }
+        }
+
+        function onDropdownChange() {
+            document.getElementById('txtFrom').value = "";
+            document.getElementById('txtTo').value = "";
+            toggleInputs('dropdown');
+        }
+
+        function onQuarterChange() {
+            if(document.getElementById('ddlQuarter').value !== "") {
+                document.getElementById('ddlMonth').value = "";
+            }
+            onDropdownChange();
+        }
+
+        function onMonthChange() {
+             if(document.getElementById('ddlMonth').value !== "") {
+                document.getElementById('ddlQuarter').value = "";
+            }
+            onDropdownChange();
+        }
+
+        function onDateChange() {
+            document.getElementById('ddlQuarter').value = "";
+            document.getElementById('ddlMonth').value = "";
+            toggleInputs('date');
+        }
+
+        function resetForm() {
+            window.location.href = "@Url.Action("Stats", "StaffManager")";
+        }
+
+        function toggleInputs(mode) {
+            var dropIds = ['ddlYear', 'ddlQuarter', 'ddlMonth'];
+            var dateIds = ['txtFrom', 'txtTo'];
+            var groupDrop = document.getElementById('groupDropdown');
+            var groupDate = document.getElementById('groupDate');
+
+            if (mode === 'dropdown') {
+                dropIds.forEach(id => document.getElementById(id).disabled = false);
+                dateIds.forEach(id => document.getElementById(id).disabled = true);
+
+                groupDrop.classList.add('bg-white'); groupDrop.classList.remove('bg-light', 'text-muted');
+                groupDate.classList.add('bg-light', 'text-muted'); groupDate.classList.remove('bg-white');
+            } else {
+                dropIds.forEach(id => document.getElementById(id).disabled = true);
+                dateIds.forEach(id => document.getElementById(id).disabled = false);
+
+                groupDate.classList.add('bg-white'); groupDate.classList.remove('bg-light', 'text-muted');
+                groupDrop.classList.add('bg-light', 'text-muted'); groupDrop.classList.remove('bg-white');
+            }
+        }
+    </script>
+}

@@ -169,26 +169,37 @@ namespace QL_ThuVIenHUIT_13.Controllers
         [HttpPost]
         public ActionResult XoaSach(string maSach)
         {
+            if (Session["User_info"] == null || (Session["Role"].ToString() != "1" && Session["Role"].ToString() != "2"))
+            {
+                return Content("<script>alert('Bạn không có quyền thực hiện chức năng này!'); window.location.href='/Home/Index';</script>");
+            }
+
             try
             {
                 var sach = db.QLSACHes.Find(maSach);
                 if (sach == null) return HttpNotFound();
-                bool dangMuon = db.CHITIETPMs.Any(ct => ct.MASACH == maSach && ct.PHIEUMUON.NgayDenHan == null);
+                bool dangMuon = db.CHITIETPMs.Any(ct => ct.MASACH == maSach && ct.TINHTRANG == 0);
                 if (dangMuon)
                 {
-                    return Content("<script>alert('Sách đang được mượn, không thể xóa!'); window.location.href='/Sach/QuanLySach';</script>");
+                    return Content("<script>alert('Sách này đang có độc giả mượn (Chưa trả), không thể xóa!'); window.location.href='/Sach/QuanLySach';</script>");
                 }
-
                 var bia = db.BIASACHes.FirstOrDefault(b => b.MASACH == maSach);
-                if (bia != null) db.BIASACHes.Remove(bia);
+                if (bia != null)
+                {
+                     string fullPath = Request.MapPath("~/Images/" + bia.URL_ANH);
+                    if (System.IO.File.Exists(fullPath)) System.IO.File.Delete(fullPath);
 
+                    db.BIASACHes.Remove(bia);
+                }
                 db.QLSACHes.Remove(sach);
                 db.SaveChanges();
+                TempData["Success"] = "Đã xóa sách thành công!";
                 return RedirectToAction("QuanLySach");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return Content("<script>alert('Lỗi rằng buộc dữ liệu (FK)!'); window.location.href='/Sach/QuanLySach';</script>");
+                ViewBag.Error = "Lỗi xóa sách: " + ex.Message;
+                return Content("<script>alert('Không thể xóa sách này do dữ liệu ràng buộc (đã từng có lịch sử mượn trả)!'); window.location.href='/Sach/QuanLySach';</script>");
             }
         }
     }
