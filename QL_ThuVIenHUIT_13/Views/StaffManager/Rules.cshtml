@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "Cấu hình Quy định";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-primary">
+                <div class="card-header bg-primary text-white fw-bold">
+                    <i class="fa fa-cogs me-2"></i> THIẾT LẬP QUY ĐỊNH THƯ VIỆN
+                </div>
+                <div class="card-body p-4">
+
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success"><i class="fa fa-check-circle me-1"></i> @TempData["Success"]</div>
+                    }
+
+                    <form action="@Url.Action("UpdateRules", "StaffManager")" method="post">
+
+                        <div class="mb-4 pb-3 border-bottom">
+                            <label class="form-label fw-bold text-dark h6">1. Số sách tối đa được mượn cùng lúc</label>
+                            <p class="text-muted small mb-2">Quy định số lượng sách tối đa mà một độc giả có thể giữ (bao gồm cả sách đang chờ duyệt).</p>
+                            <div class="input-group" style="max-width: 200px;">
+                                <input type="number" name="SoSachToiDa" class="form-control fw-bold text-center text-primary"
+                                       value="@ViewBag.SoSachToiDa" min="1" max="20" required>
+                                <span class="input-group-text">Cuốn</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4 pb-3 border-bottom">
+                            <label class="form-label fw-bold text-dark h6">2. Thời hạn mượn sách tối đa</label>
+                            <p class="text-muted small mb-2">Số ngày độc giả được phép giữ sách trước khi bị tính là quá hạn.</p>
+                            <div class="input-group" style="max-width: 200px;">
+                                <input type="number" name="SoNgayMuon" class="form-control fw-bold text-center text-primary"
+                                       value="@ViewBag.SoNgayMuon" min="1" max="30" required>
+                                <span class="input-group-text">Ngày</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-dark h6">3. Mức phạt quá hạn (mỗi ngày)</label>
+                            <p class="text-muted small mb-2">Số tiền phạt tính trên mỗi cuốn sách cho mỗi ngày trễ hạn.</p>
+                            <div class="input-group" style="max-width: 300px;">
+                                <input type="number" name="TienPhat" class="form-control fw-bold text-center text-danger"
+                                       value="@ViewBag.TienPhat" min="0" step="1000" required>
+                                <span class="input-group-text">VNĐ / Ngày / Cuốn</span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end bg-light p-3 rounded">
+                            <a href="@Url.Action("Index", "Home")" class="btn btn-secondary me-2">Hủy bỏ</a>
+                            <button type="submit" class="btn btn-primary px-4 fw-bold">
+                                <i class="fa fa-save me-2"></i> Lưu thay đổi
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

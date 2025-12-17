@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = "Đăng ký thành công";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background-image: url('/images/login1.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .card {
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .success-icon {
+            font-size: 60px;
+            color: #28a745;
+        }
+
+        .ma-the-box {
+            background-color: #f8f9fa;
+            border: 2px dashed #0e56a0;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #0e56a0;
+        }
+
+        .btn-login {
+            background-color: #0e56a0;
+            color: white;
+            border-radius: 30px;
+            padding: 10px 30px;
+            text-decoration: none;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+            .btn-login:hover {
+                background-color: #0b4580;
+                color: white;
+                transform: scale(1.05);
+            }
+    </style>
+</head>
+<body>
+
+    <div class="card p-5">
+        <div class="mb-3">
+            <span class="success-icon">&#10004;</span>
+        </div>
+
+        <h2 class="fw-bold mb-3" style="color: #28a745;">Đăng ký thành công!</h2>
+        <p class="text-muted">Chúc mừng bạn đã trở thành thành viên của thư viện.</p>
+
+        <p>Mã thẻ thư viện của bạn là:</p>
+
+        <div class="ma-the-box">
+            @ViewBag.Mathe
+        </div>
+
+        <p class="small text-danger fst-italic">
+            * Vui lòng ghi nhớ mã thẻ này để đăng nhập hệ thống.
+        </p>
+
+        <div class="mt-4">
+            <a href="@Url.Action("SignIn", "User")" class="btn-login">
+                Quay lại đăng nhập
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,127 @@
+﻿@model QL_ThuVIenHUIT_13.Models.PHIEUMUON
+@{
+    ViewBag.Title = "Chi tiết Phiếu Mượn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int stt = 1;
+}
+
+<style>
+    body { background: #eef1f5; font-family: 'Segoe UI', sans-serif; }
+
+    .invoice-box {
+        background: #fff;
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        border-top: 5px solid #1cc88a;
+    }
+
+    .invoice-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+    .invoice-title { font-size: 24px; font-weight: 800; color: #333; text-transform: uppercase; }
+    .invoice-status {
+        background: #e8fdf5; color: #1cc88a; padding: 5px 15px;
+        border-radius: 20px; font-weight: bold; border: 1px solid #1cc88a;
+    }
+
+    .info-group label { color: #888; font-size: 12px; display: block; margin-bottom: 2px; text-transform: uppercase; }
+    .info-group div { font-weight: 600; color: #333; font-size: 15px; }
+
+    .table-bill th { background-color: #f8f9fc; color: #5a5c69; font-weight: bold; border-top: none; }
+    .total-section { border-top: 2px solid #e3e6f0; padding-top: 15px; margin-top: 15px; text-align: right; }
+    @@media print {
+        .no-print { display: none; }
+        .invoice-box { box-shadow: none; border: 1px solid #ddd; margin: 0; max-width: 100%; }
+    }
+</style>
+
+<div class="container">
+
+    <div class="alert alert-success text-center no-print" style="max-width: 800px; margin: 20px auto 0;">
+        <i class="fas fa-check-circle"></i> <strong>THÀNH CÔNG!</strong> Phiếu mượn đã được tạo trên hệ thống.
+    </div>
+
+    <div class="invoice-box" id="printArea">
+        <div class="invoice-header">
+            <div>
+                <div class="invoice-title">PHIẾU MƯỢN SÁCH</div>
+                <div class="text-muted small">Mã phiếu: <strong>#@Model.MAPM</strong></div>
+            </div>
+            <div class="invoice-status">
+                ĐÃ HOÀN TẤT
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row mb-4">
+            <div class="col-xs-6">
+                <h5 class="text-primary font-weight-bold"><i class="fas fa-user"></i> ĐỘC GIẢ</h5>
+                <div class="info-group">
+                    <label>Họ và tên:</label>
+                    <div>@Model.THETHUVIEN.DOCGIA.TENDG</div>
+                </div>
+                <div class="info-group mt-2">
+                    <label>Mã thẻ:</label>
+                    <div>@Model.MATHE</div>
+                </div>
+            </div>
+            <div class="col-xs-6 text-right">
+                <h5 class="text-primary font-weight-bold"><i class="fas fa-calendar-alt"></i> THỜI GIAN</h5>
+                <div class="info-group">
+                    <label>Ngày mượn:</label>
+                    <div>@string.Format("{0:dd/MM/yyyy HH:mm}", Model.NgayMuon)</div>
+                </div>
+                <div class="info-group mt-2">
+                    <label>Hạn trả:</label>
+                    <div class="text-danger">@string.Format("{0:dd/MM/yyyy}", Model.NgayDenHan)</div>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="font-weight-bold mt-4"><i class="fas fa-book"></i> DANH SÁCH SÁCH MƯỢN</h5>
+        <table class="table table-bill mt-2">
+            <thead>
+                <tr>
+                    <th style="width: 50px;">STT</th>
+                    <th>Tên Sách</th>
+                    <th class="text-center">Mã Sách</th>
+                    <th class="text-center">Số lượng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CHITIETPMs)
+                {
+                    <tr>
+                        <td>@(stt++)</td>
+                        <td>
+                            <strong>@item.QLSACH.TENSACH</strong><br />
+                            <small class="text-muted">TG: @item.QLSACH.TACGIA.TENTG</small>
+                        </td>
+                        <td class="text-center">@item.MASACH</td>
+                        <td class="text-center">@item.SLMUON</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="total-section">
+            <div style="font-size: 16px;">
+                Tổng số sách: <strong>@Model.CHITIETPMs.Sum(x => x.SLMUON)</strong> cuốn
+            </div>
+            <div class="mt-2 small text-muted">
+                Người lập phiếu: @(Model.QLNHANVIEN != null ? Model.QLNHANVIEN.TENNV : Model.MANV)
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mb-5 no-print">
+        <a href="@Url.Action("Index", "MuonSach")" class="btn btn-default btn-lg" style="border-radius: 25px; margin-right: 10px;">
+            <i class="fas fa-arrow-left"></i> Quay lại lập phiếu mới
+        </a>
+        <button onclick="window.print()" class="btn btn-primary btn-lg shadow" style="border-radius: 25px; background: #4e73df;">
+            <i class="fas fa-print"></i> In Phiếu Mượn
+        </button>
+    </div>
+</div>

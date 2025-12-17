@@ -1,0 +1,148 @@
+﻿@using QL_ThuVIenHUIT_13.Models
+
+@{
+    ViewBag.Title = "Quản lý phòng họp";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var dsPhong = ViewBag.DsPhong as List<string> ?? new List<string>();
+    var phongInfo = ViewBag.Phong as PHONGHOP;
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    .container {
+        width: 900px;
+        margin: 20px auto;
+    }
+
+    .search-box {
+        border: 1px solid #000;
+        padding: 10px;
+        width: 350px;
+    }
+
+        .search-box label {
+            display: block;
+            margin-top: 8px;
+            font-weight: bold;
+        }
+
+        .search-box select {
+            width: 100%;
+            padding: 5px;
+            margin-top: 4px;
+        }
+
+    .room {
+        border: 1px solid #000;
+        width: 350px;
+        margin-top: 20px;
+    }
+
+        .room h3 {
+            background: #dff1ff;
+            margin: 0;
+            padding: 6px;
+            text-align: center;
+            color: #0066cc;
+        }
+
+        .room table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .room td {
+            border-top: 1px solid #000;
+            padding: 6px;
+        }
+
+            .room td:first-child {
+                width: 45%;
+                font-weight: bold;
+            }
+
+    .btn-area {
+        margin-top: 15px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .btn-custom {
+        padding: 8px 18px;
+        border-radius: 5px;
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .btn-datphong {
+        background: #0d6efd;
+    }
+
+    .btn-lichsu {
+        background: #198754;
+    }
+</style>
+
+<div class="container">
+    <h2>Quản lý phòng họp - HUIT</h2>
+
+    <form method="get" action="@Url.Action("Index", "Phong")" class="search-box">
+        <label>Chọn phòng cần tra cứu:</label>
+        <select name="maPhong" onchange="this.form.submit()">
+            <option value="">-- Chọn phòng --</option>
+            @foreach (var p in dsPhong)
+            {
+                <option value="@p" @(Request["maPhong"] == p ? "selected" : "")>@p</option>
+            }
+        </select>
+        <noscript><button type="submit">Tìm kiếm</button></noscript>
+    </form>
+
+    @if (phongInfo != null)
+    {
+        <div class="room">
+            <h3>THÔNG TIN PHÒNG</h3>
+
+            <table>
+                <tr>
+                    <td>Mã phòng</td>
+                    <td>@phongInfo.MAPHONG</td>
+                </tr>
+                <tr>
+                    <td>Vị trí</td>
+                    <td>@phongInfo.VITRI</td>
+                </tr>
+                <tr>
+                    <td>Sức chứa tối đa</td>
+                    <td>@phongInfo.SL_NGUOITOIDA người</td>
+                </tr>
+                <tr>
+                    <td>Trạng thái</td>
+                    <td style="font-weight:bold; color:@(phongInfo.TINHTRANG == 1 ? "green" : "red")">
+                        @(phongInfo.TINHTRANG == 1 ? "Sẵn sàng" : "Đang bảo trì")
+                    </td>
+                </tr>
+            </table>
+
+            <div class="btn-area">
+                @if (phongInfo.TINHTRANG == 1)
+                {
+                    <a href="@Url.Action("DatPhong", "Phong")" class="btn-custom btn-datphong">
+                        Đặt phòng
+                    </a>
+                }
+
+                <a href="@Url.Action("LichSuDatPhong", "Phong")" class="btn-custom btn-lichsu">
+                    Quản lý phòng họp
+                </a>
+            </div>
+        </div>
+    }
+</div>

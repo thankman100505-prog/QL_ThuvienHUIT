@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewBag.Title = "Quản lý độc giả";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using QL_ThuVIenHUIT_13.Models
+@model List<DOCGIA>
+
+<h2 class="mb-3"> QUẢN LÝ ĐỘC GIẢ</h2>
+
+<p>
+    @Html.ActionLink("➕ Thêm độc giả", "ThemDocGia","StaffManager", null, new { @class = "btn btn-success mb-2" })
+</p>
+
+<table class="table table-bordered table-hover text-center align-middle">
+    <thead class="table-dark">
+        <tr>
+            <th>Mã ĐG</th>
+            <th>Tên độc giả</th>
+            <th>Khoa</th>
+            <th>Lớp</th>
+            <th>Địa chỉ</th>
+            <th>SĐT</th>
+            <th>Email</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.MADG</td>
+                <td>@item.TENDG</td>
+                <td>@item.KHOA</td>
+                <td>@item.LOP</td>
+                <td>@item.DIACHI</td>
+                <td>@item.SODT</td>
+                <td>@item.MAIL</td>
+                <td class="text-center">
+                    <div class="d-flex justify-content-center gap-2">
+                        <a href="@Url.Action("Sua_InformDG", "StaffManager", new { id = item.MADG })"
+                           class="btn btn-warning btn-sm" title="Sửa">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+
+                        <a href="@Url.Action("Xoa_DG", "StaffManager", new { id = item.MADG })"
+                           class="btn btn-danger btn-sm"
+                           title="Xóa">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

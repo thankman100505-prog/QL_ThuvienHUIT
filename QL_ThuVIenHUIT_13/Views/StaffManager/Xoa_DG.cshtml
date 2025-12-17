@@ -1,0 +1,21 @@
+﻿
+@model QL_ThuVIenHUIT_13.Models.DOCGIA
+
+<h3 class="text-danger">⚠️ XÁC NHẬN XÓA ĐỘC GIẢ</h3>
+
+<div class="card">
+    <div class="card-body">
+        <p><b>Mã ĐG:</b> @Model.MADG</p>
+        <p><b>Tên:</b> @Model.TENDG</p>
+        <p><b>Khoa:</b> @Model.KHOA</p>
+
+        @using (Html.BeginForm("Xoa_DG_Confi", "StaffManager", FormMethod.Post))
+        {
+            @Html.Hidden("id", Model.MADG)
+
+            <button type="submit" class="btn btn-danger">Xóa</button>
+            @Html.ActionLink("Hủy", "QLDocGia", null, new { @class = "btn btn-secondary ms-2" })
+        }
+    </div>
+</div>
+

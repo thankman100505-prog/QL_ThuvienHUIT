@@ -1,0 +1,81 @@
+﻿@using QL_ThuVIenHUIT_13.Models
+@model IEnumerable<PHIEU_MUONPHONG>
+
+@{
+    ViewBag.Title = "Lịch sử đặt phòng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int stt = 1;
+    DateTime now = DateTime.Now;
+}
+
+<h2 class="mb-3 text-center">LỊCH SỬ ĐẶT PHÒNG</h2>
+<div class="d-flex justify-content-between mb-3">
+    <a href="@Url.Action("DatPhong", "Phong")" class="btn btn-success">
+        ➕ Thêm phiếu mượn phòng
+    </a>
+
+    <a href="@Url.Action("Index", "Phong")" class="btn btn-primary">
+        🔍 Tra cứu phòng
+    </a>
+</div>
+<table class="table table-bordered table-hover align-middle text-center">
+    <thead class="table-dark">
+        <tr>
+            <th>STT</th>
+            <th>Mã phiếu</th>
+            <th>Phòng</th>
+            <th>Giờ mượn</th>
+            <th>Giờ trả</th>
+            <th>Ngày mượn</th>
+            <th>Hoàn tất</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            DateTime? ngay = item.NGAYMUON;
+            TimeSpan? gioTra = item.GIOTRA;
+
+            bool hoanTat = ngay.HasValue && gioTra.HasValue &&
+                           (ngay.Value.Date + gioTra.Value) <= now;
+
+            <tr>
+                <td>@stt</td>
+                <td>@item.MAPHIEU</td>
+                <td>@item.MAPH</td>
+                <td>@(item.GIOMUON.HasValue ? item.GIOMUON.Value.ToString(@"hh\:mm") : "--")</td>
+                <td>@(item.GIOTRA.HasValue ? item.GIOTRA.Value.ToString(@"hh\:mm") : "--")</td>
+                <td>@(ngay.HasValue ? ngay.Value.ToString("dd/MM/yyyy") : "")</td>
+                <td>
+                    @if (hoanTat)
+                    {
+                        <span class="text-success fw-bold fs-5">✓</span>
+                    }
+                    else
+                    {
+                        <span class="text-danger fw-bold fs-5">✗</span>
+                    }
+                </td>
+                <td>
+                    <div class="d-flex justify-content-center gap-2">
+                        <a href="@Url.Action("SuaDatPhong", "Phong", new { id = item.MAPHIEU })"
+                           class="btn btn-warning btn-sm"
+                           title="Sửa">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+
+                        <a href="@Url.Action("XoaDatPhong", "Phong", new { id = item.MAPHIEU })"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Bạn có chắc chắn muốn xóa phiếu này?');"
+                           title="Xóa">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+
+            stt++;
+        }
+    </tbody>
+</table>

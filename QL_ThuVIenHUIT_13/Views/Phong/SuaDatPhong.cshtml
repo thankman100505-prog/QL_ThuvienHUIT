@@ -1,0 +1,127 @@
+﻿@model QL_ThuVIenHUIT_13.Models.PHIEU_MUONPHONG
+@{
+    ViewBag.Title = "Sửa đặt phòng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    body {
+        background: #f2f2f2;
+        font-family: Arial, sans-serif;
+    }
+
+    .paper {
+        width: 700px;
+        margin: 30px auto;
+        background: #fff;
+        border: 2px solid #000;
+        padding: 30px 40px;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+        .paper h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            color: #2c3e50;
+        }
+
+    .form-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .form-table td {
+            padding: 8px 5px;
+            vertical-align: middle;
+        }
+
+            .form-table td:first-child {
+                width: 35%;
+                font-weight: bold;
+            }
+
+    input, textarea {
+        width: 95%;
+        padding: 6px 8px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+    }
+
+    .submit-btn {
+        text-align: center;
+        margin-top: 25px;
+    }
+
+        .submit-btn button {
+            padding: 10px 30px;
+            font-size: 16px;
+            border-radius: 6px;
+            border: none;
+            background: #ddd;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+            .submit-btn button:hover {
+                background: #ccc;
+            }
+
+    .cancel-link {
+        margin-left: 15px;
+        color: #3498db;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .message {
+        text-align: center;
+        color: red;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+</style>
+
+<div class="paper">
+    <h2>Sửa phiếu đặt phòng</h2>
+
+    @if (ViewBag.Loi != null)
+    {
+        <p class="message">@ViewBag.Loi</p>
+    }
+
+    <form method="post" action="/Phong/SuaDatPhong">
+        @Html.HiddenFor(m => m.MAPHIEU)
+        @Html.HiddenFor(m => m.MAPH)
+
+        <table class="form-table">
+            <tr>
+                <td>Ngày mượn</td>
+                <td>@Html.TextBoxFor(m => m.NGAYMUON, "{0:yyyy-MM-dd}", new { type = "date", required = "required" })</td>
+            </tr>
+            <tr>
+                <td>Giờ mượn</td>
+                <td>@Html.TextBoxFor(m => m.GIOMUON, new { type = "time", required = "required" })</td>
+            </tr>
+            <tr>
+                <td>Giờ trả</td>
+                <td>@Html.TextBoxFor(m => m.GIOTRA, new { type = "time", required = "required" })</td>
+            </tr>
+            <tr>
+                <td>Số người tham gia</td>
+                <td>@Html.TextBoxFor(m => m.SL_NGUOITHAMGIA, new { type = "number", min = "1", required = "required" })</td>
+            </tr>
+            <tr>
+                <td>Mục đích</td>
+                <td>@Html.TextAreaFor(m => m.MUCDICH, new { rows = 3 })</td>
+            </tr>
+        </table>
+
+        <div class="submit-btn">
+            <button type="submit">Lưu thay đổi</button>
+            <a href="@Url.Action("LichSuDatPhong", "Phong")" class="cancel-link">Hủy</a>
+        </div>
+    </form>
+</div>

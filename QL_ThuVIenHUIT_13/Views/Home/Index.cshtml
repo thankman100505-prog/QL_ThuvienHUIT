@@ -1,0 +1,438 @@
+﻿@using QL_ThuVIenHUIT_13.Models
+@model HomeViewModel
+
+@{
+    ViewBag.Title = "Trang chủ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int pageSize = 2;
+
+    // 1. Xử lý TIN TỨC
+    var listTin = Model.TinTucSuKien ?? new List<TINTUC1>();
+    int totalPages = (int)Math.Ceiling((double)listTin.Count / pageSize);
+    if (totalPages == 0) { totalPages = 1; }
+
+    // 2. Xử lý THÔNG BÁO
+    var listThongBao = Model.ThongBao ?? new List<TINTUC1>();
+    int totalNoticePages = (int)Math.Ceiling((double)listThongBao.Count / pageSize);
+    if (totalNoticePages == 0) { totalNoticePages = 1; }
+}
+
+<div class="container main-banner-container">
+    <div class="banner-wrapper">
+        <img src="@Url.Content("~/Images/banner.jpg")" class="banner-slide active" alt="Banner 1">
+        <img src="@Url.Content("~/Images/banner2.jpg")" class="banner-slide" alt="Banner 2">
+        <img src="@Url.Content("~/Images/banner3.jpg")" class="banner-slide" alt="Banner 3">
+
+        <div class="banner-nav prev" onclick="changeSlide(-1)"><i class="fas fa-chevron-left"></i></div>
+        <div class="banner-nav next" onclick="changeSlide(1)"><i class="fas fa-chevron-right"></i></div>
+    </div>
+</div>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.banner-slide');
+
+    function showSlide(index) {
+        if (index >= slides.length) currentSlide = 0;
+        else if (index < 0) currentSlide = slides.length - 1;
+        else currentSlide = index;
+
+        slides.forEach(slide => slide.classList.remove('active'));
+        slides[currentSlide].classList.add('active');
+    }
+
+    function changeSlide(direction) {
+        showSlide(currentSlide + direction);
+    }
+
+    setInterval(() => {
+        changeSlide(1);
+    }, 5000);
+</script>
+
+<div class="container mt-30">
+    <div class="highlight-row">
+        <img src="@Url.Content("~/Images/pic1.jpg")" alt="Pic 1">
+        <img src="@Url.Content("~/Images/pic2.jpg")" alt="Pic 2">
+        <img src="@Url.Content("~/Images/pic3.png")" alt="Pic 3">
+    </div>
+</div>
+
+<div class="container mt-40">
+    <div class="section-title">
+        <h3>TIN TỨC SỰ KIỆN</h3>
+    </div>
+
+    <div class="news-container">
+        @if (listTin.Count > 0)
+        {
+            for (int i = 0; i < totalPages; i++)
+            {
+                string displayStyle = (i == 0) ? "display: block;" : "display: none;";
+                int pageNumber = i + 1;
+
+                <div id="news-page-@pageNumber" class="news-page" style="@displayStyle">
+                    <div class="content-grid-2">
+                        @foreach (var item in listTin.Skip(i * pageSize).Take(pageSize))
+                        {
+                            <div class="news-card">
+                                <a href="@item.Link" target="_blank" style="text-decoration: none; color: inherit;">
+                                    <div style="height: 200px; overflow: hidden; border-radius: 5px;">
+                                        <img src="~/Images/@item.HinhAnh"
+                                             alt="@item.TieuDe"
+                                             style="width: 100%; height: 100%; object-fit: cover;"
+                                             onerror="this.src='https://via.placeholder.com/300x200?text=News'">
+                                    </div>
+
+                                    <h4 style="margin-top: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 50px;">
+                                        @item.TieuDe
+                                    </h4>
+                                </a>
+
+                                <ul class="meta-list">
+                                    <li>
+                                        <i class="fas fa-clock"></i>
+                                        @(item.NgayDang.HasValue ? item.NgayDang.Value.ToString("dd/MM/yyyy") : "")
+                                    </li>
+                                </ul>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="text-center">Đang cập nhật tin tức...</div>
+        }
+    </div>
+
+    <div class="pagination-controls">
+        <span class="page-btn prev" onclick="prevPage()"><i class="fas fa-chevron-left"></i></span>
+        @for (int i = 1; i <= totalPages; i++)
+        {
+            string activeClass = (i == 1) ? "active" : "";
+            <span class="page-btn @activeClass" onclick="switchPage(@i)" id="btn-@i">@i</span>
+        }
+        <span class="page-btn next" onclick="nextPage()"><i class="fas fa-chevron-right"></i></span>
+    </div>
+</div>
+
+<script>
+    const totalPages = @totalPages;
+    let currentPage = 1;
+
+    function switchPage(pageNum) {
+        currentPage = pageNum;
+        for (let i = 1; i <= totalPages; i++) {
+            let page = document.getElementById('news-page-' + i);
+            let btn = document.getElementById('btn-' + i);
+            if (page) page.style.display = 'none';
+            if (btn) btn.classList.remove('active');
+        }
+        let selectedPage = document.getElementById('news-page-' + pageNum);
+        let selectedBtn = document.getElementById('btn-' + pageNum);
+        if (selectedPage) selectedPage.style.display = 'block';
+        if (selectedBtn) selectedBtn.classList.add('active');
+    }
+
+    function nextPage() {
+        if (currentPage < totalPages) switchPage(currentPage + 1);
+    }
+
+    function prevPage() {
+        if (currentPage > 1) switchPage(currentPage - 1);
+    }
+</script>
+
+<div class="container mt-40">
+    <div class="section-title">
+        <h3>THÔNG BÁO</h3>
+    </div>
+
+    <div class="notice-container">
+        @if (listThongBao.Count > 0)
+        {
+            for (int i = 0; i < totalNoticePages; i++)
+            {
+                string displayStyle = (i == 0) ? "display: block;" : "display: none;";
+                int pageNumber = i + 1;
+
+                <div id="notice-page-@pageNumber" class="notice-page" style="@displayStyle">
+                    <div class="content-grid-2">
+                        @foreach (var item in listThongBao.Skip(i * pageSize).Take(pageSize))
+                        {
+                            <div class="news-card">
+                                <a href="@item.Link" target="_blank" style="text-decoration: none; color: inherit;">
+                                    <div style="height: 200px; overflow: hidden; border-radius: 5px;">
+                                        <img src="~/Images/@item.HinhAnh"
+                                             class="bordered-img"
+                                             alt="@item.TieuDe"
+                                             style="width: 100%; height: 100%; object-fit: cover;"
+                                             onerror="this.src='https://via.placeholder.com/300x200?text=Notice'">
+                                    </div>
+                                    <h4 style="margin-top: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 50px;">
+                                        @item.TieuDe
+                                    </h4>
+                                </a>
+                                <ul class="meta-list">
+                                    <li>
+                                        <i class="fas fa-clock"></i>
+                                        @item.MoTaNgan
+                                    </li>
+                                </ul>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="text-center">Chưa có thông báo nào.</div>
+        }
+    </div>
+
+    <div class="pagination-controls">
+        <span class="page-btn prev" onclick="prevNoticePage()"><i class="fas fa-chevron-left"></i></span>
+        @for (int i = 1; i <= totalNoticePages; i++)
+        {
+            string activeClass = (i == 1) ? "active" : "";
+            <span class="page-btn @activeClass" onclick="switchNoticePage(@i)" id="n-btn-@i">@i</span>
+        }
+        <span class="page-btn next" onclick="nextNoticePage()"><i class="fas fa-chevron-right"></i></span>
+    </div>
+</div>
+
+<script>
+    const totalNoticePages = @totalNoticePages;
+    let currentNoticePage = 1;
+
+    function switchNoticePage(pageNum) {
+        currentNoticePage = pageNum;
+        for (let i = 1; i <= totalNoticePages; i++) {
+            let page = document.getElementById('notice-page-' + i);
+            let btn = document.getElementById('n-btn-' + i);
+            if (page) page.style.display = 'none';
+            if (btn) btn.classList.remove('active');
+        }
+        let selectedPage = document.getElementById('notice-page-' + pageNum);
+        let selectedBtn = document.getElementById('n-btn-' + pageNum);
+        if (selectedPage) selectedPage.style.display = 'block';
+        if (selectedBtn) selectedBtn.classList.add('active');
+    }
+
+    function nextNoticePage() {
+        if (currentNoticePage < totalNoticePages) switchNoticePage(currentNoticePage + 1);
+    }
+
+    function prevNoticePage() {
+        if (currentNoticePage > 1) switchNoticePage(currentNoticePage - 1);
+    }
+</script>
+
+<div class="container mt-40">
+    <div class="section-title">
+        <h3>SÁCH MỚI</h3>
+    </div>
+
+    <div class="books-container">
+        <div id="book-page-1" class="book-page" style="display: block;">
+            <div class="content-grid-2">
+                <div class="news-card">
+                    <img src="@Url.Content("~/Images/sach_danhmuc2025.jpg")" class="bordered-img" alt="Sách mới 2025">
+                    <h4>Danh mục sách mới năm 2025</h4>
+                    <ul class="meta-list">
+                        <li><i class="fas fa-caret-right"></i> Hành trang vào đời</li>
+                        <li><i class="fas fa-caret-right"></i> Đánh thức con người phi thường trong bạn</li>
+                    </ul>
+                </div>
+                <div class="news-card">
+                    <img src="@Url.Content("~/Images/sach_doingan.jpg")" alt="Đời ngắn đừng ngủ dài">
+                    <h4>Đời Ngắn Đừng Ngủ Dài - Robin Sharma</h4>
+                    <ul class="meta-list">
+                        <li><i class="fas fa-caret-right"></i> Tôi Tự Học - Thu Giang</li>
+                        <li><i class="fas fa-caret-right"></i> Sống Thực Tế Giữa Đời Thực Dụng</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="book-page-2" class="book-page" style="display: none;">
+            <div class="content-grid-2">
+                <div class="news-card">
+                    <img src="@Url.Content("~/Images/sach_marketing.jpg")" alt="Marketing căn bản">
+                    <h4>Giáo trình Marketing Căn Bản - Philip Kotler</h4>
+                    <ul class="meta-list">
+                        <li><i class="fas fa-caret-right"></i> Nguyên lý tiếp thị hiện đại</li>
+                    </ul>
+                </div>
+                <div class="news-card">
+                    <img src="@Url.Content("~/Images/sach_kinhte.jpg")" class="bordered-img" alt="Kinh tế học">
+                    <h4>Kinh tế học vĩ mô - Lý thuyết và Ứng dụng</h4>
+                    <ul class="meta-list">
+                        <li><i class="fas fa-caret-right"></i> Sách tham khảo chuyên ngành</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pagination-controls">
+        <span class="page-btn prev" onclick="prevBookPage()"><i class="fas fa-chevron-left"></i></span>
+        <span class="page-btn active" onclick="switchBookPage(1)" id="b-btn-1">1</span>
+        <span class="page-btn" onclick="switchBookPage(2)" id="b-btn-2">2</span>
+        <span class="page-btn next" onclick="nextBookPage()"><i class="fas fa-chevron-right"></i></span>
+    </div>
+</div>
+<script>
+    let currentBookPage = 1;
+    const totalBookPages = 2;
+
+    function switchBookPage(pageNum) {
+        currentBookPage = pageNum;
+        for (let i = 1; i <= totalBookPages; i++) {
+            let page = document.getElementById('book-page-' + i);
+            if (page) { page.style.display = 'none'; }
+            let btn = document.getElementById('b-btn-' + i);
+            if (btn) { btn.classList.remove('active'); }
+        }
+        let selectedPage = document.getElementById('book-page-' + pageNum);
+        if (selectedPage) { selectedPage.style.display = 'block'; }
+        let selectedBtn = document.getElementById('b-btn-' + pageNum);
+        if (selectedBtn) { selectedBtn.classList.add('active'); }
+    }
+
+    function nextBookPage() {
+        if (currentBookPage < totalBookPages) { switchBookPage(currentBookPage + 1); }
+    }
+
+    function prevBookPage() {
+        if (currentBookPage > 1) { switchBookPage(currentBookPage - 1); }
+    }
+</script>
+
+<div class="container mt-40">
+    <div class="section-title">
+        <h3>TẠP CHÍ MỚI</h3>
+    </div>
+
+    <div class="journal-container">
+        <div id="journal-page-1" class="journal-page" style="display: block;">
+            <div class="content-grid-2">
+                <div class="news-card">
+                    <img src="@Url.Content("~/Images/tapchi.jpg")" class="bordered-img" alt="Tạp chí KHCN">
+                    <h4>Tạp chí Khoa học Công nghệ Việt Nam</h4>
+                    <ul class="meta-list">
+                        <li><i class="fas fa-caret-right"></i> Tạp chí Du lịch - Ẩm thực - Thủy sản</li>
+                        <li><i class="fas fa-caret-right"></i> Tạp chí Kinh tế - Tài chính - Ngân hàng</li>
+                    </ul>
+                </div>
+                <div class="news-card">
+                    <img src="@Url.Content("~/Images/tapchi_sangche.jpg")" alt="Robot nông nghiệp">
+                    <h4>Sáng chế ra "Robot đa năng phục vụ nông nghiệp"</h4>
+                    <ul class="meta-list">
+                        <li><i class="fas fa-caret-right"></i> Nga chi gần 3 tỷ USD đưa người lên Mặt Trăng</li>
+                        <li><i class="fas fa-caret-right"></i> Người phụ nữ gốc Việt đoạt giải Nobel</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="journal-page-2" class="journal-page" style="display: none;">
+            <div class="content-grid-2">
+                <div class="news-card">
+                    <img src="@Url.Content("~/Images/tapchi_congthuong.jpg")" class="bordered-img" alt="Tạp chí Công Thương">
+                    <h4>Tạp chí Công Thương - Số tháng 12/2024</h4>
+                    <ul class="meta-list">
+                        <li><i class="fas fa-caret-right"></i> Xu hướng chuyển đổi số</li>
+                    </ul>
+                </div>
+                <div class="news-card">
+                    <img src="@Url.Content("~/Images/tapchi_giaoduc.jpg")" alt="Giáo dục">
+                    <h4>Tạp chí Giáo dục và Xã hội</h4>
+                    <ul class="meta-list">
+                        <li><i class="fas fa-caret-right"></i> Đổi mới phương pháp giảng dạy đại học</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pagination-controls">
+        <span class="page-btn prev" onclick="prevJournalPage()"><i class="fas fa-chevron-left"></i></span>
+        <span class="page-btn active" onclick="switchJournalPage(1)" id="j-btn-1">1</span>
+        <span class="page-btn" onclick="switchJournalPage(2)" id="j-btn-2">2</span>
+        <span class="page-btn next" onclick="nextJournalPage()"><i class="fas fa-chevron-right"></i></span>
+    </div>
+</div>
+<script>
+    let currentJournalPage = 1;
+    const totalJournalPages = 2;
+
+    function switchJournalPage(pageNum) {
+        currentJournalPage = pageNum;
+        for (let i = 1; i <= totalJournalPages; i++) {
+            let page = document.getElementById('journal-page-' + i);
+            if (page) page.style.display = 'none';
+            let btn = document.getElementById('j-btn-' + i);
+            if (btn) btn.classList.remove('active');
+        }
+        let selectedPage = document.getElementById('journal-page-' + pageNum);
+        if (selectedPage) selectedPage.style.display = 'block';
+        let selectedBtn = document.getElementById('j-btn-' + pageNum);
+        if (selectedBtn) selectedBtn.classList.add('active');
+    }
+
+    function nextJournalPage() {
+        if (currentJournalPage < totalJournalPages) switchJournalPage(currentJournalPage + 1);
+    }
+
+    function prevJournalPage() {
+        if (currentJournalPage > 1) switchJournalPage(currentJournalPage - 1);
+    }
+</script>
+
+<div class="container mt-40">
+    <div class="section-title">
+        <h3>LIÊN KẾT</h3>
+    </div>
+    <div class="partners-row">
+        <img src="@Url.Content("~/Images/partner1.jpg")" alt="Partner 1">
+        <img src="@Url.Content("~/Images/partner2.jpg")" alt="Partner 2">
+        <img src="@Url.Content("~/Images/partner3.jpg")" alt="Partner 3">
+    </div>
+</div>
+
+<div class="container mt-40 mb-40">
+    <div class="section-title">
+        <h3>TRUY CẬP NHANH</h3>
+    </div>
+    <div class="quick-access-grid">
+        <a href="#" class="qa-item">
+            <i class="fas fa-question-circle icon-green"></i> <span>CÂU HỎI THƯỜNG GẶP</span>
+        </a>
+        <a href="#" class="qa-item">
+            <i class="fas fa-user-circle icon-gray"></i> <span>THÔNG TIN TÀI KHOẢN</span>
+        </a>
+        <a href="#" class="qa-item">
+            <i class="fas fa-history icon-blue-light"></i> <span>GIA HẠN TÀI LIỆU</span>
+        </a>
+        <a href="#" class="qa-item">
+            <i class="fas fa-calendar-alt icon-purple"></i> <span>ĐẶT PHÒNG</span>
+        </a>
+        <a href="#" class="qa-item">
+            <i class="fas fa-comments icon-cyan"></i> <span>ĐÁNH GIÁ THƯ VIỆN</span>
+        </a>
+        <a href="#" class="qa-item">
+            <i class="fab fa-facebook icon-blue-dark"></i> <span>FACEBOOK</span>
+        </a>
+        <a href="#" class="qa-item">
+            <i class="fas fa-book-open icon-orange"></i> <span>TỦ SÁCH</span>
+        </a>
+        <a href="#" class="qa-item-img">
+            <img src="@Url.Content("~/Images/hopthu.jpg")" alt="Hop Thu">
+        </a>
+    </div>
+</div>
+

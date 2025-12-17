@@ -1,0 +1,43 @@
+﻿@model QL_ThuVIenHUIT_13.Models.DOCGIA
+
+<h3>✏️ SỬA ĐỘC GIẢ</h3>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(m => m.MADG)
+
+    <div class="mb-2">
+        <label>Tên độc giả</label>
+        @Html.TextBoxFor(m => m.TENDG, new { @class = "form-control" })
+    </div>
+
+    <div class="row mb-2">
+        <div class="col">
+            <label>Khoa</label>
+            @Html.TextBoxFor(m => m.KHOA, new { @class = "form-control" })
+        </div>
+        <div class="col">
+            <label>Lớp</label>
+            @Html.TextBoxFor(m => m.LOP, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="mb-2">
+        <label>Địa chỉ</label>
+        @Html.TextBoxFor(m => m.DIACHI, new { @class = "form-control" })
+    </div>
+
+    <div class="row mb-2">
+        <div class="col">
+            <label>SĐT</label>
+            @Html.TextBoxFor(m => m.SODT, new { @class = "form-control" })
+        </div>
+        <div class="col">
+            <label>Email</label>
+            @Html.TextBoxFor(m => m.MAIL, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Lưu</button>
+    @Html.ActionLink("Hủy", "QLDocGia", null, new { @class = "btn btn-secondary ms-2" })
+}

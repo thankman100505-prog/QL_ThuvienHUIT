@@ -1,0 +1,206 @@
+﻿@using QL_ThuVIenHUIT_13.Models
+@model QLSACH
+
+@{
+    ViewBag.Title = Model.TENSACH;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var listLienQuan = ViewBag.SanPhamLienQuan as List<QLSACH>;
+}
+
+@section Styles {
+    <style>
+        .book-info-container {
+            background-color: #f3f4f8;
+            padding: 25px;
+            border-radius: 8px;
+            height: 100%;
+        }
+
+        .book-info-title {
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .book-info-list {
+            list-style: none;
+            padding: 0;
+            font-size: 15px;
+            color: #333;
+        }
+
+            .book-info-list li {
+                margin-bottom: 12px;
+            }
+
+        .btn-add-borrow {
+            background-color: #acc7ed;
+            color: #000;
+            font-weight: 600;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 4px;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+
+            .btn-add-borrow:hover {
+                background-color: #8cb0ea;
+                color: #fff;
+            }
+
+        .section-header-gray {
+            background-color: #e9ecef;
+            display: inline-block;
+            padding: 10px 25px;
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .related-book-card {
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+            background: #fff;
+            height: 100%;
+            overflow: hidden;
+        }
+
+            .related-book-card:hover {
+                transform: translateY(-5px);
+            }
+
+        /* Chỉnh ảnh bìa sách liên quan cho gọn */
+        .related-book-img-wrap {
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            padding: 10px;
+        }
+
+        .related-book-img {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        /* Link không gạch chân */  
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+            a:hover {
+                color: #0d6efd;
+            }
+    </style>
+}
+
+<div class="container py-4">
+    <div class="row">
+
+        <div class="col-lg-3 col-md-4 mb-4">
+            @Html.Action("_SidebarPartial", "Sach")
+        </div>
+
+        <div class="col-lg-9 col-md-8">
+
+            <div class="row mb-5">
+                <div class="col-md-5 mb-3 text-center">
+                    @{
+                        // Lấy ảnh từ bảng BIASACH theo trường URL_ANH
+                        string imgUrl = (Model.BIASACH != null && !string.IsNullOrEmpty(Model.BIASACH.URL_ANH))
+                                        ? "/Images/" + Model.BIASACH.URL_ANH
+                                        : "https://via.placeholder.com/300x400?text=No+Image";
+                    }
+                    <img src="@imgUrl"
+                         alt="@Model.TENSACH"
+                         class="img-fluid shadow rounded"
+                         style="max-height: 450px;" />
+                </div>
+
+                <div class="col-md-7">
+                    <div class="book-info-container">
+                        <h3 class="book-info-title">THÔNG TIN SÁCH</h3>
+
+                        <ul class="book-info-list">
+                            <li><strong>Tên sách:</strong> @Model.TENSACH</li>
+                            <li><strong>Tác giả:</strong> @(Model.TACGIA != null ? Model.TACGIA.TENTG : "Đang cập nhật")</li>
+                            <li><strong>Thể loại:</strong> @(Model.THELOAI != null ? Model.THELOAI.TENTHELOAI : "Đang cập nhật")</li>
+                            <li><strong>Nhà xuất bản:</strong> @(Model.NHAXUATBAN != null ? Model.NHAXUATBAN.TENNXB : "Đang cập nhật")</li>
+                            <li><strong>Năm xuất bản:</strong> @Model.NAMXB</li>
+                            <li>
+                                <strong>Tình trạng:</strong>
+                                @if (Model.SL > 0)
+                                {
+                                    <span class="text-success fw-bold">Còn @Model.SL cuốn</span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger fw-bold">Hết sách</span>
+                                }
+
+                            </li>
+                            <li>
+                                <strong>Chi tiết sách:</strong>
+                                @(!string.IsNullOrEmpty(Model.MOTA) ? Model.MOTA : "Nội dung đang cập nhật")
+                            </li>
+                        </ul>
+                        <form action="@Url.Action("ThemVaoGio", "GioSach")" method="post">
+                            <input type="hidden" name="maSach" value="@Model.MASACH" />
+                            <button type="submit" class="btn-add-borrow">
+                                <i class="fas fa-cart-plus me-2"></i>Thêm vào danh sách mượn
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-5 p-3 bg-light rounded">
+                <div class="section-header-gray">Một số sách liên quan</div>
+
+                <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
+                    @if (listLienQuan != null && listLienQuan.Any())
+                    {
+                        foreach (var item in listLienQuan)
+                        {
+                            var linkChiTiet = Url.Action("ChiTiet", "Sach", new { maSach = item.MASACH });
+                            string relatedImg = (item.BIASACH != null && !string.IsNullOrEmpty(item.BIASACH.URL_ANH))
+                                                ? "/Images/" + item.BIASACH.URL_ANH
+                                                : "https://via.placeholder.com/150x200?text=No+Image";
+
+                            <div class="col">
+                                <div class="card related-book-card h-100">
+                                    <div class="related-book-img-wrap">
+                                        <a href="@linkChiTiet" class="w-100 h-100 d-flex justify-content-center align-items-center">
+                                            <img src="@relatedImg" class="related-book-img" alt="@item.TENSACH">
+                                        </a>
+                                    </div>
+
+                                    <div class="card-body p-2 text-center">
+                                        <h6 class="card-title text-truncate mb-1">
+                                            <a href="@linkChiTiet" class="fw-bold">@item.TENSACH</a>
+                                        </h6>
+                                        <p class="card-text text-muted small">
+                                            @(item.TACGIA != null ? item.TACGIA.TENTG : "N/A")
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-12 text-center py-3">Không có sách liên quan nào.</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1329 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CNPM_DATABASE_THUVIENModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BIASACH">
+          <Key>
+            <PropertyRef Name="MASACH" />
+          </Key>
+          <Property Name="MASACH" Type="char" MaxLength="7" Nullable="false" />
+          <Property Name="URL_ANH" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="CHITIETPM">
+          <Key>
+            <PropertyRef Name="MAPM" />
+            <PropertyRef Name="MASACH" />
+          </Key>
+          <Property Name="MAPM" Type="char" MaxLength="7" Nullable="false" />
+          <Property Name="MASACH" Type="char" MaxLength="7" Nullable="false" />
+          <Property Name="SLMUON" Type="int" />
+          <Property Name="TIENTHECHAN" Type="money" />
+          <Property Name="TINHTRANG" Type="int" />
+        </EntityType>
+        <EntityType Name="DOCGIA">
+          <Key>
+            <PropertyRef Name="MADG" />
+          </Key>
+          <Property Name="MADG" Type="char" MaxLength="7" Nullable="false" />
+          <Property Name="TENDG" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="KHOA" Type="nvarchar" MaxLength="50" />
+          <Property Name="LOP" Type="nvarchar" MaxLength="50" />
+          <Property Name="DIACHI" Type="nvarchar" MaxLength="100" />
+          <Property Name="SODT" Type="char" MaxLength="10" />
+          <Property Name="MAIL" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="NHAXUATBAN">
+          <Key>
+            <PropertyRef Name="MAXB" />
+          </Key>
+          <Property Name="MAXB" Type="char" MaxLength="7" Nullable="false" />
+          <Property Name="TENNXB" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DCHI" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="SDT" Type="char" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="PHIEU_MUONPHONG">
+          <Key>
+            <PropertyRef Name="MAPHIEU" />
+          </Key>
+          <Property Name="MAPHIEU" Type="char" MaxLength="7" Nullable="false" />
+          <Property Name="MATHE" Type="char" MaxLength="7" Nullable="false" />
+          <Property Name="MAPH" Type="char" MaxLength="7" Nullable="false" />
+          <Property Name="NGAYMUON" Type="date" />
+          <Property Name="GIOMUON" Type="time" Precision="7" />
+          <Property Name="GIOTRA" Type="time" Precision="7" />
+          <Property Name="SL_NGUOITHAMGIA" Type="int" />
+          <Property Name="MUCDICH" Type="nvarchar" MaxLength="500" />
+          <Property Name="TIENPHAT" Type="money" />
+          <Property Name="TINHTRANG" Type="int" />
+          <Property Name="GHICHU_NV" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="PHIEUMUON">
+          <Key>
+            <PropertyRef Name="MAPM" />
+          </Key>
+          <Property Name="MAPM" Type="char" MaxLength="7" Nullable="false" />
+          <Property Name="MATHE" Type="char" MaxLength="7" Nullable="false" />
+          <Property Name="MANV" Type="char" MaxLength="7" Nullable="false" />
+          <Property Name="NgayMuon" Type="date" />
+          <Property Name="NgayDenHan" Type="date" />
+          <Property Name="TINHTRANG" Type="int" />
+        </EntityType>
+        <EntityType Name="PHIEUTRA">
+          <Key>
+            <PropertyRef Name="MAPT" />
+          </Key>
+          <Property Name="MAPT" Type="char" MaxLength="7" Nullable="false" />
+          <Property Name="MAPM" Type="char" MaxLength="7" Nullable="false" />
+          <Property Name="MANV" Type="char" MaxLength="7" Nullable="false" />
+          <Property Name="NGAYTRA" Type="date" />
+          <Property Name="TONG_TIENTHECHAN" Type="money" />
+          <Property Name="TIENPHAT" Type="money" />
+        </EntityType>
+        <EntityType Name="PHONGHOP">
+          <Key>
+            <PropertyRef Name="MAPHONG" />
+          </Key>
+          <Property Name="MAPHONG" Type="char" MaxLength="7" Nullable="false" />
+          <Property Name="VITRI" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="SL_NGUOITOIDA" Type="int" />
+          <Property Name="TINHTRANG" Type="int" />
+        </EntityType>
+        <EntityType Name="QLNHANVIEN">
+          <Key>
+            <PropertyRef Name="MANV" />
+          </Key>
+          <Property Name="MANV" Type="char" MaxLength="7" Nullable="false" />
+          <Property Name="TENNV" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NGSINH" Type="date" />
+          <Property Name="CHUCVU" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SDIENTHOAI" Type="char" MaxLength="10" />
+          <Property Name="MAIL" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="QLSACH">
+          <Key>
+            <PropertyRef Name="MASACH" />
+          </Key>
+          <Property Name="MASACH" Type="char" MaxLength="7" Nullable="false" />
+          <Property Name="TENSACH" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MATG" Type="char" MaxLength="7" />
+          <Property Name="MATHELOAI" Type="char" MaxLength="7" />
+          <Property Name="MAXB" Type="char" MaxLength="7" />
+          <Property Name="NAMXB" Type="int" />
+          <Property Name="SL" Type="int" />
+          <Property Name="TINHTRANG" Type="int" />
+          <Property Name="MOTA" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="ROLE_USER">
+          <Key>
+            <PropertyRef Name="ROLE_ID" />
+          </Key>
+          <Property Name="ROLE_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ROLE_NAME" Type="nvarchar" MaxLength="20" />
+          <Property Name="DESCRIPT" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="TACGIA">
+          <Key>
+            <PropertyRef Name="MATG" />
+          </Key>
+          <Property Name="MATG" Type="char" MaxLength="7" Nullable="false" />
+          <Property Name="TENTG" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NGAYSINH" Type="date" />
+          <Property Name="QUOCTICH" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TAIKHOAN">
+          <Key>
+            <PropertyRef Name="USERNAME" />
+          </Key>
+          <Property Name="USERNAME" Type="char" MaxLength="7" Nullable="false" />
+          <Property Name="PASS" Type="varbinary" MaxLength="64" />
+          <Property Name="ROLE_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="TINTUC">
+          <Key>
+            <PropertyRef Name="MaTin" />
+          </Key>
+          <Property Name="MaTin" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TieuDe" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="MoTaNgan" Type="nvarchar" MaxLength="500" />
+          <Property Name="HinhAnh" Type="nvarchar" MaxLength="255" />
+          <Property Name="NgayDang" Type="datetime" />
+          <Property Name="LoaiTin" Type="int" />
+          <Property Name="HienThi" Type="bit" />
+          <Property Name="Link" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="THAMSO">
+          <Key>
+            <PropertyRef Name="TENTHAMSO" />
+          </Key>
+          <Property Name="TENTHAMSO" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="GIATRI" Type="int" />
+          <Property Name="MOTA" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="THELOAI">
+          <Key>
+            <PropertyRef Name="MATHELOAI" />
+          </Key>
+          <Property Name="MATHELOAI" Type="char" MaxLength="7" Nullable="false" />
+          <Property Name="TENTHELOAI" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MOTA" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="THETHUVIEN">
+          <Key>
+            <PropertyRef Name="MATHE" />
+          </Key>
+          <Property Name="MATHE" Type="char" MaxLength="7" Nullable="false" />
+          <Property Name="MADG" Type="char" MaxLength="7" />
+          <Property Name="NGAYCAP" Type="date" />
+          <Property Name="NGAYHETHAN" Type="date" />
+          <Property Name="TRANGTHAI" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="VIPHAM">
+          <Key>
+            <PropertyRef Name="MAVP" />
+          </Key>
+          <Property Name="MAVP" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MAPM" Type="char" MaxLength="7" Nullable="false" />
+          <Property Name="MASACH" Type="char" MaxLength="7" />
+          <Property Name="HINHTHUCVP" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CHITIETVP" Type="nvarchar" MaxLength="500" />
+          <Property Name="SOTIENPHAT" Type="money" />
+          <Property Name="NGAYGHINHAN" Type="date" />
+        </EntityType>
+        <Association Name="FK__BIASACH__MASACH__4CA06362">
+          <End Role="QLSACH" Type="Self.QLSACH" Multiplicity="1" />
+          <End Role="BIASACH" Type="Self.BIASACH" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="QLSACH">
+              <PropertyRef Name="MASACH" />
+            </Principal>
+            <Dependent Role="BIASACH">
+              <PropertyRef Name="MASACH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CHITIETPM__MAPM__72C60C4A">
+          <End Role="PHIEUMUON" Type="Self.PHIEUMUON" Multiplicity="1" />
+          <End Role="CHITIETPM" Type="Self.CHITIETPM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PHIEUMUON">
+              <PropertyRef Name="MAPM" />
+            </Principal>
+            <Dependent Role="CHITIETPM">
+              <PropertyRef Name="MAPM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CHITIETPM__MASAC__73BA3083">
+          <End Role="QLSACH" Type="Self.QLSACH" Multiplicity="1" />
+          <End Role="CHITIETPM" Type="Self.CHITIETPM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QLSACH">
+              <PropertyRef Name="MASACH" />
+            </Principal>
+            <Dependent Role="CHITIETPM">
+              <PropertyRef Name="MASACH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PHIEU_MUO__MATHE__0D7A0286">
+          <End Role="THETHUVIEN" Type="Self.THETHUVIEN" Multiplicity="1" />
+          <End Role="PHIEU_MUONPHONG" Type="Self.PHIEU_MUONPHONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="THETHUVIEN">
+              <PropertyRef Name="MATHE" />
+            </Principal>
+            <Dependent Role="PHIEU_MUONPHONG">
+              <PropertyRef Name="MATHE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PHIEU_MUON__MAPH__0C85DE4D">
+          <End Role="PHONGHOP" Type="Self.PHONGHOP" Multiplicity="1" />
+          <End Role="PHIEU_MUONPHONG" Type="Self.PHIEU_MUONPHONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PHONGHOP">
+              <PropertyRef Name="MAPHONG" />
+            </Principal>
+            <Dependent Role="PHIEU_MUONPHONG">
+              <PropertyRef Name="MAPH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PHIEUMUON__MANV__6E01572D">
+          <End Role="QLNHANVIEN" Type="Self.QLNHANVIEN" Multiplicity="1" />
+          <End Role="PHIEUMUON" Type="Self.PHIEUMUON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QLNHANVIEN">
+              <PropertyRef Name="MANV" />
+            </Principal>
+            <Dependent Role="PHIEUMUON">
+              <PropertyRef Name="MANV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PHIEUMUON__MATHE__6D0D32F4">
+          <End Role="THETHUVIEN" Type="Self.THETHUVIEN" Multiplicity="1" />
+          <End Role="PHIEUMUON" Type="Self.PHIEUMUON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="THETHUVIEN">
+              <PropertyRef Name="MATHE" />
+            </Principal>
+            <Dependent Role="PHIEUMUON">
+              <PropertyRef Name="MATHE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PHIEUTRA__MANV__7C4F7684">
+          <End Role="QLNHANVIEN" Type="Self.QLNHANVIEN" Multiplicity="1" />
+          <End Role="PHIEUTRA" Type="Self.PHIEUTRA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QLNHANVIEN">
+              <PropertyRef Name="MANV" />
+            </Principal>
+            <Dependent Role="PHIEUTRA">
+              <PropertyRef Name="MANV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PHIEUTRA__MAPM__7B5B524B">
+          <End Role="PHIEUMUON" Type="Self.PHIEUMUON" Multiplicity="1" />
+          <End Role="PHIEUTRA" Type="Self.PHIEUTRA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PHIEUMUON">
+              <PropertyRef Name="MAPM" />
+            </Principal>
+            <Dependent Role="PHIEUTRA">
+              <PropertyRef Name="MAPM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__QLSACH__MATG__46E78A0C">
+          <End Role="TACGIA" Type="Self.TACGIA" Multiplicity="0..1" />
+          <End Role="QLSACH" Type="Self.QLSACH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TACGIA">
+              <PropertyRef Name="MATG" />
+            </Principal>
+            <Dependent Role="QLSACH">
+              <PropertyRef Name="MATG" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__QLSACH__MATHELOA__47DBAE45">
+          <End Role="THELOAI" Type="Self.THELOAI" Multiplicity="0..1" />
+          <End Role="QLSACH" Type="Self.QLSACH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="THELOAI">
+              <PropertyRef Name="MATHELOAI" />
+            </Principal>
+            <Dependent Role="QLSACH">
+              <PropertyRef Name="MATHELOAI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__QLSACH__MAXB__48CFD27E">
+          <End Role="NHAXUATBAN" Type="Self.NHAXUATBAN" Multiplicity="0..1" />
+          <End Role="QLSACH" Type="Self.QLSACH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NHAXUATBAN">
+              <PropertyRef Name="MAXB" />
+            </Principal>
+            <Dependent Role="QLSACH">
+              <PropertyRef Name="MAXB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TAIKHOAN__ROLE_I__571DF1D5">
+          <End Role="ROLE_USER" Type="Self.ROLE_USER" Multiplicity="0..1" />
+          <End Role="TAIKHOAN" Type="Self.TAIKHOAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROLE_USER">
+              <PropertyRef Name="ROLE_ID" />
+            </Principal>
+            <Dependent Role="TAIKHOAN">
+              <PropertyRef Name="ROLE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__THETHUVIEN__MADG__619B8048">
+          <End Role="DOCGIA" Type="Self.DOCGIA" Multiplicity="0..1" />
+          <End Role="THETHUVIEN" Type="Self.THETHUVIEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DOCGIA">
+              <PropertyRef Name="MADG" />
+            </Principal>
+            <Dependent Role="THETHUVIEN">
+              <PropertyRef Name="MADG" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__VIPHAM__MAPM__02084FDA">
+          <End Role="PHIEUMUON" Type="Self.PHIEUMUON" Multiplicity="1" />
+          <End Role="VIPHAM" Type="Self.VIPHAM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PHIEUMUON">
+              <PropertyRef Name="MAPM" />
+            </Principal>
+            <Dependent Role="VIPHAM">
+              <PropertyRef Name="MAPM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="AUTO_CREATE_ID_TACGIA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MATG" Type="char" Mode="InOut" />
+        </Function>
+        <Function Name="AUTO_ID_DOCGIA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NEWID" Type="char" Mode="InOut" />
+        </Function>
+        <Function Name="AUTO_ID_NHANVIEN" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NEWID" Type="char" Mode="InOut" />
+        </Function>
+        <Function Name="AUTO_ID_NXB" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NEWID" Type="char" Mode="InOut" />
+        </Function>
+        <Function Name="AUTO_ID_PHIEUMUONPHONG" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NEWID" Type="char" Mode="InOut" />
+        </Function>
+        <Function Name="AUTO_ID_PHIEUTRA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NEWID" Type="char" Mode="InOut" />
+        </Function>
+        <Function Name="AUTO_ID_PHONG" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NEWID" Type="char" Mode="InOut" />
+        </Function>
+        <Function Name="AUTO_ID_SACH" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NEWID" Type="char" Mode="InOut" />
+        </Function>
+        <Function Name="AUTO_ID_THELOAI" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NEWID" Type="char" Mode="InOut" />
+        </Function>
+        <Function Name="AUTO_ID_THETHUVIEN" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NEWID" Type="char" Mode="InOut" />
+        </Function>
+        <Function Name="SP_REGISTER_DOCGIA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TENDG" Type="nvarchar" Mode="In" />
+          <Parameter Name="KHOA" Type="nvarchar" Mode="In" />
+          <Parameter Name="LOP" Type="nvarchar" Mode="In" />
+          <Parameter Name="DIACHI" Type="nvarchar" Mode="In" />
+          <Parameter Name="SODT" Type="char" Mode="In" />
+          <Parameter Name="MAIL" Type="nvarchar" Mode="In" />
+          <Parameter Name="MATHE_OUT" Type="char" Mode="InOut" />
+        </Function>
+        <EntityContainer Name="CNPM_DATABASE_THUVIENModelStoreContainer">
+          <EntitySet Name="BIASACH" EntityType="Self.BIASACH" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CHITIETPM" EntityType="Self.CHITIETPM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DOCGIA" EntityType="Self.DOCGIA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NHAXUATBAN" EntityType="Self.NHAXUATBAN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PHIEU_MUONPHONG" EntityType="Self.PHIEU_MUONPHONG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PHIEUMUON" EntityType="Self.PHIEUMUON" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PHIEUTRA" EntityType="Self.PHIEUTRA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PHONGHOP" EntityType="Self.PHONGHOP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QLNHANVIEN" EntityType="Self.QLNHANVIEN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QLSACH" EntityType="Self.QLSACH" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ROLE_USER" EntityType="Self.ROLE_USER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TACGIA" EntityType="Self.TACGIA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TAIKHOAN" EntityType="Self.TAIKHOAN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TINTUC" EntityType="Self.TINTUC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="THAMSO" EntityType="Self.THAMSO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="THELOAI" EntityType="Self.THELOAI" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="THETHUVIEN" EntityType="Self.THETHUVIEN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VIPHAM" EntityType="Self.VIPHAM" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__BIASACH__MASACH__4CA06362" Association="Self.FK__BIASACH__MASACH__4CA06362">
+            <End Role="QLSACH" EntitySet="QLSACH" />
+            <End Role="BIASACH" EntitySet="BIASACH" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CHITIETPM__MAPM__72C60C4A" Association="Self.FK__CHITIETPM__MAPM__72C60C4A">
+            <End Role="PHIEUMUON" EntitySet="PHIEUMUON" />
+            <End Role="CHITIETPM" EntitySet="CHITIETPM" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CHITIETPM__MASAC__73BA3083" Association="Self.FK__CHITIETPM__MASAC__73BA3083">
+            <End Role="QLSACH" EntitySet="QLSACH" />
+            <End Role="CHITIETPM" EntitySet="CHITIETPM" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PHIEU_MUO__MATHE__0D7A0286" Association="Self.FK__PHIEU_MUO__MATHE__0D7A0286">
+            <End Role="THETHUVIEN" EntitySet="THETHUVIEN" />
+            <End Role="PHIEU_MUONPHONG" EntitySet="PHIEU_MUONPHONG" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PHIEU_MUON__MAPH__0C85DE4D" Association="Self.FK__PHIEU_MUON__MAPH__0C85DE4D">
+            <End Role="PHONGHOP" EntitySet="PHONGHOP" />
+            <End Role="PHIEU_MUONPHONG" EntitySet="PHIEU_MUONPHONG" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PHIEUMUON__MANV__6E01572D" Association="Self.FK__PHIEUMUON__MANV__6E01572D">
+            <End Role="QLNHANVIEN" EntitySet="QLNHANVIEN" />
+            <End Role="PHIEUMUON" EntitySet="PHIEUMUON" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PHIEUMUON__MATHE__6D0D32F4" Association="Self.FK__PHIEUMUON__MATHE__6D0D32F4">
+            <End Role="THETHUVIEN" EntitySet="THETHUVIEN" />
+            <End Role="PHIEUMUON" EntitySet="PHIEUMUON" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PHIEUTRA__MANV__7C4F7684" Association="Self.FK__PHIEUTRA__MANV__7C4F7684">
+            <End Role="QLNHANVIEN" EntitySet="QLNHANVIEN" />
+            <End Role="PHIEUTRA" EntitySet="PHIEUTRA" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PHIEUTRA__MAPM__7B5B524B" Association="Self.FK__PHIEUTRA__MAPM__7B5B524B">
+            <End Role="PHIEUMUON" EntitySet="PHIEUMUON" />
+            <End Role="PHIEUTRA" EntitySet="PHIEUTRA" />
+          </AssociationSet>
+          <AssociationSet Name="FK__QLSACH__MATG__46E78A0C" Association="Self.FK__QLSACH__MATG__46E78A0C">
+            <End Role="TACGIA" EntitySet="TACGIA" />
+            <End Role="QLSACH" EntitySet="QLSACH" />
+          </AssociationSet>
+          <AssociationSet Name="FK__QLSACH__MATHELOA__47DBAE45" Association="Self.FK__QLSACH__MATHELOA__47DBAE45">
+            <End Role="THELOAI" EntitySet="THELOAI" />
+            <End Role="QLSACH" EntitySet="QLSACH" />
+          </AssociationSet>
+          <AssociationSet Name="FK__QLSACH__MAXB__48CFD27E" Association="Self.FK__QLSACH__MAXB__48CFD27E">
+            <End Role="NHAXUATBAN" EntitySet="NHAXUATBAN" />
+            <End Role="QLSACH" EntitySet="QLSACH" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TAIKHOAN__ROLE_I__571DF1D5" Association="Self.FK__TAIKHOAN__ROLE_I__571DF1D5">
+            <End Role="ROLE_USER" EntitySet="ROLE_USER" />
+            <End Role="TAIKHOAN" EntitySet="TAIKHOAN" />
+          </AssociationSet>
+          <AssociationSet Name="FK__THETHUVIEN__MADG__619B8048" Association="Self.FK__THETHUVIEN__MADG__619B8048">
+            <End Role="DOCGIA" EntitySet="DOCGIA" />
+            <End Role="THETHUVIEN" EntitySet="THETHUVIEN" />
+          </AssociationSet>
+          <AssociationSet Name="FK__VIPHAM__MAPM__02084FDA" Association="Self.FK__VIPHAM__MAPM__02084FDA">
+            <End Role="PHIEUMUON" EntitySet="PHIEUMUON" />
+            <End Role="VIPHAM" EntitySet="VIPHAM" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CNPM_DATABASE_THUVIENModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="CNPM_DATABASE_THUVIENEntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="AUTO_CREATE_ID_TACGIA">
+          <Parameter Name="MATG" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AUTO_ID_DOCGIA">
+          <Parameter Name="NEWID" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AUTO_ID_NHANVIEN">
+          <Parameter Name="NEWID" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AUTO_ID_NXB">
+          <Parameter Name="NEWID" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AUTO_ID_PHIEUMUONPHONG">
+          <Parameter Name="NEWID" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AUTO_ID_PHIEUTRA">
+          <Parameter Name="NEWID" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AUTO_ID_PHONG">
+          <Parameter Name="NEWID" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AUTO_ID_SACH">
+          <Parameter Name="NEWID" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AUTO_ID_THELOAI">
+          <Parameter Name="NEWID" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AUTO_ID_THETHUVIEN">
+          <Parameter Name="NEWID" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(CNPM_DATABASE_THUVIENModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(CNPM_DATABASE_THUVIENModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="BIASACHes" EntityType="CNPM_DATABASE_THUVIENModel.BIASACH" />
+          <EntitySet Name="CHITIETPMs" EntityType="CNPM_DATABASE_THUVIENModel.CHITIETPM" />
+          <EntitySet Name="DOCGIAs" EntityType="CNPM_DATABASE_THUVIENModel.DOCGIA" />
+          <EntitySet Name="NHAXUATBANs" EntityType="CNPM_DATABASE_THUVIENModel.NHAXUATBAN" />
+          <EntitySet Name="PHIEUTRAs" EntityType="CNPM_DATABASE_THUVIENModel.PHIEUTRA" />
+          <EntitySet Name="PHONGHOPs" EntityType="CNPM_DATABASE_THUVIENModel.PHONGHOP" />
+          <EntitySet Name="QLNHANVIENs" EntityType="CNPM_DATABASE_THUVIENModel.QLNHANVIEN" />
+          <EntitySet Name="QLSACHes" EntityType="CNPM_DATABASE_THUVIENModel.QLSACH" />
+          <EntitySet Name="ROLE_USER" EntityType="CNPM_DATABASE_THUVIENModel.ROLE_USER" />
+          <EntitySet Name="TACGIAs" EntityType="CNPM_DATABASE_THUVIENModel.TACGIA" />
+          <EntitySet Name="TAIKHOANs" EntityType="CNPM_DATABASE_THUVIENModel.TAIKHOAN" />
+          <EntitySet Name="THELOAIs" EntityType="CNPM_DATABASE_THUVIENModel.THELOAI" />
+          <EntitySet Name="THETHUVIENs" EntityType="CNPM_DATABASE_THUVIENModel.THETHUVIEN" />
+          <AssociationSet Name="FK__BIASACH__MASACH__4BAC3F29" Association="CNPM_DATABASE_THUVIENModel.FK__BIASACH__MASACH__4BAC3F29">
+            <End Role="QLSACH" EntitySet="QLSACHes" />
+            <End Role="BIASACH" EntitySet="BIASACHes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CHITIETPM__MASAC__6EF57B66" Association="CNPM_DATABASE_THUVIENModel.FK__CHITIETPM__MASAC__6EF57B66">
+            <End Role="QLSACH" EntitySet="QLSACHes" />
+            <End Role="CHITIETPM" EntitySet="CHITIETPMs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__THETHUVIEN__MADG__5AEE82B9" Association="CNPM_DATABASE_THUVIENModel.FK__THETHUVIEN__MADG__5AEE82B9">
+            <End Role="DOCGIA" EntitySet="DOCGIAs" />
+            <End Role="THETHUVIEN" EntitySet="THETHUVIENs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__QLSACH__MAXB__47DBAE45" Association="CNPM_DATABASE_THUVIENModel.FK__QLSACH__MAXB__47DBAE45">
+            <End Role="NHAXUATBAN" EntitySet="NHAXUATBANs" />
+            <End Role="QLSACH" EntitySet="QLSACHes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PHIEUTRA__MANV__778AC167" Association="CNPM_DATABASE_THUVIENModel.FK__PHIEUTRA__MANV__778AC167">
+            <End Role="QLNHANVIEN" EntitySet="QLNHANVIENs" />
+            <End Role="PHIEUTRA" EntitySet="PHIEUTRAs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__QLSACH__MATG__45F365D3" Association="CNPM_DATABASE_THUVIENModel.FK__QLSACH__MATG__45F365D3">
+            <End Role="TACGIA" EntitySet="TACGIAs" />
+            <End Role="QLSACH" EntitySet="QLSACHes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__QLSACH__MATHELOA__46E78A0C" Association="CNPM_DATABASE_THUVIENModel.FK__QLSACH__MATHELOA__46E78A0C">
+            <End Role="THELOAI" EntitySet="THELOAIs" />
+            <End Role="QLSACH" EntitySet="QLSACHes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TAIKHOAN__ROLE_I__52593CB8" Association="CNPM_DATABASE_THUVIENModel.FK__TAIKHOAN__ROLE_I__52593CB8">
+            <End Role="ROLE_USER" EntitySet="ROLE_USER" />
+            <End Role="TAIKHOAN" EntitySet="TAIKHOANs" />
+          </AssociationSet>
+          <EntitySet Name="PHIEU_MUONPHONG" EntityType="CNPM_DATABASE_THUVIENModel.PHIEU_MUONPHONG" />
+          <EntitySet Name="PHIEUMUONs" EntityType="CNPM_DATABASE_THUVIENModel.PHIEUMUON" />
+          <AssociationSet Name="FK__CHITIETPM__MAPM__7F2BE32F" Association="CNPM_DATABASE_THUVIENModel.FK__CHITIETPM__MAPM__7F2BE32F">
+            <End Role="PHIEUMUON" EntitySet="PHIEUMUONs" />
+            <End Role="CHITIETPM" EntitySet="CHITIETPMs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PHIEU_MUO__MATHE__14270015" Association="CNPM_DATABASE_THUVIENModel.FK__PHIEU_MUO__MATHE__14270015">
+            <End Role="THETHUVIEN" EntitySet="THETHUVIENs" />
+            <End Role="PHIEU_MUONPHONG" EntitySet="PHIEU_MUONPHONG" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PHIEU_MUON__MAPH__1332DBDC" Association="CNPM_DATABASE_THUVIENModel.FK__PHIEU_MUON__MAPH__1332DBDC">
+            <End Role="PHONGHOP" EntitySet="PHONGHOPs" />
+            <End Role="PHIEU_MUONPHONG" EntitySet="PHIEU_MUONPHONG" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PHIEUMUON__MANV__7A672E12" Association="CNPM_DATABASE_THUVIENModel.FK__PHIEUMUON__MANV__7A672E12">
+            <End Role="QLNHANVIEN" EntitySet="QLNHANVIENs" />
+            <End Role="PHIEUMUON" EntitySet="PHIEUMUONs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PHIEUMUON__MATHE__797309D9" Association="CNPM_DATABASE_THUVIENModel.FK__PHIEUMUON__MATHE__797309D9">
+            <End Role="THETHUVIEN" EntitySet="THETHUVIENs" />
+            <End Role="PHIEUMUON" EntitySet="PHIEUMUONs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PHIEUTRA__MAPM__07C12930" Association="CNPM_DATABASE_THUVIENModel.FK__PHIEUTRA__MAPM__07C12930">
+            <End Role="PHIEUMUON" EntitySet="PHIEUMUONs" />
+            <End Role="PHIEUTRA" EntitySet="PHIEUTRAs" />
+          </AssociationSet>
+          <EntitySet Name="TINTUC1" EntityType="CNPM_DATABASE_THUVIENModel.TINTUC1" />
+          <EntitySet Name="VIPHAMs" EntityType="CNPM_DATABASE_THUVIENModel.VIPHAM" />
+          <AssociationSet Name="FK__VIPHAM__MAPM__02084FDA" Association="CNPM_DATABASE_THUVIENModel.FK__VIPHAM__MAPM__02084FDA">
+            <End Role="PHIEUMUON" EntitySet="PHIEUMUONs" />
+            <End Role="VIPHAM" EntitySet="VIPHAMs" />
+          </AssociationSet>
+          <FunctionImport Name="AUTO_CREATE_ID_TACGIA1">
+          <Parameter Name="MATG" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AUTO_ID_DOCGIA1">
+          <Parameter Name="NEWID" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AUTO_ID_NHANVIEN1">
+          <Parameter Name="NEWID" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AUTO_ID_NXB1">
+          <Parameter Name="NEWID" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AUTO_ID_PHIEUMUONPHONG1">
+          <Parameter Name="NEWID" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AUTO_ID_PHIEUTRA1">
+          <Parameter Name="NEWID" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AUTO_ID_PHONG1">
+          <Parameter Name="NEWID" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AUTO_ID_SACH1">
+          <Parameter Name="NEWID" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AUTO_ID_THELOAI1">
+          <Parameter Name="NEWID" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AUTO_ID_THETHUVIEN1">
+          <Parameter Name="NEWID" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="THAMSOes" EntityType="CNPM_DATABASE_THUVIENModel.THAMSO" />
+          <FunctionImport Name="SP_REGISTER_DOCGIA">
+            <Parameter Name="TENDG" Mode="In" Type="String" />
+            <Parameter Name="KHOA" Mode="In" Type="String" />
+            <Parameter Name="LOP" Mode="In" Type="String" />
+            <Parameter Name="DIACHI" Mode="In" Type="String" />
+            <Parameter Name="SODT" Mode="In" Type="String" />
+            <Parameter Name="MAIL" Mode="In" Type="String" />
+            <Parameter Name="MATHE_OUT" Mode="InOut" Type="String" />
+          </FunctionImport>
+          </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="BIASACH">
+          <Key>
+            <PropertyRef Name="MASACH" />
+          </Key>
+          <Property Name="MASACH" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="URL_ANH" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="QLSACH" Relationship="CNPM_DATABASE_THUVIENModel.FK__BIASACH__MASACH__4BAC3F29" FromRole="BIASACH" ToRole="QLSACH" />
+        </EntityType>
+        <EntityType Name="CHITIETPM">
+          <Key>
+            <PropertyRef Name="MAPM" />
+            <PropertyRef Name="MASACH" />
+          </Key>
+          <Property Name="MAPM" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="MASACH" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="SLMUON" Type="Int32" />
+          <Property Name="TIENTHECHAN" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="QLSACH" Relationship="CNPM_DATABASE_THUVIENModel.FK__CHITIETPM__MASAC__6EF57B66" FromRole="CHITIETPM" ToRole="QLSACH" />
+          <NavigationProperty Name="PHIEUMUON" Relationship="CNPM_DATABASE_THUVIENModel.FK__CHITIETPM__MAPM__7F2BE32F" FromRole="CHITIETPM" ToRole="PHIEUMUON" />
+          <Property Name="TINHTRANG" Type="Int32" />
+        </EntityType>
+        <EntityType Name="DOCGIA">
+          <Key>
+            <PropertyRef Name="MADG" />
+          </Key>
+          <Property Name="MADG" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="TENDG" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="KHOA" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LOP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DIACHI" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SODT" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="MAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="THETHUVIENs" Relationship="CNPM_DATABASE_THUVIENModel.FK__THETHUVIEN__MADG__5AEE82B9" FromRole="DOCGIA" ToRole="THETHUVIEN" />
+        </EntityType>
+        <EntityType Name="NHAXUATBAN">
+          <Key>
+            <PropertyRef Name="MAXB" />
+          </Key>
+          <Property Name="MAXB" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="TENNXB" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DCHI" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SDT" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="QLSACHes" Relationship="CNPM_DATABASE_THUVIENModel.FK__QLSACH__MAXB__47DBAE45" FromRole="NHAXUATBAN" ToRole="QLSACH" />
+        </EntityType>
+        <EntityType Name="PHIEUTRA">
+          <Key>
+            <PropertyRef Name="MAPT" />
+          </Key>
+          <Property Name="MAPT" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="MAPM" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="MANV" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="NGAYTRA" Type="DateTime" Precision="0" />
+          <Property Name="TONG_TIENTHECHAN" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TIENPHAT" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="QLNHANVIEN" Relationship="CNPM_DATABASE_THUVIENModel.FK__PHIEUTRA__MANV__778AC167" FromRole="PHIEUTRA" ToRole="QLNHANVIEN" />
+          <NavigationProperty Name="PHIEUMUON" Relationship="CNPM_DATABASE_THUVIENModel.FK__PHIEUTRA__MAPM__07C12930" FromRole="PHIEUTRA" ToRole="PHIEUMUON" />
+        </EntityType>
+        <EntityType Name="PHONGHOP">
+          <Key>
+            <PropertyRef Name="MAPHONG" />
+          </Key>
+          <Property Name="MAPHONG" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="VITRI" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="SL_NGUOITOIDA" Type="Int32" />
+          <Property Name="TINHTRANG" Type="Int32" />
+          <NavigationProperty Name="PHIEU_MUONPHONG" Relationship="CNPM_DATABASE_THUVIENModel.FK__PHIEU_MUON__MAPH__1332DBDC" FromRole="PHONGHOP" ToRole="PHIEU_MUONPHONG" />
+        </EntityType>
+        <EntityType Name="QLNHANVIEN">
+          <Key>
+            <PropertyRef Name="MANV" />
+          </Key>
+          <Property Name="MANV" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="TENNV" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NGSINH" Type="DateTime" Precision="0" />
+          <Property Name="CHUCVU" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SDIENTHOAI" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="MAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PHIEUTRAs" Relationship="CNPM_DATABASE_THUVIENModel.FK__PHIEUTRA__MANV__778AC167" FromRole="QLNHANVIEN" ToRole="PHIEUTRA" />
+          <NavigationProperty Name="PHIEUMUONs" Relationship="CNPM_DATABASE_THUVIENModel.FK__PHIEUMUON__MANV__7A672E12" FromRole="QLNHANVIEN" ToRole="PHIEUMUON" />
+        </EntityType>
+        <EntityType Name="QLSACH">
+          <Key>
+            <PropertyRef Name="MASACH" />
+          </Key>
+          <Property Name="MASACH" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="TENSACH" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MATG" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="MATHELOAI" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="MAXB" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="NAMXB" Type="Int32" />
+          <Property Name="SL" Type="Int32" />
+          <Property Name="TINHTRANG" Type="Int32" />
+          <NavigationProperty Name="BIASACH" Relationship="CNPM_DATABASE_THUVIENModel.FK__BIASACH__MASACH__4BAC3F29" FromRole="QLSACH" ToRole="BIASACH" />
+          <NavigationProperty Name="CHITIETPMs" Relationship="CNPM_DATABASE_THUVIENModel.FK__CHITIETPM__MASAC__6EF57B66" FromRole="QLSACH" ToRole="CHITIETPM" />
+          <NavigationProperty Name="NHAXUATBAN" Relationship="CNPM_DATABASE_THUVIENModel.FK__QLSACH__MAXB__47DBAE45" FromRole="QLSACH" ToRole="NHAXUATBAN" />
+          <NavigationProperty Name="TACGIA" Relationship="CNPM_DATABASE_THUVIENModel.FK__QLSACH__MATG__45F365D3" FromRole="QLSACH" ToRole="TACGIA" />
+          <NavigationProperty Name="THELOAI" Relationship="CNPM_DATABASE_THUVIENModel.FK__QLSACH__MATHELOA__46E78A0C" FromRole="QLSACH" ToRole="THELOAI" />
+          <Property Name="MOTA" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ROLE_USER">
+          <Key>
+            <PropertyRef Name="ROLE_ID" />
+          </Key>
+          <Property Name="ROLE_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ROLE_NAME" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DESCRIPT" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TAIKHOANs" Relationship="CNPM_DATABASE_THUVIENModel.FK__TAIKHOAN__ROLE_I__52593CB8" FromRole="ROLE_USER" ToRole="TAIKHOAN" />
+        </EntityType>
+        <EntityType Name="TACGIA">
+          <Key>
+            <PropertyRef Name="MATG" />
+          </Key>
+          <Property Name="MATG" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="TENTG" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NGAYSINH" Type="DateTime" Precision="0" />
+          <Property Name="QUOCTICH" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="QLSACHes" Relationship="CNPM_DATABASE_THUVIENModel.FK__QLSACH__MATG__45F365D3" FromRole="TACGIA" ToRole="QLSACH" />
+        </EntityType>
+        <EntityType Name="TAIKHOAN">
+          <Key>
+            <PropertyRef Name="USERNAME" />
+          </Key>
+          <Property Name="USERNAME" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="PASS" Type="Binary" MaxLength="64" FixedLength="false" />
+          <Property Name="ROLE_ID" Type="Int32" />
+          <NavigationProperty Name="ROLE_USER" Relationship="CNPM_DATABASE_THUVIENModel.FK__TAIKHOAN__ROLE_I__52593CB8" FromRole="TAIKHOAN" ToRole="ROLE_USER" />
+        </EntityType>
+        <EntityType Name="THELOAI">
+          <Key>
+            <PropertyRef Name="MATHELOAI" />
+          </Key>
+          <Property Name="MATHELOAI" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="TENTHELOAI" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MOTA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="QLSACHes" Relationship="CNPM_DATABASE_THUVIENModel.FK__QLSACH__MATHELOA__46E78A0C" FromRole="THELOAI" ToRole="QLSACH" />
+        </EntityType>
+        <EntityType Name="THETHUVIEN">
+          <Key>
+            <PropertyRef Name="MATHE" />
+          </Key>
+          <Property Name="MATHE" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="MADG" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="NGAYCAP" Type="DateTime" Precision="0" />
+          <Property Name="NGAYHETHAN" Type="DateTime" Precision="0" />
+          <Property Name="TRANGTHAI" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DOCGIA" Relationship="CNPM_DATABASE_THUVIENModel.FK__THETHUVIEN__MADG__5AEE82B9" FromRole="THETHUVIEN" ToRole="DOCGIA" />
+          <NavigationProperty Name="PHIEU_MUONPHONG" Relationship="CNPM_DATABASE_THUVIENModel.FK__PHIEU_MUO__MATHE__14270015" FromRole="THETHUVIEN" ToRole="PHIEU_MUONPHONG" />
+          <NavigationProperty Name="PHIEUMUONs" Relationship="CNPM_DATABASE_THUVIENModel.FK__PHIEUMUON__MATHE__797309D9" FromRole="THETHUVIEN" ToRole="PHIEUMUON" />
+          </EntityType>
+        <Association Name="FK__BIASACH__MASACH__4BAC3F29">
+          <End Type="CNPM_DATABASE_THUVIENModel.QLSACH" Role="QLSACH" Multiplicity="1" />
+          <End Type="CNPM_DATABASE_THUVIENModel.BIASACH" Role="BIASACH" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="QLSACH">
+              <PropertyRef Name="MASACH" />
+            </Principal>
+            <Dependent Role="BIASACH">
+              <PropertyRef Name="MASACH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CHITIETPM__MASAC__6EF57B66">
+          <End Type="CNPM_DATABASE_THUVIENModel.QLSACH" Role="QLSACH" Multiplicity="1" />
+          <End Type="CNPM_DATABASE_THUVIENModel.CHITIETPM" Role="CHITIETPM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QLSACH">
+              <PropertyRef Name="MASACH" />
+            </Principal>
+            <Dependent Role="CHITIETPM">
+              <PropertyRef Name="MASACH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__THETHUVIEN__MADG__5AEE82B9">
+          <End Type="CNPM_DATABASE_THUVIENModel.DOCGIA" Role="DOCGIA" Multiplicity="0..1" />
+          <End Type="CNPM_DATABASE_THUVIENModel.THETHUVIEN" Role="THETHUVIEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DOCGIA">
+              <PropertyRef Name="MADG" />
+            </Principal>
+            <Dependent Role="THETHUVIEN">
+              <PropertyRef Name="MADG" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__QLSACH__MAXB__47DBAE45">
+          <End Type="CNPM_DATABASE_THUVIENModel.NHAXUATBAN" Role="NHAXUATBAN" Multiplicity="0..1" />
+          <End Type="CNPM_DATABASE_THUVIENModel.QLSACH" Role="QLSACH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NHAXUATBAN">
+              <PropertyRef Name="MAXB" />
+            </Principal>
+            <Dependent Role="QLSACH">
+              <PropertyRef Name="MAXB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PHIEUTRA__MANV__778AC167">
+          <End Type="CNPM_DATABASE_THUVIENModel.QLNHANVIEN" Role="QLNHANVIEN" Multiplicity="1" />
+          <End Type="CNPM_DATABASE_THUVIENModel.PHIEUTRA" Role="PHIEUTRA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QLNHANVIEN">
+              <PropertyRef Name="MANV" />
+            </Principal>
+            <Dependent Role="PHIEUTRA">
+              <PropertyRef Name="MANV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__QLSACH__MATG__45F365D3">
+          <End Type="CNPM_DATABASE_THUVIENModel.TACGIA" Role="TACGIA" Multiplicity="0..1" />
+          <End Type="CNPM_DATABASE_THUVIENModel.QLSACH" Role="QLSACH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TACGIA">
+              <PropertyRef Name="MATG" />
+            </Principal>
+            <Dependent Role="QLSACH">
+              <PropertyRef Name="MATG" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__QLSACH__MATHELOA__46E78A0C">
+          <End Type="CNPM_DATABASE_THUVIENModel.THELOAI" Role="THELOAI" Multiplicity="0..1" />
+          <End Type="CNPM_DATABASE_THUVIENModel.QLSACH" Role="QLSACH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="THELOAI">
+              <PropertyRef Name="MATHELOAI" />
+            </Principal>
+            <Dependent Role="QLSACH">
+              <PropertyRef Name="MATHELOAI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TAIKHOAN__ROLE_I__52593CB8">
+          <End Type="CNPM_DATABASE_THUVIENModel.ROLE_USER" Role="ROLE_USER" Multiplicity="0..1" />
+          <End Type="CNPM_DATABASE_THUVIENModel.TAIKHOAN" Role="TAIKHOAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROLE_USER">
+              <PropertyRef Name="ROLE_ID" />
+            </Principal>
+            <Dependent Role="TAIKHOAN">
+              <PropertyRef Name="ROLE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="PHIEU_MUONPHONG">
+          <Key>
+            <PropertyRef Name="MAPHIEU" />
+          </Key>
+          <Property Name="MAPHIEU" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="MATHE" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="MAPH" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="NGAYMUON" Type="DateTime" Precision="0" />
+          <Property Name="GIOMUON" Type="Time" Precision="7" />
+          <Property Name="SL_NGUOITHAMGIA" Type="Int32" />
+          <Property Name="MUCDICH" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TIENPHAT" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="THETHUVIEN" Relationship="CNPM_DATABASE_THUVIENModel.FK__PHIEU_MUO__MATHE__14270015" FromRole="PHIEU_MUONPHONG" ToRole="THETHUVIEN" />
+          <NavigationProperty Name="PHONGHOP" Relationship="CNPM_DATABASE_THUVIENModel.FK__PHIEU_MUON__MAPH__1332DBDC" FromRole="PHIEU_MUONPHONG" ToRole="PHONGHOP" />
+          <Property Name="GIOTRA" Type="Time" Precision="7" />
+          <Property Name="TINHTRANG" Type="Int32" />
+          <Property Name="GHICHU_NV" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PHIEUMUON">
+          <Key>
+            <PropertyRef Name="MAPM" />
+          </Key>
+          <Property Name="MAPM" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="MATHE" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="MANV" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="NgayMuon" Type="DateTime" Precision="0" />
+          <Property Name="NgayDenHan" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="CHITIETPMs" Relationship="CNPM_DATABASE_THUVIENModel.FK__CHITIETPM__MAPM__7F2BE32F" FromRole="PHIEUMUON" ToRole="CHITIETPM" />
+          <NavigationProperty Name="QLNHANVIEN" Relationship="CNPM_DATABASE_THUVIENModel.FK__PHIEUMUON__MANV__7A672E12" FromRole="PHIEUMUON" ToRole="QLNHANVIEN" />
+          <NavigationProperty Name="THETHUVIEN" Relationship="CNPM_DATABASE_THUVIENModel.FK__PHIEUMUON__MATHE__797309D9" FromRole="PHIEUMUON" ToRole="THETHUVIEN" />
+          <NavigationProperty Name="PHIEUTRAs" Relationship="CNPM_DATABASE_THUVIENModel.FK__PHIEUTRA__MAPM__07C12930" FromRole="PHIEUMUON" ToRole="PHIEUTRA" />
+          <NavigationProperty Name="VIPHAMs" Relationship="CNPM_DATABASE_THUVIENModel.FK__VIPHAM__MAPM__02084FDA" FromRole="PHIEUMUON" ToRole="VIPHAM" />
+          <Property Name="TINHTRANG" Type="Int32" />
+        </EntityType>
+        <Association Name="FK__CHITIETPM__MAPM__7F2BE32F">
+          <End Type="CNPM_DATABASE_THUVIENModel.PHIEUMUON" Role="PHIEUMUON" Multiplicity="1" />
+          <End Type="CNPM_DATABASE_THUVIENModel.CHITIETPM" Role="CHITIETPM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PHIEUMUON">
+              <PropertyRef Name="MAPM" />
+            </Principal>
+            <Dependent Role="CHITIETPM">
+              <PropertyRef Name="MAPM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PHIEU_MUO__MATHE__14270015">
+          <End Type="CNPM_DATABASE_THUVIENModel.THETHUVIEN" Role="THETHUVIEN" Multiplicity="1" />
+          <End Type="CNPM_DATABASE_THUVIENModel.PHIEU_MUONPHONG" Role="PHIEU_MUONPHONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="THETHUVIEN">
+              <PropertyRef Name="MATHE" />
+            </Principal>
+            <Dependent Role="PHIEU_MUONPHONG">
+              <PropertyRef Name="MATHE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PHIEU_MUON__MAPH__1332DBDC">
+          <End Type="CNPM_DATABASE_THUVIENModel.PHONGHOP" Role="PHONGHOP" Multiplicity="1" />
+          <End Type="CNPM_DATABASE_THUVIENModel.PHIEU_MUONPHONG" Role="PHIEU_MUONPHONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PHONGHOP">
+              <PropertyRef Name="MAPHONG" />
+            </Principal>
+            <Dependent Role="PHIEU_MUONPHONG">
+              <PropertyRef Name="MAPH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PHIEUMUON__MANV__7A672E12">
+          <End Type="CNPM_DATABASE_THUVIENModel.QLNHANVIEN" Role="QLNHANVIEN" Multiplicity="1" />
+          <End Type="CNPM_DATABASE_THUVIENModel.PHIEUMUON" Role="PHIEUMUON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QLNHANVIEN">
+              <PropertyRef Name="MANV" />
+            </Principal>
+            <Dependent Role="PHIEUMUON">
+              <PropertyRef Name="MANV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PHIEUMUON__MATHE__797309D9">
+          <End Type="CNPM_DATABASE_THUVIENModel.THETHUVIEN" Role="THETHUVIEN" Multiplicity="1" />
+          <End Type="CNPM_DATABASE_THUVIENModel.PHIEUMUON" Role="PHIEUMUON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="THETHUVIEN">
+              <PropertyRef Name="MATHE" />
+            </Principal>
+            <Dependent Role="PHIEUMUON">
+              <PropertyRef Name="MATHE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PHIEUTRA__MAPM__07C12930">
+          <End Type="CNPM_DATABASE_THUVIENModel.PHIEUMUON" Role="PHIEUMUON" Multiplicity="1" />
+          <End Type="CNPM_DATABASE_THUVIENModel.PHIEUTRA" Role="PHIEUTRA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PHIEUMUON">
+              <PropertyRef Name="MAPM" />
+            </Principal>
+            <Dependent Role="PHIEUTRA">
+              <PropertyRef Name="MAPM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="TINTUC1">
+          <Key>
+            <PropertyRef Name="MaTin" />
+          </Key>
+          <Property Name="MaTin" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TieuDe" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MoTaNgan" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="HinhAnh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="NgayDang" Type="DateTime" Precision="3" />
+          <Property Name="LoaiTin" Type="Int32" />
+          <Property Name="HienThi" Type="Boolean" />
+          <Property Name="Link" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="VIPHAM">
+          <Key>
+            <PropertyRef Name="MAVP" />
+          </Key>
+          <Property Name="MAVP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MAPM" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="MASACH" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="HINHTHUCVP" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CHITIETVP" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SOTIENPHAT" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="NGAYGHINHAN" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="PHIEUMUON" Relationship="CNPM_DATABASE_THUVIENModel.FK__VIPHAM__MAPM__02084FDA" FromRole="VIPHAM" ToRole="PHIEUMUON" />
+        </EntityType>
+        <Association Name="FK__VIPHAM__MAPM__02084FDA">
+          <End Type="CNPM_DATABASE_THUVIENModel.PHIEUMUON" Role="PHIEUMUON" Multiplicity="1" />
+          <End Type="CNPM_DATABASE_THUVIENModel.VIPHAM" Role="VIPHAM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PHIEUMUON">
+              <PropertyRef Name="MAPM" />
+            </Principal>
+            <Dependent Role="VIPHAM">
+              <PropertyRef Name="MAPM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="THAMSO">
+          <Key>
+            <PropertyRef Name="TENTHAMSO" />
+          </Key>
+          <Property Name="TENTHAMSO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="GIATRI" Type="Int32" />
+          <Property Name="MOTA" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CNPM_DATABASE_THUVIENModelStoreContainer" CdmEntityContainer="CNPM_DATABASE_THUVIENEntities">
+          <EntitySetMapping Name="BIASACHes">
+            <EntityTypeMapping TypeName="CNPM_DATABASE_THUVIENModel.BIASACH">
+              <MappingFragment StoreEntitySet="BIASACH">
+                <ScalarProperty Name="URL_ANH" ColumnName="URL_ANH" />
+                <ScalarProperty Name="MASACH" ColumnName="MASACH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CHITIETPMs">
+            <EntityTypeMapping TypeName="CNPM_DATABASE_THUVIENModel.CHITIETPM">
+              <MappingFragment StoreEntitySet="CHITIETPM">
+                <ScalarProperty Name="TINHTRANG" ColumnName="TINHTRANG" />
+                <ScalarProperty Name="TIENTHECHAN" ColumnName="TIENTHECHAN" />
+                <ScalarProperty Name="SLMUON" ColumnName="SLMUON" />
+                <ScalarProperty Name="MASACH" ColumnName="MASACH" />
+                <ScalarProperty Name="MAPM" ColumnName="MAPM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DOCGIAs">
+            <EntityTypeMapping TypeName="CNPM_DATABASE_THUVIENModel.DOCGIA">
+              <MappingFragment StoreEntitySet="DOCGIA">
+                <ScalarProperty Name="MAIL" ColumnName="MAIL" />
+                <ScalarProperty Name="SODT" ColumnName="SODT" />
+                <ScalarProperty Name="DIACHI" ColumnName="DIACHI" />
+                <ScalarProperty Name="LOP" ColumnName="LOP" />
+                <ScalarProperty Name="KHOA" ColumnName="KHOA" />
+                <ScalarProperty Name="TENDG" ColumnName="TENDG" />
+                <ScalarProperty Name="MADG" ColumnName="MADG" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NHAXUATBANs">
+            <EntityTypeMapping TypeName="CNPM_DATABASE_THUVIENModel.NHAXUATBAN">
+              <MappingFragment StoreEntitySet="NHAXUATBAN">
+                <ScalarProperty Name="SDT" ColumnName="SDT" />
+                <ScalarProperty Name="DCHI" ColumnName="DCHI" />
+                <ScalarProperty Name="TENNXB" ColumnName="TENNXB" />
+                <ScalarProperty Name="MAXB" ColumnName="MAXB" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PHIEUTRAs">
+            <EntityTypeMapping TypeName="CNPM_DATABASE_THUVIENModel.PHIEUTRA">
+              <MappingFragment StoreEntitySet="PHIEUTRA">
+                <ScalarProperty Name="TIENPHAT" ColumnName="TIENPHAT" />
+                <ScalarProperty Name="TONG_TIENTHECHAN" ColumnName="TONG_TIENTHECHAN" />
+                <ScalarProperty Name="NGAYTRA" ColumnName="NGAYTRA" />
+                <ScalarProperty Name="MANV" ColumnName="MANV" />
+                <ScalarProperty Name="MAPM" ColumnName="MAPM" />
+                <ScalarProperty Name="MAPT" ColumnName="MAPT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PHONGHOPs">
+            <EntityTypeMapping TypeName="CNPM_DATABASE_THUVIENModel.PHONGHOP">
+              <MappingFragment StoreEntitySet="PHONGHOP">
+                <ScalarProperty Name="TINHTRANG" ColumnName="TINHTRANG" />
+                <ScalarProperty Name="SL_NGUOITOIDA" ColumnName="SL_NGUOITOIDA" />
+                <ScalarProperty Name="VITRI" ColumnName="VITRI" />
+                <ScalarProperty Name="MAPHONG" ColumnName="MAPHONG" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QLNHANVIENs">
+            <EntityTypeMapping TypeName="CNPM_DATABASE_THUVIENModel.QLNHANVIEN">
+              <MappingFragment StoreEntitySet="QLNHANVIEN">
+                <ScalarProperty Name="MAIL" ColumnName="MAIL" />
+                <ScalarProperty Name="SDIENTHOAI" ColumnName="SDIENTHOAI" />
+                <ScalarProperty Name="CHUCVU" ColumnName="CHUCVU" />
+                <ScalarProperty Name="NGSINH" ColumnName="NGSINH" />
+                <ScalarProperty Name="TENNV" ColumnName="TENNV" />
+                <ScalarProperty Name="MANV" ColumnName="MANV" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QLSACHes">
+            <EntityTypeMapping TypeName="CNPM_DATABASE_THUVIENModel.QLSACH">
+              <MappingFragment StoreEntitySet="QLSACH">
+                <ScalarProperty Name="MOTA" ColumnName="MOTA" />
+                <ScalarProperty Name="TINHTRANG" ColumnName="TINHTRANG" />
+                <ScalarProperty Name="SL" ColumnName="SL" />
+                <ScalarProperty Name="NAMXB" ColumnName="NAMXB" />
+                <ScalarProperty Name="MAXB" ColumnName="MAXB" />
+                <ScalarProperty Name="MATHELOAI" ColumnName="MATHELOAI" />
+                <ScalarProperty Name="MATG" ColumnName="MATG" />
+                <ScalarProperty Name="TENSACH" ColumnName="TENSACH" />
+                <ScalarProperty Name="MASACH" ColumnName="MASACH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ROLE_USER">
+            <EntityTypeMapping TypeName="CNPM_DATABASE_THUVIENModel.ROLE_USER">
+              <MappingFragment StoreEntitySet="ROLE_USER">
+                <ScalarProperty Name="DESCRIPT" ColumnName="DESCRIPT" />
+                <ScalarProperty Name="ROLE_NAME" ColumnName="ROLE_NAME" />
+                <ScalarProperty Name="ROLE_ID" ColumnName="ROLE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TACGIAs">
+            <EntityTypeMapping TypeName="CNPM_DATABASE_THUVIENModel.TACGIA">
+              <MappingFragment StoreEntitySet="TACGIA">
+                <ScalarProperty Name="QUOCTICH" ColumnName="QUOCTICH" />
+                <ScalarProperty Name="NGAYSINH" ColumnName="NGAYSINH" />
+                <ScalarProperty Name="TENTG" ColumnName="TENTG" />
+                <ScalarProperty Name="MATG" ColumnName="MATG" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TAIKHOANs">
+            <EntityTypeMapping TypeName="CNPM_DATABASE_THUVIENModel.TAIKHOAN">
+              <MappingFragment StoreEntitySet="TAIKHOAN">
+                <ScalarProperty Name="ROLE_ID" ColumnName="ROLE_ID" />
+                <ScalarProperty Name="PASS" ColumnName="PASS" />
+                <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="THELOAIs">
+            <EntityTypeMapping TypeName="CNPM_DATABASE_THUVIENModel.THELOAI">
+              <MappingFragment StoreEntitySet="THELOAI">
+                <ScalarProperty Name="MOTA" ColumnName="MOTA" />
+                <ScalarProperty Name="TENTHELOAI" ColumnName="TENTHELOAI" />
+                <ScalarProperty Name="MATHELOAI" ColumnName="MATHELOAI" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="THETHUVIENs">
+            <EntityTypeMapping TypeName="CNPM_DATABASE_THUVIENModel.THETHUVIEN">
+              <MappingFragment StoreEntitySet="THETHUVIEN">
+                <ScalarProperty Name="TRANGTHAI" ColumnName="TRANGTHAI" />
+                <ScalarProperty Name="NGAYHETHAN" ColumnName="NGAYHETHAN" />
+                <ScalarProperty Name="NGAYCAP" ColumnName="NGAYCAP" />
+                <ScalarProperty Name="MADG" ColumnName="MADG" />
+                <ScalarProperty Name="MATHE" ColumnName="MATHE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PHIEU_MUONPHONG">
+            <EntityTypeMapping TypeName="CNPM_DATABASE_THUVIENModel.PHIEU_MUONPHONG">
+              <MappingFragment StoreEntitySet="PHIEU_MUONPHONG">
+                <ScalarProperty Name="GHICHU_NV" ColumnName="GHICHU_NV" />
+                <ScalarProperty Name="TINHTRANG" ColumnName="TINHTRANG" />
+                <ScalarProperty Name="GIOTRA" ColumnName="GIOTRA" />
+                <ScalarProperty Name="TIENPHAT" ColumnName="TIENPHAT" />
+                <ScalarProperty Name="MUCDICH" ColumnName="MUCDICH" />
+                <ScalarProperty Name="SL_NGUOITHAMGIA" ColumnName="SL_NGUOITHAMGIA" />
+                <ScalarProperty Name="GIOMUON" ColumnName="GIOMUON" />
+                <ScalarProperty Name="NGAYMUON" ColumnName="NGAYMUON" />
+                <ScalarProperty Name="MAPH" ColumnName="MAPH" />
+                <ScalarProperty Name="MATHE" ColumnName="MATHE" />
+                <ScalarProperty Name="MAPHIEU" ColumnName="MAPHIEU" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PHIEUMUONs">
+            <EntityTypeMapping TypeName="CNPM_DATABASE_THUVIENModel.PHIEUMUON">
+              <MappingFragment StoreEntitySet="PHIEUMUON">
+                <ScalarProperty Name="TINHTRANG" ColumnName="TINHTRANG" />
+                <ScalarProperty Name="NgayDenHan" ColumnName="NgayDenHan" />
+                <ScalarProperty Name="NgayMuon" ColumnName="NgayMuon" />
+                <ScalarProperty Name="MANV" ColumnName="MANV" />
+                <ScalarProperty Name="MATHE" ColumnName="MATHE" />
+                <ScalarProperty Name="MAPM" ColumnName="MAPM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TINTUC1">
+            <EntityTypeMapping TypeName="CNPM_DATABASE_THUVIENModel.TINTUC1">
+              <MappingFragment StoreEntitySet="TINTUC">
+                <ScalarProperty Name="Link" ColumnName="Link" />
+                <ScalarProperty Name="HienThi" ColumnName="HienThi" />
+                <ScalarProperty Name="LoaiTin" ColumnName="LoaiTin" />
+                <ScalarProperty Name="NgayDang" ColumnName="NgayDang" />
+                <ScalarProperty Name="HinhAnh" ColumnName="HinhAnh" />
+                <ScalarProperty Name="MoTaNgan" ColumnName="MoTaNgan" />
+                <ScalarProperty Name="TieuDe" ColumnName="TieuDe" />
+                <ScalarProperty Name="MaTin" ColumnName="MaTin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VIPHAMs">
+            <EntityTypeMapping TypeName="CNPM_DATABASE_THUVIENModel.VIPHAM">
+              <MappingFragment StoreEntitySet="VIPHAM">
+                <ScalarProperty Name="NGAYGHINHAN" ColumnName="NGAYGHINHAN" />
+                <ScalarProperty Name="SOTIENPHAT" ColumnName="SOTIENPHAT" />
+                <ScalarProperty Name="CHITIETVP" ColumnName="CHITIETVP" />
+                <ScalarProperty Name="HINHTHUCVP" ColumnName="HINHTHUCVP" />
+                <ScalarProperty Name="MASACH" ColumnName="MASACH" />
+                <ScalarProperty Name="MAPM" ColumnName="MAPM" />
+                <ScalarProperty Name="MAVP" ColumnName="MAVP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="AUTO_CREATE_ID_TACGIA1" FunctionName="CNPM_DATABASE_THUVIENModel.Store.AUTO_CREATE_ID_TACGIA" />
+          <FunctionImportMapping FunctionImportName="AUTO_ID_DOCGIA1" FunctionName="CNPM_DATABASE_THUVIENModel.Store.AUTO_ID_DOCGIA" />
+          <FunctionImportMapping FunctionImportName="AUTO_ID_NHANVIEN1" FunctionName="CNPM_DATABASE_THUVIENModel.Store.AUTO_ID_NHANVIEN" />
+          <FunctionImportMapping FunctionImportName="AUTO_ID_NXB1" FunctionName="CNPM_DATABASE_THUVIENModel.Store.AUTO_ID_NXB" />
+          <FunctionImportMapping FunctionImportName="AUTO_ID_PHIEUMUONPHONG1" FunctionName="CNPM_DATABASE_THUVIENModel.Store.AUTO_ID_PHIEUMUONPHONG" />
+          <FunctionImportMapping FunctionImportName="AUTO_ID_PHIEUTRA1" FunctionName="CNPM_DATABASE_THUVIENModel.Store.AUTO_ID_PHIEUTRA" />
+          <FunctionImportMapping FunctionImportName="AUTO_ID_PHONG1" FunctionName="CNPM_DATABASE_THUVIENModel.Store.AUTO_ID_PHONG" />
+          <FunctionImportMapping FunctionImportName="AUTO_ID_SACH1" FunctionName="CNPM_DATABASE_THUVIENModel.Store.AUTO_ID_SACH" />
+          <FunctionImportMapping FunctionImportName="AUTO_ID_THELOAI1" FunctionName="CNPM_DATABASE_THUVIENModel.Store.AUTO_ID_THELOAI" />
+          <FunctionImportMapping FunctionImportName="AUTO_ID_THETHUVIEN1" FunctionName="CNPM_DATABASE_THUVIENModel.Store.AUTO_ID_THETHUVIEN" />
+          <EntitySetMapping Name="THAMSOes">
+            <EntityTypeMapping TypeName="CNPM_DATABASE_THUVIENModel.THAMSO">
+              <MappingFragment StoreEntitySet="THAMSO">
+                <ScalarProperty Name="MOTA" ColumnName="MOTA" />
+                <ScalarProperty Name="GIATRI" ColumnName="GIATRI" />
+                <ScalarProperty Name="TENTHAMSO" ColumnName="TENTHAMSO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_REGISTER_DOCGIA" FunctionName="CNPM_DATABASE_THUVIENModel.Store.SP_REGISTER_DOCGIA" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

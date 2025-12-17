@@ -1,0 +1,86 @@
+﻿
+@{
+    ViewBag.Title = "Thêm độc giả";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using QL_ThuVIenHUIT_13.Models
+@model DOCGIA
+
+
+<h3 class="mb-3">➕ THÊM ĐỘC GIẢ</h3>
+
+@using (Html.BeginForm("ThemDocGia", "StaffManager", FormMethod.Post))
+{
+    <div class="card mb-3">
+        <div class="card-header fw-bold">THÔNG TIN ĐỘC GIẢ</div>
+        <div class="card-body">
+
+            <!-- Tên độc giả -->
+            <div class="mb-3">
+                <label class="form-label">Tên độc giả</label>
+                @Html.TextBoxFor(m => m.TENDG, new
+                {
+                    @class = "form-control",
+                    placeholder = "Nhập tên độc giả"
+                })
+            </div>
+
+            <!-- Khoa + Lớp -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Khoa</label>
+                    @Html.TextBoxFor(m => m.KHOA, new
+                    {
+                        @class = "form-control",
+                        placeholder = "Nhập khoa"
+                    })
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Lớp</label>
+                    @Html.TextBoxFor(m => m.LOP, new
+                    {
+                        @class = "form-control",
+                        placeholder = "Nhập lớp"
+                    })
+                </div>
+            </div>
+
+            <!-- Địa chỉ -->
+            <div class="mb-3">
+                <label class="form-label">Địa chỉ</label>
+                @Html.TextBoxFor(m => m.DIACHI, new
+                {
+                    @class = "form-control",
+                    placeholder = "Nhập địa chỉ"
+                })
+            </div>
+
+            <!-- SĐT + Email -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Số điện thoại</label>
+                    @Html.TextBoxFor(m => m.SODT, new
+                    {
+                        @class = "form-control",
+                        placeholder = "Nhập số điện thoại"
+                    })
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Email</label>
+                    @Html.TextBoxFor(m => m.MAIL, new
+                    {
+                        @class = "form-control",
+                        placeholder = "Nhập email"
+                    })
+                </div>
+            </div>
+
+            <!-- Nút -->
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">Lưu</button>
+                @Html.ActionLink("Hủy", "QLDocGia", null, new { @class = "btn btn-secondary ms-2" })
+            </div>
+        </div>
+    </div>
+}

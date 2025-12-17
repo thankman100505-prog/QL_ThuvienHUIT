@@ -1,0 +1,86 @@
+﻿@using QL_ThuVIenHUIT_13.Models
+@model List<THELOAI>
+
+@{
+    string currentAction = ViewContext.RouteData.Values["action"].ToString();
+    string activeMaTL = Request.QueryString["maTL"];
+}
+
+<style>
+    /* (Giữ nguyên CSS cũ của Vy - không cần sửa) */
+    .sidebar-custom {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        overflow: hidden;
+        background-color: #fff;
+    }
+
+    .sidebar-header-gray {
+        background-color: #f0f0f0;
+        color: #333;
+        padding: 12px 15px;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 14px;
+        border-bottom: 1px solid #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .sidebar-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .sidebar-link {
+        display: block;
+        padding: 12px 15px;
+        text-decoration: none;
+        color: #333;
+        font-size: 14px;
+        background-color: #f9f9f9;
+        border-bottom: 1px solid #fff;
+        transition: all 0.2s;
+        border-left: 3px solid transparent;
+    }
+
+        .sidebar-link:hover {
+            background-color: #e9ecef;
+            color: #000;
+            padding-left: 20px;
+        }
+
+        /* Active Style */
+        .sidebar-link.active {
+            background-color: #fff;
+            color: #0d6efd;
+            font-weight: 700;
+            border-left: 3px solid #0d6efd;
+            padding-left: 20px;
+        }
+
+    .item-all {
+        font-weight: 600;
+        background-color: #e9ecef;
+    }
+</style>
+
+<div class="sidebar-custom">
+    <div class="sidebar-header-gray">THỂ LOẠI</div>
+
+    <ul class="sidebar-list">
+        @foreach (var item in Model)
+        {
+            bool isActive = (currentAction == "LocTheLoai" && activeMaTL == item.MATHELOAI);
+
+            <li>
+                <a href="@Url.Action("LocTheLoai", "Sach", new { maTL = item.MATHELOAI })"
+                   class="sidebar-link @(isActive ? "active" : "")">
+                    @item.TENTHELOAI
+                </a>
+            </li>
+        }
+    </ul>
+</div>
