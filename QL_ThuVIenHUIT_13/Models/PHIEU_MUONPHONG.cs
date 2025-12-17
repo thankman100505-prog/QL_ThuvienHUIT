@@ -28,5 +28,6 @@ namespace QL_ThuVIenHUIT_13.Models
     
         public virtual THETHUVIEN THETHUVIEN { get; set; }
         public virtual PHONGHOP PHONGHOP { get; set; }
+        public int TRANGTHAI { get; internal set; }
     }
 }

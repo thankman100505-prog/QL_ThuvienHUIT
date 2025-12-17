@@ -1,8 +1,45 @@
-﻿
+﻿@model QL_ThuVIenHUIT_13.Models.PHIEU_MUONPHONG
+
 @{
-    ViewBag.Title = "XoaDatPhong";
+    ViewBag.Title = "Xóa đặt phòng";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>XoaDatPhong</h2>
+<h2>Xác nhận xóa phiếu đặt phòng</h2>
 
+<p style="color:red; font-weight:bold">
+    Bạn có chắc chắn muốn xóa phiếu đặt phòng này không?
+</p>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <td>Mã phiếu</td>
+        <td>@Model.MAPHIEU</td>
+    </tr>
+    <tr>
+        <td>Phòng</td>
+        <td>@Model.MAPH</td>
+    </tr>
+    <tr>
+        <td>Ngày</td>
+        <td>@Model.NGAYMUON?.ToString("dd/MM/yyyy")</td>
+    </tr>
+    <tr>
+        <td>Giờ</td>
+        <td>@Model.GIOMUON - @Model.GIOTRA</td>
+    </tr>
+</table>
+
+<br />
+
+@using (Html.BeginForm("XacNhanXoa", "Phong", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="id" value="@Model.MAPHIEU" />
+
+    <button type="submit" style="background:red;color:white">
+        Xác nhận xóa
+    </button>
+
+    <a href="@Url.Action("LichSuDatPhong")">Hủy</a>
+}

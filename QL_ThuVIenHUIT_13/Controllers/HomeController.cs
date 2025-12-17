@@ -24,7 +24,7 @@ namespace QL_ThuVIenHUIT_13.Controllers
         public ActionResult Index()
         {
             HomeViewModel model = new HomeViewModel();
-            model.TinTucSuKien = db.TINTUC1
+            model.TinTuc = db.TINTUC1
                                    .Where(x => x.LoaiTin == 1 && x.HienThi == true)
                                    .OrderByDescending(x => x.NgayDang)
                                    .ToList();

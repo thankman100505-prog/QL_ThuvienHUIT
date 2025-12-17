@@ -1,10 +1,11 @@
 ﻿@{
     ViewBag.Title = "Quản lý phòng họp";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    // Ép kiểu an toàn để tránh lỗi Runtime
+
     var dsPhong = ViewBag.DsPhong as List<string> ?? new List<string>();
-    var phongInfo = ViewBag.Phong as QL_ThuVIenHUIT_13.Models.PHONGHOP; // Thay namespace đúng model của cậu
+    var phongInfo = ViewBag.Phong as QL_ThuVIenHUIT_13.Models.PHONGHOP;
 }
+
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -32,11 +33,6 @@
             padding: 5px;
             margin-top: 4px;
         }
-
-    .search-btn {
-        margin-top: 10px;
-        text-align: right;
-    }
 
     .room {
         border: 1px solid #000;
@@ -72,22 +68,25 @@
 <div class="container">
     <h2>Quản lý phòng họp - HUIT</h2>
 
+    <!-- FORM TÌM PHÒNG -->
     <form method="get" action="@Url.Action("Index", "Phong")" class="search-box">
         <label>Chọn phòng cần tra cứu:</label>
         <select name="maPhong" onchange="this.form.submit()">
             <option value="">-- Chọn phòng --</option>
             @foreach (var p in dsPhong)
             {
-                string selected = (Request["maPhong"] == p) ? "selected" : "";
-                <option value="@p" @selected>@p</option>
+                <option value="@p" @(Request["maPhong"] == p ? "selected" : "")>
+                    @p
+                </option>
             }
         </select>
-        <noscript><button type="submit">Tìm kiếm</button></noscript>
     </form>
 
+    <!-- THÔNG TIN PHÒNG -->
     @if (phongInfo != null)
     {
         <div class="room">
+            <h3>Thông tin phòng</h3>
             <table>
                 <tr>
                     <td>Mã phòng</td>
@@ -98,7 +97,7 @@
                     <td>@phongInfo.VITRI</td>
                 </tr>
                 <tr>
-                    <td>Sức chứa tối đa</td>
+                    <td>Sức chứa</td>
                     <td>@phongInfo.SL_NGUOITOIDA người</td>
                 </tr>
                 <tr>
@@ -110,10 +109,19 @@
             </table>
 
             <div style="margin-top:15px; text-align:center;">
-                <a href="@Url.Action("DatPhong", "Phong")"
-                   style="background:#0066cc; color:white; padding:8px 15px; text-decoration:none; border-radius:4px;">
-                    Đặt phòng này ngay
-                </a>
+                @if (phongInfo.TINHTRANG == 1)
+                {
+                    <a href="@Url.Action("DatPhong", "Phong")"
+                       style="background:#0066cc; color:white; padding:8px 15px; text-decoration:none; border-radius:4px;">
+                        Đặt phòng này ngay
+                    </a>
+                }
+                else
+                {
+                    <span style="color:red; font-weight:bold;">
+                        Phòng đang bảo trì – không thể đặt
+                    </span>
+                }
             </div>
         </div>
     }

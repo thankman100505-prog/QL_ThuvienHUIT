@@ -1,0 +1,51 @@
+﻿@model IEnumerable<QL_ThuVIenHUIT_13.Models.PHIEU_MUONPHONG>
+
+@{
+    ViewBag.Title = "Phiếu mượn phòng chờ duyệt";
+}
+
+<h2>Danh sách phiếu mượn phòng chờ duyệt</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Mã phiếu</th>
+        <th>Phòng</th>
+        <th>Ngày mượn</th>
+        <th>Giờ mượn</th>
+        <th>Giờ trả</th>
+        <th>Số người</th>
+        <th>Mục đích</th>
+        <th>Thao tác</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.MAPHIEU</td>
+            <td>@item.PHONGHOP.MAPHONG</td>
+            <td>
+                @(item.NGAYMUON.HasValue
+                ? item.NGAYMUON.Value.ToString("dd/MM/yyyy")
+                : "")
+            </td>
+            <td>@item.GIOMUON</td>
+            <td>@item.GIOTRA</td>
+            <td>@item.SL_NGUOITHAMGIA</td>
+            <td>@item.MUCDICH</td>
+            <td>
+                @using (Html.BeginForm("Duyet", "AdminPhong", FormMethod.Post))
+                {
+                    @Html.Hidden("id", item.MAPHIEU)
+                    <button type="submit" class="btn btn-success btn-sm">Duyệt</button>
+                }
+
+                @using (Html.BeginForm("TuChoi", "AdminPhong", FormMethod.Post))
+                {
+                    @Html.Hidden("id", item.MAPHIEU)
+                    <input type="text" name="ghiChu" placeholder="Lý do" required />
+                    <button type="submit" class="btn btn-danger btn-sm">Từ chối</button>
+                }
+            </td>
+        </tr>
+    }
+</table>
