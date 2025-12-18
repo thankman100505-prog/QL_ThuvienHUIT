@@ -106,7 +106,7 @@
     <div class="row">
 
         <div class="col-lg-3 col-md-4 mb-4">
-            @Html.Action("_SidebarPartial", "Sach")
+            @Html.Action("SidebarPartial", "Sach")
         </div>
 
         <div class="col-lg-9 col-md-8">
@@ -152,12 +152,15 @@
                                 @(!string.IsNullOrEmpty(Model.MOTA) ? Model.MOTA : "Nội dung đang cập nhật")
                             </li>
                         </ul>
-                        <form action="@Url.Action("ThemGioSach", "MuonSach")" method="post">
-                            <input type="hidden" name="maSach" value="@Model.MASACH" />
+                        @using (Html.BeginForm("ThemGioSach", "MuonSach", FormMethod.Post))
+                        {
+                            @Html.Hidden("id", Model.MASACH)
+                            @Html.Hidden("soLuong", 1)
+
                             <button type="submit" class="btn-add-borrow">
                                 <i class="fas fa-cart-plus me-2"></i>Thêm vào danh sách mượn
                             </button>
-                        </form>
+                        }
                     </div>
                 </div>
             </div>

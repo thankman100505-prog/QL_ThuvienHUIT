@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
     <link href="~/Content/Site.css" rel="stylesheet" />
+    @RenderSection("Styles", required: false)
 </head>
 <body>
 
@@ -114,10 +115,14 @@
                                 <li><a href="@Url.Action("MyRooms", "RoomBooking")">LỊCH SỬ ĐẶT PHÒNG</a></li>
                             </ul>
                         </li>
+
+
                     }
                 }
-
+                <li><a href="@Url.Action("Index", "Sach")">Sách</a></li>
                 <li><a href="#">LIÊN HỆ</a></li>
+
+
             </ul>
         </div>
     </div>

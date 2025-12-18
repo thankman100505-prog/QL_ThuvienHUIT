@@ -26,6 +26,12 @@ namespace QL_ThuVIenHUIT_13.Controllers
             return View(query.OrderByDescending(s => s.NAMXB).ToList());
         }
 
+        public ActionResult SidebarPartial()
+        {
+            var List_theloai = db.THELOAIs.ToList();
+            return PartialView("_SidebarPartial", List_theloai);
+        }
+
         public ActionResult ChiTiet(string maSach)
         {
             if (string.IsNullOrEmpty(maSach)) return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);

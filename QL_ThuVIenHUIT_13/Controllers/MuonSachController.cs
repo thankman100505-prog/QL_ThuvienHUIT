@@ -193,7 +193,7 @@ namespace QL_ThuVIenHUIT_13.Controllers
             }
             return View(gs);
         }
-
+        [HttpPost]
         public ActionResult ThemGioSach(string id, int soLuong)
         {
             if (Session["Username"] == null)
@@ -222,7 +222,7 @@ namespace QL_ThuVIenHUIT_13.Controllers
                 {
                     Session["GioSach"] = gs;
                 }
-                return RedirectToAction("ChiTiet", "Sach", new { id = id });
+                return RedirectToAction("ChiTiet", "Sach", new { maSach = id });
             }
 
         }
