@@ -176,5 +176,106 @@ namespace QL_ThuVIenHUIT_13.Controllers
                                      .FirstOrDefault(p => p.MAPM == id);
             return View(phieu);
         }
+
+        //================ GIỎ SÁCH ================
+        public ActionResult TrangGioSach()
+        {
+            // Kiểm tra đăng nhập
+            if (Session["UserName"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
+            GioSach gs = (GioSach)Session["GioSach"];
+            if (gs == null)
+            {
+                gs = new GioSach();
+            }
+            return View(gs);
+        }
+
+        public ActionResult ThemGioSach(string id, int soLuong)
+        {
+            if (Session["Username"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            else
+            {
+                if (soLuong <= 0)
+                {
+                    soLuong = 1;
+                }
+
+                GioSach gs = (GioSach)Session["GioSach"];
+
+                if (gs == null)
+                    gs = new GioSach();
+
+                int them = gs.ThemSach(id, soLuong);
+                if (them != 1)
+                {
+                    ViewBag.Error = "Không thể thêm sách vào giỏ sách!";
+                    return RedirectToAction("ChiTiet", "Sach", new { id = id });
+                }
+                else
+                {
+                    Session["GioSach"] = gs;
+                }
+                return RedirectToAction("ChiTiet", "Sach", new { id = id });
+            }
+
+        }
+
+        public ActionResult Remove_Sach(string id)
+        {
+            GioSach gs = (GioSach)Session["GioSach"];//Lấy thông tin hiện tại 
+            int check = gs.XoaSach(id);
+            if (check != 1)
+            {
+                ViewBag.Error = "Xóa không thành công!";
+                return RedirectToAction("TrangGioSach", "MuonSach");
+            }
+            Session["GioSach"] = gs;//gán lại để lấy trạng thái
+            return RedirectToAction("TrangGioSach", "MuonSach");
+        }
+
+        public ActionResult UpdateQuanity(string id, int thaotac)
+        {
+            GioSach gs = (GioSach)Session["GioSach"];//Lấy trạng thái giỏ hàng hiện tại
+            int check = gs.CapNhatSL(id, thaotac);
+            if (check != 1)
+            {
+                ViewBag.Error = "Cập nhật không thành công!";
+                return RedirectToAction("TrangGioSach", "MuonSach");
+            }
+            Session["GioSach"] = gs;
+            return RedirectToAction("TrangGioSach", "MuonSach");
+        }
+
+        //================ DANH SÁCH SÁCH ĐANG MƯỢN ================
+        public ActionResult SachDangMuon()
+        {
+            string id = Convert.ToString(Session["Username"]);
+            List<string> danhSachMaPhieuDaTra = db.PHIEUTRAs.Select(pt => pt.MAPM).ToList();
+            List<PHIEUMUON> sach_dangmuon = db.PHIEUMUONs.Include(pm => pm.CHITIETPMs)
+                                                          .Include(pm => pm.CHITIETPMs.Select(ct => ct.QLSACH))
+                                                          .Include(pm => pm.CHITIETPMs.Select(ct => ct.QLSACH.TACGIA))
+                                                          .Where(pm => pm.MATHE == id && !danhSachMaPhieuDaTra.Contains(pm.MAPM)).ToList();
+            return View(sach_dangmuon);
+        }
+
+        //================ DANH SÁCH SÁCH ĐÃ MƯỢN ================
+        public ActionResult SachDaMuon()
+        {
+            string id = Convert.ToString(Session["Username"]);
+            List<string> danhSachMaPhieuDaTra = db.PHIEUTRAs.Select(pt => pt.MAPM).ToList();
+            List<PHIEUMUON> sach_damuon = db.PHIEUMUONs.Include(pm => pm.CHITIETPMs)
+                                                          .Include(pm => pm.CHITIETPMs.Select(ct => ct.QLSACH))
+                                                          .Include(pm => pm.CHITIETPMs.Select(ct => ct.QLSACH.TACGIA))
+                                                          .Where(pm => pm.MATHE == id && danhSachMaPhieuDaTra.Contains(pm.MAPM)).ToList();
+            return View(sach_damuon);
+        }
+
     }
 }

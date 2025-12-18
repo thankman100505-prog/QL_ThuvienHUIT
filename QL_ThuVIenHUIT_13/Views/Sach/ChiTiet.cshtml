@@ -152,7 +152,7 @@
                                 @(!string.IsNullOrEmpty(Model.MOTA) ? Model.MOTA : "Nội dung đang cập nhật")
                             </li>
                         </ul>
-                        <form action="@Url.Action("ThemVaoGio", "GioSach")" method="post">
+                        <form action="@Url.Action("ThemGioSach", "MuonSach")" method="post">
                             <input type="hidden" name="maSach" value="@Model.MASACH" />
                             <button type="submit" class="btn-add-borrow">
                                 <i class="fas fa-cart-plus me-2"></i>Thêm vào danh sách mượn

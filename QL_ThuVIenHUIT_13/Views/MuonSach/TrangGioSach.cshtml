@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewBag.Title = "GioSach";
+}
+
+@model QL_ThuVIenHUIT_13.Models.GioSach
+
+<div class="container mt-4">
+    <h2 class="mb-4">Giỏ sách</h2>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr class="table-light">
+                                <th scope="col">Sách</th>
+                                <th scope="col" class="text-center">Tác giả</th>
+                                <th scope="col" class="text-center">Số lượng</th>
+                                <th scope="col" class="text-center">Xóa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.List_Sach)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="@Url.Content("~/Images/"+item.HinhAnh)" class="me-3" alt="@item.TenSach" width="50">
+                                            <span class="fw-bold">@item.TenSach</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">@item.TacGia</td>
+                                    <td class="text-center">
+                                        <a href="@Url.Action("UpdateQuanity", "MuonSach", new {id=item.MaSach,thaotac=2})" class="btn btn-sm btn-outline-danger"
+                                           style="padding: 3px 15px; margin: 3px;">-</a>
+                                        <b>@item.soLuong</b>
+                                        <a href="@Url.Action("UpdateQuanity","MuonSach", new {id=item.MaSach,thaotac=1})" class="btn btn-sm btn-outline-success"
+                                           style="padding: 3px 15px; margin: 3px;">+</a>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="@Url.Action("Remove_Sach","MuonSach", new {id=item.MaSach})" class="btn btn-sm btn-outline-danger">Xóa</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-secondary text-light fw-bold">
+                    Tóm tắt phiếu mượn
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Tổng số lượng sách:</span>
+                        <span class="fw-bold">@Model.TongSL()</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Tổng số tiền thế chân:</span>
+                        <span class="fw-bold">@Model.TongTC()</span>
+                    </div>
+                    <a href="#" class="btn btn-primary w-100 btn-lg">Tiến hành mượn sách</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

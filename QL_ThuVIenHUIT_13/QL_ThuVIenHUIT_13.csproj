@@ -157,6 +157,7 @@
     <Compile Include="Models\DOCGIA.cs">
       <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\GioSach.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\NHAXUATBAN.cs">
       <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
@@ -184,6 +185,7 @@
     <Compile Include="Models\ROLE_USER.cs">
       <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Sach_GioSach.cs" />
     <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
       <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
     </Compile>
@@ -360,6 +362,9 @@
     <Content Include="Views\StaffManager\Edit.cshtml" />
     <Content Include="Views\StaffManager\Rules.cshtml" />
     <Content Include="Views\StaffManager\Stats.cshtml" />
+    <Content Include="Views\MuonSach\TrangGioSach.cshtml" />
+    <Content Include="Views\MuonSach\SachDangMuon.cshtml" />
+    <Content Include="Views\MuonSach\SachDaMuon.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
