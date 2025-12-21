@@ -1,0 +1,64 @@
+﻿@model List<QL_ThuVIenHUIT_13.Models.PHIEUMUON>
+@{
+    ViewBag.Title = "Duyệt mượn sách";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid mt-4">
+    <h2 class="text-primary mb-4"><i class="bi bi-check2-all"></i> DUYỆT ĐĂNG KÝ MƯỢN SÁCH</h2>
+
+    @if (TempData["Success"] != null)
+    {<div class="alert alert-success">@TempData["Success"]</div>}
+    @if (TempData["Error"] != null)
+    {<div class="alert alert-danger">@TempData["Error"]</div>}
+
+    <div class="card shadow">
+        <div class="card-body">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Mã Phiếu</th>
+                        <th>Độc giả (Mã thẻ)</th>
+                        <th>Ngày đăng ký</th>
+                        <th>Chi tiết sách</th>
+                        <th class="text-center">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold">@item.MAPM</td>
+                            <td>
+                                <div>@item.THETHUVIEN.DOCGIA.TENDG</div>
+                                <small class="text-muted">@item.MATHE</small>
+                            </td>
+                            <td>@item.NgayMuon.Value.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>
+                                <ul class="list-unstyled mb-0 small">
+                                    @foreach (var ct in item.CHITIETPMs)
+                                    {
+                                        <li>• @ct.QLSACH.TENSACH (SL: @ct.SLMUON)</li>
+                                    }
+                                </ul>
+                            </td>
+                            <td class="text-center">
+                                @using (Html.BeginForm("XacNhanChoMuon", "StaffManager", new { id = item.MAPM }, FormMethod.Post, new { @class = "d-inline" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-success btn-sm">Cho mượn</button>
+                                }
+
+                                @using (Html.BeginForm("TuChoiPhieuMuon", "StaffManager", new { id = item.MAPM }, FormMethod.Post, new { @class = "d-inline" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Từ chối yêu cầu này?')">Hủy</button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

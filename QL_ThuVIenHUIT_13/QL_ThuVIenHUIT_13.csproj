@@ -122,6 +122,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdminPhongController.cs" />
     <Compile Include="Controllers\MuonSachController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PhongController.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Models\DOCGIA.cs">
       <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\GioSach.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\NHAXUATBAN.cs">
       <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
@@ -184,6 +186,7 @@
     <Compile Include="Models\ROLE_USER.cs">
       <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Sach_GioSach.cs" />
     <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
       <DependentUpon>CNPM_DATABASE_THUVIEN.tt</DependentUpon>
     </Compile>
@@ -364,6 +367,17 @@
     <Content Include="Views\StaffManager\ThemDocGia.cshtml" />
     <Content Include="Views\StaffManager\Xoa_DG.cshtml" />
     <Content Include="Views\StaffManager\Sua_InformDG.cshtml" />
+    <Content Include="Views\StaffManager\QLPhongHop.cshtml" />
+    <Content Include="Views\StaffManager\ThemPhongHop.cshtml" />
+    <Content Include="Views\StaffManager\SuaPhongHop.cshtml" />
+    <Content Include="Views\AdminPhong\ChoDuyet.cshtml" />
+    <Content Include="Views\MuonSach\SachDaMuon.cshtml" />
+    <Content Include="Views\MuonSach\SachDangMuon.cshtml" />
+    <Content Include="Views\MuonSach\TrangGioSach.cshtml" />
+    <Content Include="Views\StaffManager\DuyetMuonSach.cshtml" />
+    <Content Include="Views\StaffManager\TraSach.cshtml" />
+    <Content Include="Views\MuonSach\_SelectedBooks.cshtml" />
+    <Content Include="Views\Sach\NhapSach.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

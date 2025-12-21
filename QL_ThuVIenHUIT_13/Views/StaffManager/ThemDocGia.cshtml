@@ -1,86 +1,76 @@
-﻿
+﻿@model QL_ThuVIenHUIT_13.Models.DOCGIA
 @{
     ViewBag.Title = "Thêm độc giả";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using QL_ThuVIenHUIT_13.Models
-@model DOCGIA
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h3 class="mb-3 text-success"><i class="bi bi-person-plus-fill"></i> THÊM ĐỘC GIẢ MỚI</h3>
 
+            @using (Html.BeginForm("ThemDocGia", "StaffManager", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken() 
 
-<h3 class="mb-3">➕ THÊM ĐỘC GIẢ</h3>
+                <div class="card shadow">
+                    <div class="card-header bg-success text-white fw-bold">
+                        THÔNG TIN CHI TIẾT
+                    </div>
+                    <div class="card-body">
+                        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
 
-@using (Html.BeginForm("ThemDocGia", "StaffManager", FormMethod.Post))
-{
-    <div class="card mb-3">
-        <div class="card-header fw-bold">THÔNG TIN ĐỘC GIẢ</div>
-        <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Tên độc giả <span class="text-danger">*</span></label>
+                            @Html.TextBoxFor(m => m.TENDG, new { @class = "form-control", placeholder = "Nhập tên độc giả" })
+                            @Html.ValidationMessageFor(m => m.TENDG, "", new { @class = "text-danger small" })
+                        </div>
 
-            <!-- Tên độc giả -->
-            <div class="mb-3">
-                <label class="form-label">Tên độc giả</label>
-                @Html.TextBoxFor(m => m.TENDG, new
-                {
-                    @class = "form-control",
-                    placeholder = "Nhập tên độc giả"
-                })
-            </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Khoa</label>
+                                @Html.TextBoxFor(m => m.KHOA, new { @class = "form-control", placeholder = "Nhập khoa" })
+                                @Html.ValidationMessageFor(m => m.KHOA, "", new { @class = "text-danger small" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Lớp</label>
+                                @Html.TextBoxFor(m => m.LOP, new { @class = "form-control", placeholder = "Nhập lớp" })
+                                @Html.ValidationMessageFor(m => m.LOP, "", new { @class = "text-danger small" })
+                            </div>
+                        </div>
 
-            <!-- Khoa + Lớp -->
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label class="form-label">Khoa</label>
-                    @Html.TextBoxFor(m => m.KHOA, new
-                    {
-                        @class = "form-control",
-                        placeholder = "Nhập khoa"
-                    })
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Địa chỉ</label>
+                            @Html.TextBoxFor(m => m.DIACHI, new { @class = "form-control", placeholder = "Nhập địa chỉ" })
+                            @Html.ValidationMessageFor(m => m.DIACHI, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Số điện thoại <span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(m => m.SODT, new { @class = "form-control", placeholder = "0xxxxxxxxx" })
+                                @Html.ValidationMessageFor(m => m.SODT, "", new { @class = "text-danger small" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Email <span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(m => m.MAIL, new { @class = "form-control", placeholder = "example@gmail.com" })
+                                @Html.ValidationMessageFor(m => m.MAIL, "", new { @class = "text-danger small" })
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="text-end">
+                            <a href="@Url.Action("QLDocGia", "StaffManager")" class="btn btn-secondary shadow-sm">
+                                <i class="bi bi-arrow-left"></i> Quay lại
+                            </a>
+                            <button type="submit" class="btn btn-success shadow-sm ms-2">
+                                <i class="bi bi-save"></i> Lưu thông tin
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label">Lớp</label>
-                    @Html.TextBoxFor(m => m.LOP, new
-                    {
-                        @class = "form-control",
-                        placeholder = "Nhập lớp"
-                    })
-                </div>
-            </div>
-
-            <!-- Địa chỉ -->
-            <div class="mb-3">
-                <label class="form-label">Địa chỉ</label>
-                @Html.TextBoxFor(m => m.DIACHI, new
-                {
-                    @class = "form-control",
-                    placeholder = "Nhập địa chỉ"
-                })
-            </div>
-
-            <!-- SĐT + Email -->
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label class="form-label">Số điện thoại</label>
-                    @Html.TextBoxFor(m => m.SODT, new
-                    {
-                        @class = "form-control",
-                        placeholder = "Nhập số điện thoại"
-                    })
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">Email</label>
-                    @Html.TextBoxFor(m => m.MAIL, new
-                    {
-                        @class = "form-control",
-                        placeholder = "Nhập email"
-                    })
-                </div>
-            </div>
-
-            <!-- Nút -->
-            <div class="text-end">
-                <button type="submit" class="btn btn-primary">Lưu</button>
-                @Html.ActionLink("Hủy", "QLDocGia", null, new { @class = "btn btn-secondary ms-2" })
-            </div>
+            }
         </div>
     </div>
-}
+</div>

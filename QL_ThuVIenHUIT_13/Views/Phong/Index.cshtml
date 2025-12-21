@@ -1,11 +1,9 @@
-﻿@using QL_ThuVIenHUIT_13.Models
-
-@{
+﻿@{
     ViewBag.Title = "Quản lý phòng họp";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var dsPhong = ViewBag.DsPhong as List<string> ?? new List<string>();
-    var phongInfo = ViewBag.Phong as PHONGHOP;
+    var phongInfo = ViewBag.Phong as QL_ThuVIenHUIT_13.Models.PHONGHOP;
 }
 
 <style>
@@ -65,51 +63,30 @@
                 width: 45%;
                 font-weight: bold;
             }
-
-    .btn-area {
-        margin-top: 15px;
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-    }
-
-    .btn-custom {
-        padding: 8px 18px;
-        border-radius: 5px;
-        color: white;
-        font-weight: bold;
-        text-decoration: none;
-    }
-
-    .btn-datphong {
-        background: #0d6efd;
-    }
-
-    .btn-lichsu {
-        background: #198754;
-    }
 </style>
 
 <div class="container">
     <h2>Quản lý phòng họp - HUIT</h2>
 
+    <!-- FORM TÌM PHÒNG -->
     <form method="get" action="@Url.Action("Index", "Phong")" class="search-box">
         <label>Chọn phòng cần tra cứu:</label>
         <select name="maPhong" onchange="this.form.submit()">
             <option value="">-- Chọn phòng --</option>
             @foreach (var p in dsPhong)
             {
-                <option value="@p" @(Request["maPhong"] == p ? "selected" : "")>@p</option>
+                <option value="@p" @(Request["maPhong"] == p ? "selected" : "")>
+                    @p
+                </option>
             }
         </select>
-        <noscript><button type="submit">Tìm kiếm</button></noscript>
     </form>
 
+    <!-- THÔNG TIN PHÒNG -->
     @if (phongInfo != null)
     {
         <div class="room">
-            <h3>THÔNG TIN PHÒNG</h3>
-
+            <h3>Thông tin phòng</h3>
             <table>
                 <tr>
                     <td>Mã phòng</td>
@@ -120,7 +97,7 @@
                     <td>@phongInfo.VITRI</td>
                 </tr>
                 <tr>
-                    <td>Sức chứa tối đa</td>
+                    <td>Sức chứa</td>
                     <td>@phongInfo.SL_NGUOITOIDA người</td>
                 </tr>
                 <tr>
@@ -131,17 +108,20 @@
                 </tr>
             </table>
 
-            <div class="btn-area">
+            <div style="margin-top:15px; text-align:center;">
                 @if (phongInfo.TINHTRANG == 1)
                 {
-                    <a href="@Url.Action("DatPhong", "Phong")" class="btn-custom btn-datphong">
-                        Đặt phòng
+                    <a href="@Url.Action("DatPhong", "Phong")"
+                       style="background:#0066cc; color:white; padding:8px 15px; text-decoration:none; border-radius:4px;">
+                        Đặt phòng này ngay
                     </a>
                 }
-
-                <a href="@Url.Action("LichSuDatPhong", "Phong")" class="btn-custom btn-lichsu">
-                    Quản lý phòng họp
-                </a>
+                else
+                {
+                    <span style="color:red; font-weight:bold;">
+                        Phòng đang bảo trì – không thể đặt
+                    </span>
+                }
             </div>
         </div>
     }

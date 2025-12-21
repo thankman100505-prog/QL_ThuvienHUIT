@@ -616,3 +616,84 @@ footer {
             .menu ul li:hover > ul {
                 display: flex;
             }
+
+.user-login .dropdown {
+    position: relative; 
+    display: inline-block;
+}
+
+.user-login .dropdown-menu {
+    display: none;
+    position: absolute;
+    border: none;
+    border-radius: 12px;
+    padding: 8px;
+    min-width: 210px;
+    border: 1px solid #eee;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15) !important;
+    right: 0 !important;
+    left: auto !important;
+    top: 110% !important;
+    margin-top: 0 !important;
+}
+
+.user-login .dropdown.show .dropdown-menu,
+.user-login .dropdown:hover .dropdown-menu {
+    display: block !important;
+}
+
+.user-login .dropdown-item {
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 0.95rem;
+    color: #444;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+}
+
+    .user-login .dropdown-item i {
+        width: 25px; /* Tăng khoảng cách icon */
+        font-size: 1rem;
+        color: #666;
+    }
+
+    .user-login .dropdown-item:hover {
+        background-color: #f0f7ff;
+        color: #0d6efd;
+        transform: translateX(5px);
+    }
+
+    .user-login .dropdown-item.text-danger:hover {
+        background-color: #fff5f5;
+        color: #dc3545;
+    }
+.user-login .dropdown-toggle::after {
+    display: none !important;
+}
+
+.user-login .dropdown-menu::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    right: 15px;
+    width: 12px;
+    height: 12px;
+    background: white;
+    transform: rotate(45deg);
+    border-top: 1px solid #eee;
+    border-left: 1px solid #eee;
+    z-index: -1;
+}
+.user-login .dropdown-menu::after {
+    content: "";
+    position: absolute;
+    top: -15px;
+    left: 0;
+    right: 0;
+    height: 15px;
+    background: transparent; 
+}
+.user-login .dropdown:hover .dropdown-menu {
+    display: block !important;
+}

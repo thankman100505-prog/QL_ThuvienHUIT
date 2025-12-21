@@ -1,134 +1,87 @@
 ﻿@model QL_ThuVIenHUIT_13.Models.PHIEU_MUONPHONG
+@using QL_ThuVIenHUIT_13.Models
+
 @{
-    ViewBag.Title = "Xem Phiếu Đặt Phòng";
+    ViewBag.Title = "Đặt phòng họp";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var dsPhong = ViewBag.DsPhong as List<PHONGHOP>;
 }
 
-<style>
-    body {
-        background: #f2f2f2;
-        font-family: "Times New Roman", serif;
-    }
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h4 class="mb-0 text-uppercase">Đăng ký đặt phòng họp</h4>
+                </div>
 
-    .paper {
-        width: 800px;
-        margin: 40px auto;
-        background: #fff;
-        border: 2px solid #000;
-        padding: 35px 45px;
-    }
+                <div class="card-body p-4">
+                    @using (Html.BeginForm("DatPhong", "Phong", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        .paper h2 {
-            text-align: center;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
+                        <div class="row">
+                            <div class="col-md-6 form-group mb-3">
+                                <label class="fw-bold">Mã thẻ thư viện</label>
+                                @Html.TextBoxFor(m => m.MATHE, new { @class = "form-control", placeholder = "Nhập mã thẻ", required = "required" })
+                            </div>
 
-    .sub-title {
-        text-align: center;
-        font-style: italic;
-        margin-bottom: 30px;
-    }
+                            <div class="col-md-6 form-group mb-3">
+                                <label class="fw-bold">Chọn phòng</label>
+                                <select name="MAPHONG" class="form-control" required>
+                                    <option value="">-- Chọn phòng --</option>
+                                    @if (dsPhong != null)
+                                    {
+                                        foreach (var p in dsPhong)
+                                        {
+                                            <option value="@p.MAPHONG">@p.TENPHONG (@p.MAPHONG)</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
 
-    .info-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 16px;
-    }
+                        <div class="row">
+                            <div class="col-md-4 form-group mb-3">
+                                <label class="fw-bold">Ngày mượn</label>
+                                @Html.TextBoxFor(m => m.NGAYMUON, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", required = "required" })
+                            </div>
 
-        .info-table td {
-            padding: 8px 5px;
-        }
+                            <div class="col-md-4 form-group mb-3">
+                                <label class="fw-bold">Giờ mượn</label>
+                                @Html.TextBoxFor(m => m.GIOMUON, new { @class = "form-control", type = "time", required = "required" })
+                            </div>
 
-            .info-table td:first-child {
-                width: 30%;
-                font-weight: bold;
-            }
+                            <div class="col-md-4 form-group mb-3">
+                                <label class="fw-bold">Giờ trả</label>
+                                @Html.TextBoxFor(m => m.GIOTRA, new { @class = "form-control", type = "time", required = "required" })
+                            </div>
+                        </div>
 
-    .line {
-        border-bottom: 1px dotted #000;
-        padding-bottom: 3px;
-    }
+                        <div class="form-group mb-3">
+                            <label class="fw-bold">Số người tham gia</label>
+                            @Html.TextBoxFor(m => m.SL_NGUOITHAMGIA, new { @class = "form-control", type = "number", min = "1", placeholder = "Ví dụ: 10", required = "required" })
+                        </div>
 
-    .footer {
-        margin-top: 40px;
-        display: flex;
-        justify-content: space-between;
-        text-align: center;
-    }
+                        <div class="form-group mb-4">
+                            <label class="fw-bold">Mục đích sử dụng</label>
+                            @Html.TextAreaFor(m => m.MUCDICH, new { @class = "form-control", rows = "3", placeholder = "Ghi rõ lý do mượn phòng...", required = "required" })
+                        </div>
 
-    .actions {
-        margin-top: 30px;
-        text-align: center;
-    }
+                        <hr />
 
-        .actions button {
-            padding: 8px 22px;
-            font-size: 15px;
-            margin: 0 10px;
-            border-radius: 5px;
-            border: 1px solid #000;
-            background: #eee;
-            cursor: pointer;
-        }
-
-            .actions button:hover {
-                background: #ddd;
-            }
-</style>
-
-<div class="paper">
-    <h2>Phiếu đặt phòng</h2>
-    <div class="sub-title">Xem lại thông tin trước khi xác nhận</div>
-
-    <table class="info-table">
-        <tr><td>Mã thẻ</td><td class="line">@Model.MATHE</td></tr>
-        <tr><td>Phòng</td><td class="line">@Model.MAPH</td></tr>
-        <tr>
-            <td>Ngày mượn</td>
-            <td class="line">@Model.NGAYMUON.Value.ToString("dd/MM/yyyy")</td>
-        </tr>
-        <tr>
-            <td>Thời gian</td>
-            <td class="line">
-                @Model.GIOMUON.Value.ToString(@"hh\:mm") - @Model.GIOTRA.Value.ToString(@"hh\:mm")
-            </td>
-        </tr>
-        <tr><td>Số người</td><td class="line">@Model.SL_NGUOITHAMGIA</td></tr>
-        <tr><td>Mục đích</td><td class="line">@Model.MUCDICH</td></tr>
-    </table>
-
-    <div class="footer">
-        <div><p><b>Người đặt phòng</b></p><p>(Ký, ghi rõ họ tên)</p></div>
-        <div><p><b>Quản lý thư viện</b></p><p>(Xác nhận)</p></div>
-    </div>
-
-    @if (ViewBag.Loi != null)
-    {
-        <p style="color:red; text-align:center; font-weight:bold; margin-top:15px">@ViewBag.Loi</p>
-    }
-
-    <div class="actions">
-        @if (ViewBag.Loi == null)
-        {
-            <form method="post" action="/Phong/XacNhan" style="display:inline">
-                @Html.HiddenFor(m => m.MATHE)
-                @Html.HiddenFor(m => m.MAPH)
-                @Html.HiddenFor(m => m.NGAYMUON)
-                @Html.HiddenFor(m => m.GIOMUON)
-                @Html.HiddenFor(m => m.GIOTRA)
-                @Html.HiddenFor(m => m.SL_NGUOITHAMGIA)
-                @Html.HiddenFor(m => m.MUCDICH)
-                <button type="submit">Xác nhận đặt phòng</button>
-            </form>
-        }
-        else
-        {
-            <button disabled style="opacity:0.6; cursor:not-allowed">Không thể xác nhận</button>
-        }
-
-        <form method="post" action="/Phong/DatPhong" style="display:inline">
-            <button type="submit">Quay lại</button>
-        </form>
+                        <div class="d-flex justify-content-between">
+                            <a href="@Url.Action("Index", "Phong")" class="btn btn-outline-secondary px-4">
+                                <i class="fas fa-arrow-left"></i> Quay lại
+                            </a>
+                            <button type="submit" class="btn btn-primary px-5 fw-bold">
+                                <i class="fas fa-check-circle"></i> Xác nhận đặt phòng
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
 </div>

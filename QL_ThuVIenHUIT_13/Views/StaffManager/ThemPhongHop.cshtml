@@ -1,0 +1,27 @@
+﻿@model QL_ThuVIenHUIT_13.Models.PHONGHOP
+@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<div class="container mt-4">
+    <div class="col-md-6 mx-auto">
+        <h3>➕ THÊM PHÒNG HỌP</h3>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="card p-3 shadow">
+                <div class="mb-3">
+                    <label class="fw-bold">Vị trí</label>
+                    @Html.DropDownListFor(m => m.VITRI, new SelectList(new[] { "Tầng 1", "Tầng 2", "Tầng 3", "Tầng 4" }), "-- Chọn tầng --", new { @class = "form-select" })
+                    @Html.ValidationMessageFor(m => m.VITRI, "", new { @class = "text-danger small" })
+                </div>
+                <div class="mb-3">
+                    <label class="fw-bold">Sức chứa</label>
+                    @Html.TextBoxFor(m => m.SL_NGUOITOIDA, new { @class = "form-control", type = "number", min = "1" })
+                </div>
+                <div class="text-end">
+                    <a href="@Url.Action("QLPhongHop")" class="btn btn-secondary">Hủy</a>
+                    <button type="submit" class="btn btn-success">Lưu</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>

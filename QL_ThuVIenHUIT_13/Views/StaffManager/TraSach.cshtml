@@ -1,0 +1,174 @@
+﻿@model QL_ThuVIenHUIT_13.Models.PHIEUMUON
+@{
+    ViewBag.Title = "Quản lý trả sách";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var dsDangMuon = ViewBag.DsDangMuon as List<QL_ThuVIenHUIT_13.Models.PHIEUMUON>;
+}
+
+<style>
+    .card-custom {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        margin-bottom: 25px;
+    }
+
+    .card-penalty {
+        background-color: #fff5f5;
+        border: 1px solid #feb2b2;
+    }
+
+    .penalty-value {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: #e53e3e;
+    }
+
+    .status-badge {
+        font-size: 0.8rem;
+        padding: 5px 12px;
+        border-radius: 20px;
+    }
+
+    .btn-confirm {
+        background: #e53e3e;
+        border: none;
+        font-weight: bold;
+        padding: 15px;
+        transition: 0.3s;
+    }
+
+        .btn-confirm:hover {
+            background: #c53030;
+            transform: translateY(-2px);
+        }
+
+    .table-modern thead {
+        background: #f8fafc;
+        border-bottom: 2px solid #edf2f7;
+    }
+</style>
+
+<div class="container py-4">
+    <h2 class="text-primary mb-4 fw-bold">QUẢN LÝ TRẢ SÁCH</h2>
+
+    <div class="card card-custom">
+        <div class="card-body p-4">
+            @using (Html.BeginForm("TraSach", "StaffManager", FormMethod.Get))
+            {
+                <div class="input-group">
+                    <input type="text" name="maPM" class="form-control form-control-lg border-end-0" placeholder="Nhập mã phiếu mượn (PM...)" value="@Request.QueryString["maPM"]">
+                    <button class="btn btn-primary px-5 fw-bold" type="submit">TÌM KIẾM PHIẾU</button>
+                </div>
+            }
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success border-0 shadow-sm mb-4">@TempData["Success"]</div>
+    }
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger border-0 shadow-sm mb-4">@ViewBag.Error</div>
+    }
+
+    @if (Model != null)
+    {
+        <div class="row g-4 mb-5">
+            <div class="col-lg-7">
+                <div class="card card-custom h-100">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0 fw-bold">Thông tin chi tiết mượn: <span class="text-primary">@Model.MAPM</span></h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <small class="text-muted d-block text-uppercase">Độc giả</small>
+                                <span class="fw-bold text-dark">@Model.THETHUVIEN.DOCGIA.TENDG (@Model.MATHE)</span>
+                            </div>
+                            <div class="col-6 text-end">
+                                <small class="text-muted d-block text-uppercase">Hạn trả</small>
+                                <span class="fw-bold text-danger">@Model.NgayDenHan.Value.ToString("dd/MM/yyyy")</span>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-sm align-middle">
+                                <thead class="text-muted small">
+                                    <tr>
+                                        <th>TÊN SÁCH</th>
+                                        <th class="text-center">SỐ LƯỢNG</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var ct in Model.CHITIETPMs)
+                                    {
+                                        <tr>
+                                            <td class="py-2">@ct.QLSACH.TENSACH</td>
+                                            <td class="text-center"><span class="badge bg-secondary">@ct.SLMUON</span></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="card card-custom card-penalty h-100 text-center d-flex flex-column justify-content-center p-4">
+                    <div class="text-muted text-uppercase small">Tình trạng quá hạn</div>
+                    <h4 class="fw-bold my-2">Trễ <span class="text-danger">@ViewBag.SoNgayTre</span> Ngày</h4>
+                    <div class="penalty-value mb-4">@String.Format("{0:N0}", ViewBag.TienPhat) <small style="font-size: 1rem">VNĐ</small></div>
+
+                    @using (Html.BeginForm("XacNhanTraSach", "StaffManager", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="maPM" value="@Model.MAPM" />
+                        <input type="hidden" name="tienPhat" value="@ViewBag.TienPhat" />
+                        <button type="submit" class="btn btn-confirm text-white w-100 shadow-sm py-3 mt-auto">
+                            XÁC NHẬN TRẢ & THU TIỀN
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="card card-custom overflow-hidden">
+        <div class="card-header bg-white py-3 border-0">
+            <h6 class="mb-0 fw-bold text-muted text-uppercase">Danh sách phiếu đang mượn sách</h6>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover table-modern mb-0 align-middle">
+                <thead>
+                    <tr>
+                        <th class="ps-4">MÃ PHIẾU</th>
+                        <th>ĐỘC GIẢ</th>
+                        <th>HẠN TRẢ</th>
+                        <th class="text-center">THAO TÁC</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in dsDangMuon)
+                    {
+                        <tr>
+                            <td class="ps-4 fw-bold text-primary">@p.MAPM</td>
+                            <td>@p.THETHUVIEN.DOCGIA.TENDG</td>
+                            <td>
+                                <span class="@(DateTime.Now > p.NgayDenHan ? "text-danger fw-bold" : "text-dark")">
+                                    @p.NgayDenHan.Value.ToString("dd/MM/yyyy")
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <a href="@Url.Action("TraSach", "StaffManager", new { maPM = p.MAPM })" class="btn btn-sm btn-outline-primary rounded-pill px-4">
+                                    Chọn phiếu
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

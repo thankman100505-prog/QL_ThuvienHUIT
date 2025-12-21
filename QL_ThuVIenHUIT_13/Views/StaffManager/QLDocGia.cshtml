@@ -1,59 +1,55 @@
-﻿
+﻿@model List<QL_ThuVIenHUIT_13.Models.DOCGIA>
 @{
     ViewBag.Title = "Quản lý độc giả";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using QL_ThuVIenHUIT_13.Models
-@model List<DOCGIA>
-
-<h2 class="mb-3"> QUẢN LÝ ĐỘC GIẢ</h2>
-
-<p>
-    @Html.ActionLink("➕ Thêm độc giả", "ThemDocGia","StaffManager", null, new { @class = "btn btn-success mb-2" })
-</p>
-
-<table class="table table-bordered table-hover text-center align-middle">
-    <thead class="table-dark">
-        <tr>
-            <th>Mã ĐG</th>
-            <th>Tên độc giả</th>
-            <th>Khoa</th>
-            <th>Lớp</th>
-            <th>Địa chỉ</th>
-            <th>SĐT</th>
-            <th>Email</th>
-            <th>Thao tác</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.MADG</td>
-                <td>@item.TENDG</td>
-                <td>@item.KHOA</td>
-                <td>@item.LOP</td>
-                <td>@item.DIACHI</td>
-                <td>@item.SODT</td>
-                <td>@item.MAIL</td>
-                <td class="text-center">
-                    <div class="d-flex justify-content-center gap-2">
-                        <a href="@Url.Action("Sua_InformDG", "StaffManager", new { id = item.MADG })"
-                           class="btn btn-warning btn-sm" title="Sửa">
-                            <i class="bi bi-pencil-square"></i>
-                        </a>
-
-                        <a href="@Url.Action("Xoa_DG", "StaffManager", new { id = item.MADG })"
-                           class="btn btn-danger btn-sm"
-                           title="Xóa">
-                            <i class="bi bi-trash"></i>
-                        </a>
-                    </div>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="text-primary"><i class="bi bi-people-fill"></i> QUẢN LÝ ĐỘC GIẢ</h2>
+        <a href="@Url.Action("ThemDocGia", "StaffManager")" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Thêm độc giả mới
+        </a>
+    </div>
+    <div class="card shadow">
+        <div class="card-body">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Mã ĐG</th>
+                        <th>Tên độc giả</th>
+                        <th>Khoa / Lớp</th>
+                        <th>Liên hệ (SĐT/Email)</th>
+                        <th class="text-center">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold">@item.MADG</td>
+                            <td>@item.TENDG</td>
+                            <td><small>@item.KHOA <br /> @item.LOP</small></td>
+                            <td>
+                                <i class="bi bi-telephone"></i> @item.SODT <br />
+                                <i class="bi bi-envelope"></i> @item.MAIL
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    <a href="@Url.Action("Sua_InformDG", "StaffManager", new { id = item.MADG })"
+                                       class="btn btn-outline-warning btn-sm">
+                                        <i class="bi bi-pencil"></i> Sửa
+                                    </a>
+                                    <a href="@Url.Action("Xoa_DG", "StaffManager", new { id = item.MADG })"
+                                       class="btn btn-outline-danger btn-sm">
+                                        <i class="bi bi-trash"></i> Xóa
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

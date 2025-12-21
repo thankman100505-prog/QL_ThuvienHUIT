@@ -11,170 +11,202 @@ namespace QL_ThuVIenHUIT_13.Controllers
     public class MuonSachController : Controller
     {
         private CNPM_DATABASE_THUVIENEntities db = new CNPM_DATABASE_THUVIENEntities();
+
         public ActionResult Index()
         {
-            if (Session["User_info"] == null || Session["Role"] == null)
-                return RedirectToAction("SignIn", "User");
+            if (Session["User_info"] == null) return RedirectToAction("SignIn", "User");
 
-            if (Session["DsSachMuon"] == null)
-            {
-                Session["DsSachMuon"] = new List<SachMuonTam>();
-            }
-            return View();
+            if (Session["DsSachMuon"] == null) Session["DsSachMuon"] = new List<SachMuonTam>();
+            var dsSach = db.QLSACHes.Include(s => s.TACGIA)
+                                    .Where(s => s.TINHTRANG > 0)
+                                    .OrderBy(s => s.TENSACH)
+                                    .Take(15).ToList();
+            return View(dsSach);
         }
+
         [HttpGet]
         public JsonResult TimKiemSach(string tuKhoa)
         {
             db.Configuration.ProxyCreationEnabled = false;
-            var query = db.QLSACHes.AsQueryable();
-
-            if (!string.IsNullOrEmpty(tuKhoa))
-            {
-                query = query.Where(s => s.TENSACH.Contains(tuKhoa) || s.MASACH.Contains(tuKhoa));
-            }
-            var data = query.Where(s => s.TINHTRANG > 0)
-                            .OrderBy(s => s.TENSACH)
+            var data = db.QLSACHes.Where(s => (s.TENSACH.Contains(tuKhoa) || s.MASACH.Contains(tuKhoa)) && s.TINHTRANG > 0)
                             .Take(20)
-                            .Select(s => new {
-                                s.MASACH,
-                                s.TENSACH,
-                                SL_TON = s.TINHTRANG, 
-                                TENTG = s.TACGIA.TENTG
-                            }).ToList();
-
+                            .Select(s => new { s.MASACH, s.TENSACH, SL_TON = s.TINHTRANG, TENTG = s.TACGIA.TENTG })
+                            .ToList();
             return Json(new { data = data }, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         public JsonResult ThemSachAjax(string maSach)
         {
-            try
-            {
-                var lst = Session["DsSachMuon"] as List<SachMuonTam>;
-                if (lst == null) lst = new List<SachMuonTam>();
+            var lst = Session["DsSachMuon"] as List<SachMuonTam> ?? new List<SachMuonTam>();
+            var sach = db.QLSACHes.Find(maSach);
+            if (sach == null || (sach.TINHTRANG ?? 0) < 1)
+                return Json(new { status = false, msg = "Sách không khả dụng!" });
 
-                var sach = db.QLSACHes.Find(maSach);
-                if (sach == null) return Json(new { status = false, msg = "Không tìm thấy sách!" });
-                if ((sach.TINHTRANG ?? 0) < 1) return Json(new { status = false, msg = "Sách này đã hết!" });
-                var item = lst.FirstOrDefault(x => x.MaSach == maSach);
-                if (item != null)
-                {
-                    if (item.SoLuong >= sach.TINHTRANG)
-                    {
-                        return Json(new { status = false, msg = "Số lượng mượn vượt quá tồn kho!" });
-                    }
-                    item.SoLuong++;
-                }
-                else
-                {
-                    lst.Add(new SachMuonTam
-                    {
-                        MaSach = sach.MASACH,
-                        TenSach = sach.TENSACH,
-                        SoLuong = 1,
-                        TienTheChan = 0 
-                    });
-                }
+            var item = lst.FirstOrDefault(x => x.MaSach == maSach);
+            if (item != null) item.SoLuong++;
+            else lst.Add(new SachMuonTam { MaSach = sach.MASACH, TenSach = sach.TENSACH, SoLuong = 1, TienTheChan = 10000 });
 
-                Session["DsSachMuon"] = lst;
-                return Json(new { status = true, msg = "Đã thêm thành công!" });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { status = false, msg = ex.Message });
-            }
+            Session["DsSachMuon"] = lst;
+            return Json(new { status = true, msg = "Đã thêm!" });
         }
         [HttpPost]
         public JsonResult KiemTraDocGia(string maThe)
         {
-            var the = db.THETHUVIENs.Include(t => t.DOCGIA).FirstOrDefault(t => t.MATHE == maThe);
-            if (the != null)
+            try
             {
+                var the = db.THETHUVIENs.Include(t => t.DOCGIA).FirstOrDefault(t => t.MATHE == maThe);
+                if (the == null) return Json(new { status = false, message = "Mã thẻ không tồn tại!" });
+
                 bool conHan = the.NGAYHETHAN >= DateTime.Now;
-                return Json(new
-                {
-                    status = true,
-                    ten = the.DOCGIA.TENDG,
-                    trangThai = conHan ? "Hợp lệ" : "Hết hạn",
-                    isValid = conHan
-                });
+                return Json(new { status = true, ten = the.DOCGIA.TENDG, trangThai = conHan ? "Hợp lệ" : "Hết hạn", isValid = conHan });
             }
-            return Json(new { status = false, message = "Mã thẻ không tồn tại!" });
+            catch (Exception ex)
+            {
+                return Json(new { status = false, message = "Lỗi hệ thống: " + ex.Message });
+            }
         }
-        public ActionResult XoaSach(string maSach)
+
+        public ActionResult GetSelectedBooks()
+        {
+            return PartialView("_SelectedBooks");
+        }
+        [HttpPost]
+        public JsonResult XoaSachAjax(string maSach)
         {
             var lst = Session["DsSachMuon"] as List<SachMuonTam>;
             if (lst != null)
             {
                 var item = lst.FirstOrDefault(x => x.MaSach == maSach);
                 if (item != null) lst.Remove(item);
+                Session["DsSachMuon"] = lst;
             }
-            return RedirectToAction("Index");
+            return Json(new { status = true });
         }
         [HttpPost]
         public ActionResult LuuPhieu(string maThe)
         {
             var lst = Session["DsSachMuon"] as List<SachMuonTam>;
-            if (lst == null || lst.Count == 0)
-            {
-                return Content("<script>alert('Chưa chọn sách nào!'); window.location.href='/MuonSach/Index';</script>");
-            }
-            string maNV = "";
-            if (Session["User_info"] is QLNHANVIEN nv) maNV = nv.MANV;
-            else maNV = "ADMIN";
+            if (lst == null || !lst.Any()) return Content("<script>alert('Giỏ trống!'); window.location.href='/MuonSach/Index';</script>");
 
-            using (var transaction = db.Database.BeginTransaction())
+            string maNV = (Session["User_info"] is QLNHANVIEN nv) ? nv.MANV : "ADMIN";
+            using (var dbTransaction = db.Database.BeginTransaction())
             {
                 try
                 {
-                    PHIEUMUON pm = new PHIEUMUON();
-                    pm.MAPM = DataHelper.GenerateNewID(db, "PHIEUMUON", "MAPM", "PM", 5);
-                    pm.MATHE = maThe;
-                    pm.MANV = maNV;
-                    pm.NgayMuon = DateTime.Now;
-                    pm.NgayDenHan = DateTime.Now.AddDays(7);
-                    pm.TINHTRANG = 0; 
-
+                    PHIEUMUON pm = new PHIEUMUON
+                    {
+                        MAPM = DataHelper.GenerateNewID(db, "PHIEUMUON", "MAPM", "PM", 5),
+                        MATHE = maThe,
+                        MANV = maNV,
+                        NgayMuon = DateTime.Now,
+                        NgayDenHan = DateTime.Now.AddDays(7),
+                        TINHTRANG = 1
+                    };
                     db.PHIEUMUONs.Add(pm);
-                    db.SaveChanges(); 
                     foreach (var item in lst)
                     {
-
-                        CHITIETPM ct = new CHITIETPM();
-                        ct.MAPM = pm.MAPM;
-                        ct.MASACH = item.MaSach;
-                        ct.SLMUON = item.SoLuong;
-                        ct.TIENTHECHAN = item.TienTheChan;
-                        ct.TINHTRANG = 0; 
-
-                        db.CHITIETPMs.Add(ct);
-                        var sach = db.QLSACHes.Find(item.MaSach);
-                        if (sach != null)
+                        db.CHITIETPMs.Add(new CHITIETPM
                         {
-                            sach.TINHTRANG = (sach.TINHTRANG ?? 0) - item.SoLuong;
-                            if (sach.TINHTRANG < 0) throw new Exception("Sách " + sach.TENSACH + " không đủ số lượng!");
-                        }
+                            MAPM = pm.MAPM,
+                            MASACH = item.MaSach,
+                            SLMUON = item.SoLuong,
+                            TIENTHECHAN = (decimal)(item.TienTheChan * item.SoLuong),
+                            TINHTRANG = 0
+                        });
+                        var s = db.QLSACHes.Find(item.MaSach);
+                        s.TINHTRANG -= item.SoLuong;
                     }
-
                     db.SaveChanges();
-                    transaction.Commit();
+                    dbTransaction.Commit();
                     Session["DsSachMuon"] = null;
                     return RedirectToAction("ChiTietPhieu", new { id = pm.MAPM });
                 }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    return Content("<script>alert('Lỗi: " + ex.Message + "'); window.location.href='/MuonSach/Index';</script>");
-                }
+                catch (Exception ex) { dbTransaction.Rollback(); return Content("Lỗi: " + ex.Message); }
             }
         }
 
+        [HttpPost]
+        public ActionResult ThemGioSach(string id, int soLuong = 1)
+        {
+            if (Session["UserName"] == null) return RedirectToAction("SignIn", "User");
+            GioSach gs = (GioSach)Session["GioSach"] ?? new GioSach();
+            if (gs.ThemSach(id, soLuong) == 1) Session["GioSach"] = gs;
+            return RedirectToAction("ChiTiet", "Sach", new { maSach = id });
+        }
+
+        public ActionResult TrangGioSach()
+        {
+            if (Session["UserName"] == null) return RedirectToAction("SignIn", "User");
+            return View((GioSach)Session["GioSach"] ?? new GioSach());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult XacNhanMuon()
+        {
+            if (Session["UserName"] == null) return RedirectToAction("SignIn", "User");
+            GioSach gs = (GioSach)Session["GioSach"];
+            if (gs == null || !gs.List_Sach.Any()) return RedirectToAction("TrangGioSach");
+
+            using (var dbTransaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    PHIEUMUON pm = new PHIEUMUON
+                    {
+                        MAPM = DataHelper.GenerateNewID(db, "PHIEUMUON", "MAPM", "PM", 5),
+                        MATHE = Session["UserName"].ToString(),
+                        MANV = null, 
+                        NgayMuon = DateTime.Now,
+                        NgayDenHan = DateTime.Now.AddDays(7),
+                        TINHTRANG = -1
+                    };
+                    db.PHIEUMUONs.Add(pm);
+                    foreach (var item in gs.List_Sach)
+                    {
+                        db.CHITIETPMs.Add(new CHITIETPM
+                        {
+                            MAPM = pm.MAPM,
+                            MASACH = item.MaSach,
+                            SLMUON = item.soLuong,
+                            TIENTHECHAN = (decimal)(item.TienTheChan * item.soLuong),
+                            TINHTRANG = 0
+                        });
+                    }
+                    db.SaveChanges();
+                    dbTransaction.Commit();
+                    Session["GioSach"] = null;
+                    return RedirectToAction("ChiTietPhieu", new { id = pm.MAPM });
+                }
+                catch (Exception ex) { dbTransaction.Rollback(); return RedirectToAction("TrangGioSach"); }
+            }
+        }
         public ActionResult ChiTietPhieu(string id)
         {
-            var phieu = db.PHIEUMUONs.Include("THETHUVIEN.DOCGIA")
-                                     .Include("QLNHANVIEN")
-                                     .Include("CHITIETPMs.QLSACH")
-                                     .FirstOrDefault(p => p.MAPM == id);
+            var phieu = db.PHIEUMUONs.Include(p => p.THETHUVIEN.DOCGIA).Include(p => p.QLNHANVIEN)
+                          .Include("CHITIETPMs.QLSACH.TACGIA")
+                          .FirstOrDefault(p => p.MAPM == id);
             return View(phieu);
+        }
+
+        public ActionResult SachDangMuon()
+        {
+            string id = Convert.ToString(Session["UserName"]);
+            var phieuTra = db.PHIEUTRAs.Select(pt => pt.MAPM).ToList();
+            var data = db.PHIEUMUONs.Include(pm => pm.CHITIETPMs).Include("CHITIETPMs.QLSACH.BIASACH")
+                         .Where(pm => pm.MATHE == id && !phieuTra.Contains(pm.MAPM)).ToList();
+            return View(data);
+        }
+
+        public ActionResult SachDaMuon()
+        {
+            string id = Convert.ToString(Session["UserName"]);
+            var phieuTra = db.PHIEUTRAs.Select(pt => pt.MAPM).ToList();
+            var data = db.PHIEUMUONs.Include(pm => pm.CHITIETPMs).Include(pm => pm.QLNHANVIEN)
+                         .Include("CHITIETPMs.QLSACH.BIASACH").Include("CHITIETPMs.QLSACH.TACGIA")
+                         .Where(pm => pm.MATHE == id && phieuTra.Contains(pm.MAPM)).ToList();
+            return View(data);
         }
     }
 }

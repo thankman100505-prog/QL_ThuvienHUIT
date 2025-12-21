@@ -1,21 +1,45 @@
-﻿
-@model QL_ThuVIenHUIT_13.Models.DOCGIA
+﻿@model QL_ThuVIenHUIT_13.Models.DOCGIA
+@{
+    ViewBag.Title = "Xác nhận xóa độc giả";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-<h3 class="text-danger">⚠️ XÁC NHẬN XÓA ĐỘC GIẢ</h3>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-danger shadow">
+                <div class="card-header bg-danger text-white fw-bold">
+                    <i class="bi bi-exclamation-triangle-fill"></i> XÁC NHẬN XÓA ĐỘC GIẢ
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <i class="bi bi-info-circle"></i>
+                        <strong>Lưu ý:</strong> Nếu độc giả này đã có lịch sử mượn sách hoặc mượn phòng, hệ thống sẽ <b>khóa thẻ</b> thay vì xóa hoàn toàn để giữ lại dữ liệu thống kê.
+                    </div>
 
-<div class="card">
-    <div class="card-body">
-        <p><b>Mã ĐG:</b> @Model.MADG</p>
-        <p><b>Tên:</b> @Model.TENDG</p>
-        <p><b>Khoa:</b> @Model.KHOA</p>
+                    <ul class="list-group list-group-flush mb-4">
+                        <li class="list-group-item"><b>Mã độc giả:</b> <span class="text-primary">@Model.MADG</span></li>
+                        <li class="list-group-item"><b>Tên độc giả:</b> @Model.TENDG</li>
+                        <li class="list-group-item"><b>Khoa/Lớp:</b> @Model.KHOA - @Model.LOP</li>
+                        <li class="list-group-item"><b>Email:</b> @Model.MAIL</li>
+                    </ul>
 
-        @using (Html.BeginForm("Xoa_DG_Confi", "StaffManager", FormMethod.Post))
-        {
-            @Html.Hidden("id", Model.MADG)
+                    @using (Html.BeginForm("Xoa_DG_Confi", "StaffManager", new { id = Model.MADG }, FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.MADG)
 
-            <button type="submit" class="btn btn-danger">Xóa</button>
-            @Html.ActionLink("Hủy", "QLDocGia", null, new { @class = "btn btn-secondary ms-2" })
-        }
+                        <div class="text-end">
+                            <a href="@Url.Action("QLDocGia", "StaffManager")" class="btn btn-secondary shadow-sm">
+                                <i class="bi bi-x-circle"></i> Hủy bỏ
+                            </a>
+                            <button type="submit" class="btn btn-danger shadow-sm ms-2">
+                                <i class="bi bi-trash"></i> Đồng ý xóa
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-

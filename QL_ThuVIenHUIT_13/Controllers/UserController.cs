@@ -141,7 +141,7 @@ namespace QL_ThuVIenHUIT_13.Controllers
                 }
 
                 ViewBag.Mathe = newMaThe;
-                return View("RegisterSuccess", "User");
+                return View("RegisterSuccess");
             }
             catch (Exception ex)
             {

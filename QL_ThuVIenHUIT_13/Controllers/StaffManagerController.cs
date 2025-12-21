@@ -1,13 +1,16 @@
-﻿using QL_ThuVIenHUIT_13.Helpers;
+﻿using OfficeOpenXml;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
+using OfficeOpenXml.Style;
+using QL_ThuVIenHUIT_13.Helpers;
 using QL_ThuVIenHUIT_13.Models;
 using System;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
-using OfficeOpenXml;
-using OfficeOpenXml.Style;
 namespace QL_ThuVIenHUIT_13.Controllers
 {
     public class StaffManagerController : Controller
@@ -63,7 +66,10 @@ namespace QL_ThuVIenHUIT_13.Controllers
                 }
                 catch (Exception ex)
                 {
-                    ViewBag.Error = "Lỗi hệ thống: " + ex.Message;
+                    var innerMessage = ex.InnerException != null && ex.InnerException.InnerException != null
+                                       ? ex.InnerException.InnerException.Message
+                                       : ex.Message;
+                    ModelState.AddModelError("", "Lỗi: " + innerMessage);
                 }
             }
             return View(nv);
@@ -173,7 +179,7 @@ namespace QL_ThuVIenHUIT_13.Controllers
                     TempData["Error"] = "Lỗi: " + ex.Message;
                 }
             }
-            return RedirectToAction("Rules","StaffManager");
+            return RedirectToAction("Rules", "StaffManager");
         }
         public ActionResult Stats(DateTime? fromDate, DateTime? toDate, int? year, int? quarter, int? month)
         {
@@ -369,30 +375,69 @@ namespace QL_ThuVIenHUIT_13.Controllers
                 return File(stream, contentType, fileName);
             }
         }
-
-        //Quản lý độc giả
         public ActionResult QLDocGia()
         {
             var dsDG = db.DOCGIAs.ToList();
             return View(dsDG);
         }
 
-        //Thêm độc giả + hàm bổ trở generate mã độc giả 
         public ActionResult ThemDocGia()
         {
             return View();
         }
-        
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult ThemDocGia(DOCGIA dg)
         {
-            dg.MADG = SinhMaDocGia();
-            db.DOCGIAs.Add(dg);
-            db.SaveChanges();
-            return RedirectToAction("QLDocGia");
-        }
+            if (!string.IsNullOrEmpty(dg.SODT) && !Regex.IsMatch(dg.SODT, @"^0[0-9]{9}$"))
+                ModelState.AddModelError("SODT", "Số điện thoại phải có 10 chữ số và bắt đầu bằng số 0.");
 
-        //hàm bổ trợ
+            if (!string.IsNullOrEmpty(dg.MAIL) && !Regex.IsMatch(dg.MAIL, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                ModelState.AddModelError("MAIL", "Địa chỉ Email không đúng định dạng.");
+            if (db.DOCGIAs.Any(x => x.SODT == dg.SODT))
+            {
+                ModelState.AddModelError("SODT", "Số điện thoại này đã tồn tại trong hệ thống.");
+            }
+
+            if (db.DOCGIAs.Any(x => x.MAIL == dg.MAIL))
+            {
+                ModelState.AddModelError("MAIL", "Email này đã tồn tại trong hệ thống.");
+            }
+            if (ModelState.IsValid)
+            {
+                using (var transaction = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        dg.MADG = SinhMaDocGia(); 
+                        db.DOCGIAs.Add(dg);
+                        db.SaveChanges();
+                        var card = new THETHUVIEN
+                        {
+                            MATHE = "TH" + dg.MADG.Substring(2),
+                            MADG = dg.MADG,
+                            NGAYCAP = DateTime.Now,
+                            NGAYHETHAN = DateTime.Now.AddYears(2),
+                            TRANGTHAI = "Hoạt động"
+                        };
+                        db.THETHUVIENs.Add(card);
+                        db.SaveChanges();
+
+                        transaction.Commit();
+                        TempData["Success"] = "Thêm độc giả thành công!";
+                        return RedirectToAction("QLDocGia");
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        ModelState.AddModelError("", "Lỗi hệ thống: " + ex.Message);
+                    }
+                }
+            }
+
+            return View(dg);
+        }
         private string SinhMaDocGia()
         {
             var last_DocGiaID = db.DOCGIAs.OrderByDescending(x => x.MADG).Select(x => x.MADG).FirstOrDefault();
@@ -401,29 +446,54 @@ namespace QL_ThuVIenHUIT_13.Controllers
             return "DG" + next.ToString("D5");
         }
 
-        //xóa đọc giả
-        // XÓA ĐỘC GIẢ
         public ActionResult Xoa_DG(string id)
         {
             var dg = db.DOCGIAs.FirstOrDefault(x => x.MADG == id);
             if (dg == null) return HttpNotFound();
-
             return View(dg);
         }
 
         [HttpPost]
         public ActionResult Xoa_DG_Confi(string id)
         {
-            var dg = db.DOCGIAs.FirstOrDefault(x => x.MADG == id);
-            if (dg != null)
+            try
             {
+                var dg = db.DOCGIAs.Find(id);
+                if (dg == null) return HttpNotFound();
+                bool hasHistory = db.THETHUVIENs.Any(t => t.MADG == id &&
+                                 (db.PHIEUMUONs.Any(p => p.MATHE == t.MATHE) ||
+                                  db.PHIEU_MUONPHONG.Any(mp => mp.MATHE == t.MATHE)));
+
+                if (hasHistory)
+                {
+                    var the = db.THETHUVIENs.FirstOrDefault(t => t.MADG == id);
+                    if (the != null) the.TRANGTHAI = "Bị khóa";
+                    db.SaveChanges();
+
+                    TempData["Error"] = "Độc giả này đã có lịch sử giao dịch. Hệ thống đã chuyển trạng thái thẻ sang 'Bị khóa' thay vì xóa!";
+                    return RedirectToAction("QLDocGia");
+                }
+
+                var theTG = db.THETHUVIENs.FirstOrDefault(t => t.MADG == id);
+                if (theTG != null)
+                {
+                    var acc = db.TAIKHOANs.Find(theTG.MATHE);
+                    if (acc != null) db.TAIKHOANs.Remove(acc);
+
+                    db.THETHUVIENs.Remove(theTG);
+                }
+
                 db.DOCGIAs.Remove(dg);
                 db.SaveChanges();
+
+                TempData["Success"] = "Đã xóa độc giả và tài khoản liên quan.";
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Lỗi khi xóa: " + ex.Message;
             }
             return RedirectToAction("QLDocGia");
         }
-
-        //sửa độc giả
         public ActionResult Sua_InformDG(string id)
         {
             var dg = db.DOCGIAs.FirstOrDefault(x => x.MADG == id);
@@ -433,20 +503,285 @@ namespace QL_ThuVIenHUIT_13.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Sua_InformDG(DOCGIA dg)
         {
             var old = db.DOCGIAs.FirstOrDefault(x => x.MADG == dg.MADG);
             if (old == null) return HttpNotFound();
 
-            old.TENDG = dg.TENDG;
-            old.KHOA = dg.KHOA;
-            old.LOP = dg.LOP;
-            old.DIACHI = dg.DIACHI;
-            old.SODT = dg.SODT;
-            old.MAIL = dg.MAIL;
+            if (!string.IsNullOrEmpty(dg.SODT) && !Regex.IsMatch(dg.SODT, @"^0[0-9]{9}$"))
+            {
+                ModelState.AddModelError("SODT", "Số điện thoại phải có 10 chữ số và bắt đầu bằng số 0.");
+            }
+            if (!string.IsNullOrEmpty(dg.MAIL) && !Regex.IsMatch(dg.MAIL, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            {
+                ModelState.AddModelError("MAIL", "Email không đúng định dạng (ví dụ: abc@gmail.com).");
+            }
+            if (dg.SODT != old.SODT && db.DOCGIAs.Any(x => x.SODT == dg.SODT))
+            {
+                ModelState.AddModelError("SODT", "Số điện thoại này đã được sử dụng bởi người khác.");
+            }
+            if (dg.MAIL != old.MAIL && db.DOCGIAs.Any(x => x.MAIL == dg.MAIL))
+            {
+                ModelState.AddModelError("MAIL", "Email này đã được sử dụng bởi người khác.");
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    old.TENDG = dg.TENDG;
+                    old.KHOA = dg.KHOA;
+                    old.LOP = dg.LOP;
+                    old.DIACHI = dg.DIACHI;
+                    old.SODT = dg.SODT;
+                    old.MAIL = dg.MAIL;
 
-            db.SaveChanges();
-            return RedirectToAction("QLDocGia");
+                    db.SaveChanges();
+                    TempData["Success"] = "Cập nhật thông tin độc giả thành công!";
+                    return RedirectToAction("QLDocGia");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "Lỗi khi lưu dữ liệu: " + ex.Message);
+                }
+            }
+            return View(dg);
+        }
+        public ActionResult QLPhongHop()
+        {
+            var ds = db.PHONGHOPs.ToList();
+            return View(ds);
+        }
+
+        [HttpGet]
+        public ActionResult ThemPhongHop() => View();
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ThemPhongHop(PHONGHOP ph)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    ph.MAPHONG = SinhMaPhongHop();
+                    ph.TINHTRANG = 1;
+                    db.PHONGHOPs.Add(ph);
+                    db.SaveChanges();
+                    TempData["Success"] = "Thêm phòng thành công!";
+                    return RedirectToAction("QLPhongHop");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "Lỗi: " + ex.Message);
+                }
+            }
+            return View(ph);
+        }
+
+        [HttpGet]
+        public ActionResult SuaPhongHop(string id)
+        {
+            var ph = db.PHONGHOPs.Find(id);
+            if (ph == null) return HttpNotFound();
+            return View(ph);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SuaPhongHop(PHONGHOP ph)
+        {
+            if (ModelState.IsValid)
+            {
+                var old = db.PHONGHOPs.Find(ph.MAPHONG);
+                if (old != null)
+                {
+                    old.VITRI = ph.VITRI;
+                    old.SL_NGUOITOIDA = ph.SL_NGUOITOIDA;
+                    old.TINHTRANG = ph.TINHTRANG;
+                    db.SaveChanges();
+                    TempData["Success"] = "Cập nhật thành công!";
+                    return RedirectToAction("QLPhongHop");
+                }
+            }
+            return View(ph);
+        }
+
+        [HttpPost]
+        public ActionResult XoaPhongHop(string id)
+        {
+            bool hasData = db.PHIEU_MUONPHONG.Any(m => m.MAPH == id);
+            if (hasData)
+            {
+                TempData["Error"] = "Phòng đang có dữ liệu mượn, không thể xóa!";
+            }
+            else
+            {
+                var ph = db.PHONGHOPs.Find(id);
+                if (ph != null)
+                {
+                    db.PHONGHOPs.Remove(ph);
+                    db.SaveChanges();
+                    TempData["Success"] = "Đã xóa phòng!";
+                }
+            }
+            return RedirectToAction("QLPhongHop");
+        }
+
+        private string SinhMaPhongHop()
+        {
+            var lastID = db.PHONGHOPs.OrderByDescending(x => x.MAPHONG).Select(x => x.MAPHONG).FirstOrDefault();
+            if (lastID == null) return "PH00001";
+            int next = int.Parse(lastID.Substring(2)) + 1;
+            return "PH" + next.ToString("D5");
+        }
+        public ActionResult DuyetMuonSach()
+        {
+            var dsChoDuyet = db.PHIEUMUONs
+                               .Include(p => p.THETHUVIEN.DOCGIA)
+                               .Where(p => p.TINHTRANG == -1)
+                               .OrderByDescending(p => p.NgayMuon)
+                               .ToList();
+            return View(dsChoDuyet);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult XacNhanChoMuon(string id)
+        {
+            var pm = db.PHIEUMUONs.Include(p => p.CHITIETPMs).FirstOrDefault(p => p.MAPM == id);
+            if (pm == null) return HttpNotFound();
+
+            string maNV = (Session["User_info"] is QLNHANVIEN nv) ? nv.MANV : "ADMIN";
+
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    foreach (var ct in pm.CHITIETPMs)
+                    {
+                        var sach = db.QLSACHes.Find(ct.MASACH);
+                        if (sach != null)
+                        {
+                            if ((sach.TINHTRANG ?? 0) < ct.SLMUON)
+                            {
+                                throw new Exception("Sách " + sach.TENSACH + " đã hết hàng, không thể duyệt!");
+                            }
+                            sach.TINHTRANG -= ct.SLMUON;
+                        }
+                    }
+                    pm.TINHTRANG = 1;
+                    pm.MANV = maNV;
+                    pm.NgayMuon = DateTime.Now;
+                    pm.NgayDenHan = DateTime.Now.AddDays(7);
+
+                    db.SaveChanges();
+                    transaction.Commit();
+                    TempData["Success"] = "Đã duyệt phiếu mượn " + id + " thành công!";
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    TempData["Error"] = "Lỗi duyệt phiếu: " + ex.Message;
+                }
+            }
+            return RedirectToAction("DuyetMuonSach");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult TuChoiPhieuMuon(string id)
+        {
+            var pm = db.PHIEUMUONs.Find(id);
+            if (pm != null)
+            {
+                pm.TINHTRANG = 2;
+                db.SaveChanges();
+                TempData["Success"] = "Đã từ chối phiếu mượn " + id;
+            }
+            return RedirectToAction("DuyetMuonSach");
+        }
+        public ActionResult TraSach(string maPM)
+        {
+            var dsDangMuon = db.PHIEUMUONs
+                               .Include(p => p.THETHUVIEN.DOCGIA)
+                               .Where(p => p.TINHTRANG == 1)
+                               .OrderByDescending(p => p.NgayMuon)
+                               .ToList();
+            ViewBag.DsDangMuon = dsDangMuon;
+
+            if (string.IsNullOrEmpty(maPM)) return View();
+            var phieu = db.PHIEUMUONs
+                          .Include(p => p.THETHUVIEN.DOCGIA)
+                          .Include(p => p.CHITIETPMs.Select(ct => ct.QLSACH))
+                          .FirstOrDefault(p => p.MAPM == maPM && p.TINHTRANG == 1);
+
+            if (phieu == null)
+            {
+                ViewBag.Error = "Không tìm thấy phiếu mượn hợp lệ!";
+                return View();
+            }
+            int soNgayTre = 0;
+            decimal tienPhat = 0;
+
+            if (DateTime.Now > phieu.NgayDenHan)
+            {
+                soNgayTre = (DateTime.Now - phieu.NgayDenHan.Value).Days;
+                var ts = db.THAMSOes.FirstOrDefault(x => x.TENTHAMSO == "TienPhatMoiNgay");
+                decimal donGiaPhat = ts != null ? (decimal)ts.GIATRI : 2000;
+                tienPhat = soNgayTre * donGiaPhat;
+            }
+
+            ViewBag.SoNgayTre = soNgayTre;
+            ViewBag.TienPhat = tienPhat;
+
+            return View(phieu);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult XacNhanTraSach(string maPM, decimal tienPhat)
+        {
+            var pm = db.PHIEUMUONs.Include(p => p.CHITIETPMs).FirstOrDefault(p => p.MAPM == maPM);
+            if (pm == null) return HttpNotFound();
+
+            string maNV = (Session["User_info"] is QLNHANVIEN nv) ? nv.MANV : "ADMIN";
+
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    PHIEUTRA pt = new PHIEUTRA();
+                    pt.MAPT = DataHelper.GenerateNewID(db, "PHIEUTRA", "MAPT", "PT", 5);
+                    pt.MAPM = maPM;
+                    pt.MANV = maNV;
+                    pt.NGAYTRA = DateTime.Now;
+                    pt.TIENPHAT = tienPhat;
+                    db.PHIEUTRAs.Add(pt);
+                    pm.TINHTRANG = 2;
+
+                    foreach (var ct in pm.CHITIETPMs)
+                    {
+                        var sach = db.QLSACHes.Find(ct.MASACH);
+                        if (sach != null)
+                        {
+                            sach.TINHTRANG = (sach.TINHTRANG ?? 0) + ct.SLMUON;
+                        }
+                    }
+
+                    db.SaveChanges();
+                    transaction.Commit();
+
+                    TempData["Success"] = "Trả sách thành công cho phiếu " + maPM;
+                    return RedirectToAction("TraSach");
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    TempData["Error"] = "Lỗi khi xử lý trả sách: " + ex.Message;
+                    return RedirectToAction("TraSach", new { maPM = maPM });
+                }
+            }
         }
     }
 }

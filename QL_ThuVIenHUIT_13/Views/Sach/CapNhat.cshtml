@@ -1,5 +1,4 @@
 ﻿@model QL_ThuVIenHUIT_13.Models.QLSACH
-
 @{
     ViewBag.Title = "Cập Nhật Sách";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -8,11 +7,8 @@
 <div class="container py-4">
     <div class="card shadow border-0">
         <div class="card-header bg-warning text-dark">
-            <h4 class="mb-0 text-uppercase fw-bold">
-                <i class="fas fa-edit me-2"></i>Cập nhật thông tin sách
-            </h4>
+            <h4 class="mb-0 text-uppercase fw-bold"><i class="fas fa-edit me-2"></i>Cập nhật thông tin sách</h4>
         </div>
-
         <div class="card-body p-4">
             @if (ViewBag.Error != null)
             {
@@ -21,98 +17,70 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             }
-
             @using (Html.BeginForm("CapNhat", "Sach", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(model => model.MASACH)
-
-        <div class="row">
-            <div class="col-lg-8">
-
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Tên Sách <span class="text-danger">*</span></label>
-                    @Html.EditorFor(model => model.TENSACH, new { htmlAttributes = new { @class = "form-control", required = "required" } })
-                    @Html.ValidationMessageFor(model => model.TENSACH, "", new { @class = "text-danger small" })
-                </div>
-
                 <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold">Tên Tác Giả <span class="text-danger">*</span></label>
-                        <input type="text" name="tenTacGia" class="form-control" required
-                               placeholder="Nhập tên tác giả..."
-                               value="@(ViewBag.TenTacGia ?? (Model.TACGIA != null ? Model.TACGIA.TENTG : ""))" />
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold">Tên Thể Loại <span class="text-danger">*</span></label>
-                        <input type="text" name="tenTheLoai" class="form-control" required
-                               placeholder="Nhập tên thể loại..."
-                               value="@(ViewBag.TenTheLoai ?? (Model.THELOAI != null ? Model.THELOAI.TENTHELOAI : ""))" />
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold">Tên Nhà Xuất Bản <span class="text-danger">*</span></label>
-                        <input type="text" name="tenNXB" class="form-control" required
-                               placeholder="Nhập tên NXB..."
-                               value="@(ViewBag.TenNXB ?? (Model.NHAXUATBAN != null ? Model.NHAXUATBAN.TENNXB : ""))" />
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold">Năm Xuất Bản</label>
-                        @Html.EditorFor(model => model.NAMXB, new { htmlAttributes = new { @class = "form-control", type = "number" } })
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Tổng Số Lượng</label>
-                    @Html.EditorFor(model => model.SL, new { htmlAttributes = new { @class = "form-control", type = "number", min = "0" } })
-                    @Html.ValidationMessageFor(model => model.SL, "", new { @class = "text-danger small" })
-                    <div class="form-text text-muted small">
-                        <i class="fas fa-info-circle"></i> Lưu ý: Khi thay đổi tổng số lượng, hệ thống sẽ tự động tính toán lại số lượng tồn kho.
-                    </div>
-                </div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label fw-bold">Giới Thiệu Sách</label>
-                @Html.TextAreaFor(model => model.MOTA, new { @class = "form-control", rows = "5" })
-            </div>
-            <div class="col-lg-4">
-                <div class="card bg-light h-100">
-                    <div class="card-body text-center d-flex flex-column justify-content-center">
-                        <label class="form-label fw-bold mb-3">Ảnh Bìa Hiện Tại</label>
-
-                        <div class="mb-3 position-relative">
-                            @{
-                                string imgUrl = (Model.BIASACH != null && !string.IsNullOrEmpty(Model.BIASACH.URL_ANH))
-                                    ? "/Images/" + Model.BIASACH.URL_ANH
-                                    : "https://via.placeholder.com/300x400?text=No+Image";
-                            }
-                            <img id="previewImg" src="@imgUrl" class="img-fluid rounded shadow-sm border"
-                                 style="max-height: 300px; object-fit: contain; background: white;" />
+                    <div class="col-lg-8">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Tên Sách <span class="text-danger">*</span></label>
+                            @Html.EditorFor(model => model.TENSACH, new { htmlAttributes = new { @class = "form-control", required = "required" } })
                         </div>
-
-                        <div class="mt-auto">
-                            <label class="btn btn-outline-primary btn-sm w-100 cursor-pointer">
-                                <i class="fas fa-upload me-2"></i>Chọn ảnh mới thay thế
-                                <input type="file" name="fileAnh" class="d-none" accept="image/*" onchange="previewFile()" />
-                            </label>
-                            <small class="d-block text-muted mt-2 fst-italic">Để trống nếu muốn giữ ảnh cũ</small>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Tên Tác Giả <span class="text-danger">*</span></label>
+                                <input type="text" name="tenTacGia" class="form-control" required value="@(Model.TACGIA != null ? Model.TACGIA.TENTG : "")" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Thể Loại <span class="text-danger">*</span></label>
+                                @Html.DropDownList("maTheLoai", (SelectList)ViewBag.MaTheLoai, new { @class = "form-control", required = "required" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Nhà Xuất Bản <span class="text-danger">*</span></label>
+                                @Html.DropDownList("maNXB", (SelectList)ViewBag.MaNXB, new { @class = "form-control", required = "required" })
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Năm Xuất Bản</label>
+                                @Html.EditorFor(model => model.NAMXB, new { htmlAttributes = new { @class = "form-control", type = "number" } })
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Tổng Số Lượng</label>
+                            @Html.EditorFor(model => model.SL, new { htmlAttributes = new { @class = "form-control", type = "number", min = "0" } })
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Giới Thiệu Sách</label>
+                            @Html.TextAreaFor(model => model.MOTA, new { @class = "form-control", rows = "5" })
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card bg-light h-100">
+                            <div class="card-body text-center d-flex flex-column justify-content-center">
+                                <label class="form-label fw-bold mb-3">Ảnh Bìa Hiện Tại</label>
+                                <div class="mb-3 position-relative">
+                                    @{
+                                        string imgUrl = (Model.BIASACH != null && !string.IsNullOrEmpty(Model.BIASACH.URL_ANH))
+                                            ? "/Images/" + Model.BIASACH.URL_ANH
+                                            : "https://via.placeholder.com/300x400?text=No+Image";
+                                    }
+                                    <img id="previewImg" src="@imgUrl" class="img-fluid rounded shadow-sm border" style="max-height: 300px; object-fit: contain; background: white;" />
+                                </div>
+                                <div class="mt-auto">
+                                    <label class="btn btn-outline-primary btn-sm w-100 cursor-pointer">
+                                        <i class="fas fa-upload me-2"></i>Chọn ảnh mới thay thế
+                                        <input type="file" name="fileAnh" class="d-none" accept="image/*" onchange="previewFile()" />
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-                <hr class="my-4" />
-
-                <div class="d-flex justify-content-center gap-3">
-                    <a href="@Url.Action("QuanLySach", "Sach")" class="btn btn-secondary px-4">
-                        <i class="fas fa-times me-2"></i>Hủy bỏ
-                    </a>
-                    <button type="submit" class="btn btn-warning px-5 fw-bold text-dark">
-                        <i class="fas fa-save me-2"></i>Lưu Cập Nhật
-                    </button>
+                <div class="d-flex justify-content-center gap-3 mt-4">
+                    <a href="@Url.Action("QuanLySach", "Sach")" class="btn btn-secondary px-4">Hủy bỏ</a>
+                    <button type="submit" class="btn btn-warning px-5 fw-bold">Lưu Cập Nhật</button>
                 </div>
             }
         </div>
@@ -124,13 +92,7 @@
         var preview = document.querySelector('#previewImg');
         var file = document.querySelector('input[type=file]').files[0];
         var reader = new FileReader();
-
-        reader.onloadend = function () {
-            preview.src = reader.result;
-        }
-
-        if (file) {
-            reader.readAsDataURL(file);
-        }
+        reader.onloadend = function () { preview.src = reader.result; }
+        if (file) { reader.readAsDataURL(file); }
     }
 </script>

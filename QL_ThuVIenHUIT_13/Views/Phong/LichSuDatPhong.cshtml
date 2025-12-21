@@ -1,81 +1,86 @@
-﻿@using QL_ThuVIenHUIT_13.Models
-@model IEnumerable<PHIEU_MUONPHONG>
+﻿@model List<QL_ThuVIenHUIT_13.Models.PHIEU_MUONPHONG>
 
 @{
     ViewBag.Title = "Lịch sử đặt phòng";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    int stt = 1;
-    DateTime now = DateTime.Now;
 }
 
-<h2 class="mb-3 text-center">LỊCH SỬ ĐẶT PHÒNG</h2>
-<div class="d-flex justify-content-between mb-3">
-    <a href="@Url.Action("DatPhong", "Phong")" class="btn btn-success">
-        ➕ Thêm phiếu mượn phòng
-    </a>
+<div class="container mt-4">
+    <h2 class="text-primary mb-4"><i class="bi bi-clock-history"></i> LỊCH SỬ ĐẶT PHÒNG</h2>
 
-    <a href="@Url.Action("Index", "Phong")" class="btn btn-primary">
-        🔍 Tra cứu phòng
-    </a>
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">Bạn chưa có yêu cầu đặt phòng nào.</div>
+    }
+    else
+    {
+        <div class="card shadow">
+            <div class="card-body">
+                <table class="table table-hover align-middle">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th>Mã phiếu</th>
+                            <th>Mã phòng</th>
+                            <th>Ngày mượn</th>
+                            <th>Thời gian</th>
+                            <th>Số người</th>
+                            <th>Mục đích</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model)
+                        {
+                            <tr>
+                                <td class="fw-bold">@p.MAPHIEU</td>
+                                <td>@p.MAPH</td>
+                                <td>@(p.NGAYMUON.HasValue ? p.NGAYMUON.Value.ToString("dd/MM/yyyy") : "")</td>
+                                <td class="small">
+                                    @p.GIOMUON - @p.GIOTRA
+                                </td>
+                                <td class="text-center">@p.SL_NGUOITHAMGIA</td>
+                                <td>@p.MUCDICH</td>
+                                <td class="text-center">
+                                    @if (p.TINHTRANG == 0)
+                                    {
+                                        <span class="badge bg-warning text-dark">Chờ duyệt</span>
+                                    }
+                                    else if (p.TINHTRANG == 1)
+                                    {
+                                        <span class="badge bg-success">Đã duyệt</span>
+                                    }
+                                    else if (p.TINHTRANG == 2)
+                                    {
+                                        <span class="badge bg-danger">Từ chối</span>
+                                        if (!string.IsNullOrEmpty(p.GHICHU_NV))
+                                        {
+                                            <div class="small text-danger mt-1" style="font-size: 0.75rem;">
+                                                Lý do: @p.GHICHU_NV
+                                            </div>
+                                        }
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        @if (p.TINHTRANG == 0)
+                                        {
+                                            <a href="@Url.Action("SuaDatPhong", "Phong", new { id = p.MAPHIEU })" class="btn btn-outline-primary btn-sm">Sửa</a>
+                                            <a href="@Url.Action("XoaDatPhong", "Phong", new { id = p.MAPHIEU })"
+                                               class="btn btn-outline-danger btn-sm"
+                                               onclick="return confirm('Bạn có chắc muốn hủy yêu cầu này không?');">Hủy</a>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted small">N/A</span>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
 </div>
-<table class="table table-bordered table-hover align-middle text-center">
-    <thead class="table-dark">
-        <tr>
-            <th>STT</th>
-            <th>Mã phiếu</th>
-            <th>Phòng</th>
-            <th>Giờ mượn</th>
-            <th>Giờ trả</th>
-            <th>Ngày mượn</th>
-            <th>Hoàn tất</th>
-            <th>Thao tác</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            DateTime? ngay = item.NGAYMUON;
-            TimeSpan? gioTra = item.GIOTRA;
-
-            bool hoanTat = ngay.HasValue && gioTra.HasValue &&
-                           (ngay.Value.Date + gioTra.Value) <= now;
-
-            <tr>
-                <td>@stt</td>
-                <td>@item.MAPHIEU</td>
-                <td>@item.MAPH</td>
-                <td>@(item.GIOMUON.HasValue ? item.GIOMUON.Value.ToString(@"hh\:mm") : "--")</td>
-                <td>@(item.GIOTRA.HasValue ? item.GIOTRA.Value.ToString(@"hh\:mm") : "--")</td>
-                <td>@(ngay.HasValue ? ngay.Value.ToString("dd/MM/yyyy") : "")</td>
-                <td>
-                    @if (hoanTat)
-                    {
-                        <span class="text-success fw-bold fs-5">✓</span>
-                    }
-                    else
-                    {
-                        <span class="text-danger fw-bold fs-5">✗</span>
-                    }
-                </td>
-                <td>
-                    <div class="d-flex justify-content-center gap-2">
-                        <a href="@Url.Action("SuaDatPhong", "Phong", new { id = item.MAPHIEU })"
-                           class="btn btn-warning btn-sm"
-                           title="Sửa">
-                            <i class="bi bi-pencil-square"></i>
-                        </a>
-
-                        <a href="@Url.Action("XoaDatPhong", "Phong", new { id = item.MAPHIEU })"
-                           class="btn btn-danger btn-sm"
-                           onclick="return confirm('Bạn có chắc chắn muốn xóa phiếu này?');"
-                           title="Xóa">
-                            <i class="bi bi-trash"></i>
-                        </a>
-                    </div>
-                </td>
-            </tr>
-
-            stt++;
-        }
-    </tbody>
-</table>

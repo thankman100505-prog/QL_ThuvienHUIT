@@ -59,6 +59,9 @@
           <Property Name="TIENPHAT" Type="money" />
           <Property Name="TINHTRANG" Type="int" />
           <Property Name="GHICHU_NV" Type="nvarchar" MaxLength="200" />
+          <Property Name="NGAYDUYET" Type="datetime" />
+          <Property Name="MANV_DUYET" Type="char" MaxLength="7" />
+          <Property Name="TRANGTHAI" Type="int" />
         </EntityType>
         <EntityType Name="PHIEUMUON">
           <Key>
@@ -66,7 +69,7 @@
           </Key>
           <Property Name="MAPM" Type="char" MaxLength="7" Nullable="false" />
           <Property Name="MATHE" Type="char" MaxLength="7" Nullable="false" />
-          <Property Name="MANV" Type="char" MaxLength="7" Nullable="false" />
+          <Property Name="MANV" Type="char" MaxLength="7" />
           <Property Name="NgayMuon" Type="date" />
           <Property Name="NgayDenHan" Type="date" />
           <Property Name="TINHTRANG" Type="int" />
@@ -204,7 +207,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CHITIETPM__MAPM__72C60C4A">
+        <Association Name="FK__CHITIETPM__MAPM__74AE54BC">
           <End Role="PHIEUMUON" Type="Self.PHIEUMUON" Multiplicity="1" />
           <End Role="CHITIETPM" Type="Self.CHITIETPM" Multiplicity="*" />
           <ReferentialConstraint>
@@ -216,7 +219,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CHITIETPM__MASAC__73BA3083">
+        <Association Name="FK__CHITIETPM__MASAC__75A278F5">
           <End Role="QLSACH" Type="Self.QLSACH" Multiplicity="1" />
           <End Role="CHITIETPM" Type="Self.CHITIETPM" Multiplicity="*" />
           <ReferentialConstraint>
@@ -228,7 +231,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PHIEU_MUO__MATHE__0D7A0286">
+        <Association Name="FK__PHIEU_MUO__MANV___10566F31">
+          <End Role="QLNHANVIEN" Type="Self.QLNHANVIEN" Multiplicity="0..1" />
+          <End Role="PHIEU_MUONPHONG" Type="Self.PHIEU_MUONPHONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QLNHANVIEN">
+              <PropertyRef Name="MANV" />
+            </Principal>
+            <Dependent Role="PHIEU_MUONPHONG">
+              <PropertyRef Name="MANV_DUYET" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PHIEU_MUO__MATHE__123EB7A3">
           <End Role="THETHUVIEN" Type="Self.THETHUVIEN" Multiplicity="1" />
           <End Role="PHIEU_MUONPHONG" Type="Self.PHIEU_MUONPHONG" Multiplicity="*" />
           <ReferentialConstraint>
@@ -240,7 +255,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PHIEU_MUON__MAPH__0C85DE4D">
+        <Association Name="FK__PHIEU_MUON__MAPH__114A936A">
           <End Role="PHONGHOP" Type="Self.PHONGHOP" Multiplicity="1" />
           <End Role="PHIEU_MUONPHONG" Type="Self.PHIEU_MUONPHONG" Multiplicity="*" />
           <ReferentialConstraint>
@@ -252,8 +267,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PHIEUMUON__MANV__6E01572D">
-          <End Role="QLNHANVIEN" Type="Self.QLNHANVIEN" Multiplicity="1" />
+        <Association Name="FK__PHIEUMUON__MANV__6EF57B66">
+          <End Role="QLNHANVIEN" Type="Self.QLNHANVIEN" Multiplicity="0..1" />
           <End Role="PHIEUMUON" Type="Self.PHIEUMUON" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="QLNHANVIEN">
@@ -264,7 +279,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PHIEUMUON__MATHE__6D0D32F4">
+        <Association Name="FK__PHIEUMUON__MATHE__6E01572D">
           <End Role="THETHUVIEN" Type="Self.THETHUVIEN" Multiplicity="1" />
           <End Role="PHIEUMUON" Type="Self.PHIEUMUON" Multiplicity="*" />
           <ReferentialConstraint>
@@ -276,7 +291,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PHIEUTRA__MANV__7C4F7684">
+        <Association Name="FK__PHIEUTRA__MANV__7E37BEF6">
           <End Role="QLNHANVIEN" Type="Self.QLNHANVIEN" Multiplicity="1" />
           <End Role="PHIEUTRA" Type="Self.PHIEUTRA" Multiplicity="*" />
           <ReferentialConstraint>
@@ -288,7 +303,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PHIEUTRA__MAPM__7B5B524B">
+        <Association Name="FK__PHIEUTRA__MAPM__7D439ABD">
           <End Role="PHIEUMUON" Type="Self.PHIEUMUON" Multiplicity="1" />
           <End Role="PHIEUTRA" Type="Self.PHIEUTRA" Multiplicity="*" />
           <ReferentialConstraint>
@@ -360,7 +375,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__VIPHAM__MAPM__02084FDA">
+        <Association Name="FK__VIPHAM__MAPM__03F0984C">
           <End Role="PHIEUMUON" Type="Self.PHIEUMUON" Multiplicity="1" />
           <End Role="VIPHAM" Type="Self.VIPHAM" Multiplicity="*" />
           <ReferentialConstraint>
@@ -372,31 +387,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="AUTO_CREATE_ID_TACGIA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="MATG" Type="char" Mode="InOut" />
-        </Function>
         <Function Name="AUTO_ID_DOCGIA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="NEWID" Type="char" Mode="InOut" />
-        </Function>
-        <Function Name="AUTO_ID_NHANVIEN" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="NEWID" Type="char" Mode="InOut" />
-        </Function>
-        <Function Name="AUTO_ID_NXB" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="NEWID" Type="char" Mode="InOut" />
-        </Function>
-        <Function Name="AUTO_ID_PHIEUMUONPHONG" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="NEWID" Type="char" Mode="InOut" />
-        </Function>
-        <Function Name="AUTO_ID_PHIEUTRA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="NEWID" Type="char" Mode="InOut" />
-        </Function>
-        <Function Name="AUTO_ID_PHONG" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="NEWID" Type="char" Mode="InOut" />
-        </Function>
-        <Function Name="AUTO_ID_SACH" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="NEWID" Type="char" Mode="InOut" />
-        </Function>
-        <Function Name="AUTO_ID_THELOAI" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="NEWID" Type="char" Mode="InOut" />
         </Function>
         <Function Name="AUTO_ID_THETHUVIEN" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -434,35 +425,39 @@
             <End Role="QLSACH" EntitySet="QLSACH" />
             <End Role="BIASACH" EntitySet="BIASACH" />
           </AssociationSet>
-          <AssociationSet Name="FK__CHITIETPM__MAPM__72C60C4A" Association="Self.FK__CHITIETPM__MAPM__72C60C4A">
+          <AssociationSet Name="FK__CHITIETPM__MAPM__74AE54BC" Association="Self.FK__CHITIETPM__MAPM__74AE54BC">
             <End Role="PHIEUMUON" EntitySet="PHIEUMUON" />
             <End Role="CHITIETPM" EntitySet="CHITIETPM" />
           </AssociationSet>
-          <AssociationSet Name="FK__CHITIETPM__MASAC__73BA3083" Association="Self.FK__CHITIETPM__MASAC__73BA3083">
+          <AssociationSet Name="FK__CHITIETPM__MASAC__75A278F5" Association="Self.FK__CHITIETPM__MASAC__75A278F5">
             <End Role="QLSACH" EntitySet="QLSACH" />
             <End Role="CHITIETPM" EntitySet="CHITIETPM" />
           </AssociationSet>
-          <AssociationSet Name="FK__PHIEU_MUO__MATHE__0D7A0286" Association="Self.FK__PHIEU_MUO__MATHE__0D7A0286">
+          <AssociationSet Name="FK__PHIEU_MUO__MANV___10566F31" Association="Self.FK__PHIEU_MUO__MANV___10566F31">
+            <End Role="QLNHANVIEN" EntitySet="QLNHANVIEN" />
+            <End Role="PHIEU_MUONPHONG" EntitySet="PHIEU_MUONPHONG" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PHIEU_MUO__MATHE__123EB7A3" Association="Self.FK__PHIEU_MUO__MATHE__123EB7A3">
             <End Role="THETHUVIEN" EntitySet="THETHUVIEN" />
             <End Role="PHIEU_MUONPHONG" EntitySet="PHIEU_MUONPHONG" />
           </AssociationSet>
-          <AssociationSet Name="FK__PHIEU_MUON__MAPH__0C85DE4D" Association="Self.FK__PHIEU_MUON__MAPH__0C85DE4D">
+          <AssociationSet Name="FK__PHIEU_MUON__MAPH__114A936A" Association="Self.FK__PHIEU_MUON__MAPH__114A936A">
             <End Role="PHONGHOP" EntitySet="PHONGHOP" />
             <End Role="PHIEU_MUONPHONG" EntitySet="PHIEU_MUONPHONG" />
           </AssociationSet>
-          <AssociationSet Name="FK__PHIEUMUON__MANV__6E01572D" Association="Self.FK__PHIEUMUON__MANV__6E01572D">
+          <AssociationSet Name="FK__PHIEUMUON__MANV__6EF57B66" Association="Self.FK__PHIEUMUON__MANV__6EF57B66">
             <End Role="QLNHANVIEN" EntitySet="QLNHANVIEN" />
             <End Role="PHIEUMUON" EntitySet="PHIEUMUON" />
           </AssociationSet>
-          <AssociationSet Name="FK__PHIEUMUON__MATHE__6D0D32F4" Association="Self.FK__PHIEUMUON__MATHE__6D0D32F4">
+          <AssociationSet Name="FK__PHIEUMUON__MATHE__6E01572D" Association="Self.FK__PHIEUMUON__MATHE__6E01572D">
             <End Role="THETHUVIEN" EntitySet="THETHUVIEN" />
             <End Role="PHIEUMUON" EntitySet="PHIEUMUON" />
           </AssociationSet>
-          <AssociationSet Name="FK__PHIEUTRA__MANV__7C4F7684" Association="Self.FK__PHIEUTRA__MANV__7C4F7684">
+          <AssociationSet Name="FK__PHIEUTRA__MANV__7E37BEF6" Association="Self.FK__PHIEUTRA__MANV__7E37BEF6">
             <End Role="QLNHANVIEN" EntitySet="QLNHANVIEN" />
             <End Role="PHIEUTRA" EntitySet="PHIEUTRA" />
           </AssociationSet>
-          <AssociationSet Name="FK__PHIEUTRA__MAPM__7B5B524B" Association="Self.FK__PHIEUTRA__MAPM__7B5B524B">
+          <AssociationSet Name="FK__PHIEUTRA__MAPM__7D439ABD" Association="Self.FK__PHIEUTRA__MAPM__7D439ABD">
             <End Role="PHIEUMUON" EntitySet="PHIEUMUON" />
             <End Role="PHIEUTRA" EntitySet="PHIEUTRA" />
           </AssociationSet>
@@ -486,7 +481,7 @@
             <End Role="DOCGIA" EntitySet="DOCGIA" />
             <End Role="THETHUVIEN" EntitySet="THETHUVIEN" />
           </AssociationSet>
-          <AssociationSet Name="FK__VIPHAM__MAPM__02084FDA" Association="Self.FK__VIPHAM__MAPM__02084FDA">
+          <AssociationSet Name="FK__VIPHAM__MAPM__03F0984C" Association="Self.FK__VIPHAM__MAPM__03F0984C">
             <End Role="PHIEUMUON" EntitySet="PHIEUMUON" />
             <End Role="VIPHAM" EntitySet="VIPHAM" />
           </AssociationSet>
@@ -673,6 +668,10 @@
             <Parameter Name="MAIL" Mode="In" Type="String" />
             <Parameter Name="MATHE_OUT" Mode="InOut" Type="String" />
           </FunctionImport>
+          <AssociationSet Name="FK__PHIEU_MUO__MANV___10566F31" Association="CNPM_DATABASE_THUVIENModel.FK__PHIEU_MUO__MANV___10566F31">
+            <End Role="QLNHANVIEN" EntitySet="QLNHANVIENs" />
+            <End Role="PHIEU_MUONPHONG" EntitySet="PHIEU_MUONPHONG" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -764,6 +763,7 @@
           <Property Name="MAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="PHIEUTRAs" Relationship="CNPM_DATABASE_THUVIENModel.FK__PHIEUTRA__MANV__778AC167" FromRole="QLNHANVIEN" ToRole="PHIEUTRA" />
           <NavigationProperty Name="PHIEUMUONs" Relationship="CNPM_DATABASE_THUVIENModel.FK__PHIEUMUON__MANV__7A672E12" FromRole="QLNHANVIEN" ToRole="PHIEUMUON" />
+          <NavigationProperty Name="PHIEU_MUONPHONG" Relationship="CNPM_DATABASE_THUVIENModel.FK__PHIEU_MUO__MANV___10566F31" FromRole="QLNHANVIEN" ToRole="PHIEU_MUONPHONG" />
         </EntityType>
         <EntityType Name="QLSACH">
           <Key>
@@ -947,6 +947,10 @@
           <Property Name="GIOTRA" Type="Time" Precision="7" />
           <Property Name="TINHTRANG" Type="Int32" />
           <Property Name="GHICHU_NV" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="NGAYDUYET" Type="DateTime" Precision="3" />
+          <Property Name="MANV_DUYET" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="TRANGTHAI" Type="Int32" />
+          <NavigationProperty Name="QLNHANVIEN" Relationship="CNPM_DATABASE_THUVIENModel.FK__PHIEU_MUO__MANV___10566F31" FromRole="PHIEU_MUONPHONG" ToRole="QLNHANVIEN" />
         </EntityType>
         <EntityType Name="PHIEUMUON">
           <Key>
@@ -954,7 +958,7 @@
           </Key>
           <Property Name="MAPM" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
           <Property Name="MATHE" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
-          <Property Name="MANV" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="MANV" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
           <Property Name="NgayMuon" Type="DateTime" Precision="0" />
           <Property Name="NgayDenHan" Type="DateTime" Precision="0" />
           <NavigationProperty Name="CHITIETPMs" Relationship="CNPM_DATABASE_THUVIENModel.FK__CHITIETPM__MAPM__7F2BE32F" FromRole="PHIEUMUON" ToRole="CHITIETPM" />
@@ -1001,7 +1005,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__PHIEUMUON__MANV__7A672E12">
-          <End Type="CNPM_DATABASE_THUVIENModel.QLNHANVIEN" Role="QLNHANVIEN" Multiplicity="1" />
+          <End Type="CNPM_DATABASE_THUVIENModel.QLNHANVIEN" Role="QLNHANVIEN" Multiplicity="0..1" />
           <End Type="CNPM_DATABASE_THUVIENModel.PHIEUMUON" Role="PHIEUMUON" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="QLNHANVIEN">
@@ -1082,6 +1086,18 @@
           <Property Name="GIATRI" Type="Int32" />
           <Property Name="MOTA" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
+        <Association Name="FK__PHIEU_MUO__MANV___10566F31">
+          <End Type="CNPM_DATABASE_THUVIENModel.QLNHANVIEN" Role="QLNHANVIEN" Multiplicity="0..1" />
+          <End Type="CNPM_DATABASE_THUVIENModel.PHIEU_MUONPHONG" Role="PHIEU_MUONPHONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QLNHANVIEN">
+              <PropertyRef Name="MANV" />
+            </Principal>
+            <Dependent Role="PHIEU_MUONPHONG">
+              <PropertyRef Name="MANV_DUYET" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1230,6 +1246,9 @@
           <EntitySetMapping Name="PHIEU_MUONPHONG">
             <EntityTypeMapping TypeName="CNPM_DATABASE_THUVIENModel.PHIEU_MUONPHONG">
               <MappingFragment StoreEntitySet="PHIEU_MUONPHONG">
+                <ScalarProperty Name="TRANGTHAI" ColumnName="TRANGTHAI" />
+                <ScalarProperty Name="MANV_DUYET" ColumnName="MANV_DUYET" />
+                <ScalarProperty Name="NGAYDUYET" ColumnName="NGAYDUYET" />
                 <ScalarProperty Name="GHICHU_NV" ColumnName="GHICHU_NV" />
                 <ScalarProperty Name="TINHTRANG" ColumnName="TINHTRANG" />
                 <ScalarProperty Name="GIOTRA" ColumnName="GIOTRA" />
@@ -1283,15 +1302,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="AUTO_CREATE_ID_TACGIA1" FunctionName="CNPM_DATABASE_THUVIENModel.Store.AUTO_CREATE_ID_TACGIA" />
           <FunctionImportMapping FunctionImportName="AUTO_ID_DOCGIA1" FunctionName="CNPM_DATABASE_THUVIENModel.Store.AUTO_ID_DOCGIA" />
-          <FunctionImportMapping FunctionImportName="AUTO_ID_NHANVIEN1" FunctionName="CNPM_DATABASE_THUVIENModel.Store.AUTO_ID_NHANVIEN" />
-          <FunctionImportMapping FunctionImportName="AUTO_ID_NXB1" FunctionName="CNPM_DATABASE_THUVIENModel.Store.AUTO_ID_NXB" />
-          <FunctionImportMapping FunctionImportName="AUTO_ID_PHIEUMUONPHONG1" FunctionName="CNPM_DATABASE_THUVIENModel.Store.AUTO_ID_PHIEUMUONPHONG" />
-          <FunctionImportMapping FunctionImportName="AUTO_ID_PHIEUTRA1" FunctionName="CNPM_DATABASE_THUVIENModel.Store.AUTO_ID_PHIEUTRA" />
-          <FunctionImportMapping FunctionImportName="AUTO_ID_PHONG1" FunctionName="CNPM_DATABASE_THUVIENModel.Store.AUTO_ID_PHONG" />
-          <FunctionImportMapping FunctionImportName="AUTO_ID_SACH1" FunctionName="CNPM_DATABASE_THUVIENModel.Store.AUTO_ID_SACH" />
-          <FunctionImportMapping FunctionImportName="AUTO_ID_THELOAI1" FunctionName="CNPM_DATABASE_THUVIENModel.Store.AUTO_ID_THELOAI" />
           <FunctionImportMapping FunctionImportName="AUTO_ID_THETHUVIEN1" FunctionName="CNPM_DATABASE_THUVIENModel.Store.AUTO_ID_THETHUVIEN" />
           <EntitySetMapping Name="THAMSOes">
             <EntityTypeMapping TypeName="CNPM_DATABASE_THUVIENModel.THAMSO">

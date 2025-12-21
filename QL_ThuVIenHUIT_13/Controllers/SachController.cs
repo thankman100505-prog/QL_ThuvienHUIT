@@ -14,7 +14,6 @@ namespace QL_ThuVIenHUIT_13.Controllers
     {
         private CNPM_DATABASE_THUVIENEntities db = new CNPM_DATABASE_THUVIENEntities();
 
-        // --- CÁC ACTION HIỂN THỊ (GIỮ NGUYÊN) ---
         public ActionResult Index(string tuKhoa = "")
         {
             var query = db.QLSACHes.Include(s => s.TACGIA).Include(s => s.BIASACH);
@@ -26,6 +25,12 @@ namespace QL_ThuVIenHUIT_13.Controllers
             return View(query.OrderByDescending(s => s.NAMXB).ToList());
         }
 
+        public ActionResult SidebarPartial()
+        {
+            var List_theloai = db.THELOAIs.ToList();
+            return PartialView("_SidebarPartial", List_theloai);
+        }
+
         public ActionResult ChiTiet(string maSach)
         {
             if (string.IsNullOrEmpty(maSach)) return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
@@ -33,8 +38,6 @@ namespace QL_ThuVIenHUIT_13.Controllers
                          .Include(s => s.NHAXUATBAN).Include(s => s.THELOAI)
                          .FirstOrDefault(x => x.MASACH == maSach);
             if (sach == null) return HttpNotFound();
-
-            // Gợi ý sách cùng thể loại
             ViewBag.SanPhamLienQuan = db.QLSACHes.Include(s => s.BIASACH)
                                         .Where(x => x.MATHELOAI == sach.MATHELOAI && x.MASACH != maSach)
                                         .OrderBy(x => Guid.NewGuid()).Take(4).ToList();
@@ -48,13 +51,17 @@ namespace QL_ThuVIenHUIT_13.Controllers
                                     .OrderByDescending(s => s.MASACH).ToList();
             return View(listSach);
         }
-        [HttpGet]
-        public ActionResult ThemSach() { return View(); }
+        public ActionResult ThemSach()
+        {
+            ViewBag.MaTheLoai = new SelectList(db.THELOAIs, "MATHELOAI", "TENTHELOAI");
+            ViewBag.MaNXB = new SelectList(db.NHAXUATBANs, "MAXB", "TENNXB");
+            return View();
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
-        public ActionResult ThemSach(QLSACH sach, string tenTacGia, string tenTheLoai, string tenNXB, HttpPostedFileBase fileAnh)
+        public ActionResult ThemSach(QLSACH sach, string tenTacGia, string maTheLoai, string maNXB, HttpPostedFileBase fileAnh)
         {
             if (ModelState.IsValid)
             {
@@ -63,13 +70,14 @@ namespace QL_ThuVIenHUIT_13.Controllers
                     try
                     {
                         sach.MATG = DataHelper.GetOrCreateTacGia(db, tenTacGia);
-                        sach.MATHELOAI = DataHelper.GetOrCreateTheLoai(db, tenTheLoai);
-                        sach.MAXB = DataHelper.GetOrCreateNXB(db, tenNXB);
+                        sach.MATHELOAI = maTheLoai;
+                        sach.MAXB = maNXB;
                         sach.MASACH = DataHelper.GenerateNewID(db, "QLSACH", "MASACH", "S", 6);
                         sach.TINHTRANG = sach.SL;
 
                         db.QLSACHes.Add(sach);
                         db.SaveChanges();
+
                         if (fileAnh != null && fileAnh.ContentLength > 0)
                         {
                             string fileName = Path.GetFileName(fileAnh.FileName);
@@ -93,8 +101,11 @@ namespace QL_ThuVIenHUIT_13.Controllers
                     }
                 }
             }
+            ViewBag.MaTheLoai = new SelectList(db.THELOAIs, "MATHELOAI", "TENTHELOAI", maTheLoai);
+            ViewBag.MaNXB = new SelectList(db.NHAXUATBANs, "MAXB", "TENNXB", maNXB);
             return View(sach);
         }
+
         [HttpGet]
         public ActionResult CapNhat(string maSach)
         {
@@ -103,13 +114,16 @@ namespace QL_ThuVIenHUIT_13.Controllers
                                 .Include(s => s.NHAXUATBAN).Include(s => s.BIASACH)
                                 .FirstOrDefault(s => s.MASACH == maSach);
             if (sach == null) return HttpNotFound();
+
+            ViewBag.MaTheLoai = new SelectList(db.THELOAIs, "MATHELOAI", "TENTHELOAI", sach.MATHELOAI);
+            ViewBag.MaNXB = new SelectList(db.NHAXUATBANs, "MAXB", "TENNXB", sach.MAXB);
             return View(sach);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
-        public ActionResult CapNhat(QLSACH sach, string tenTacGia, string tenTheLoai, string tenNXB, HttpPostedFileBase fileAnh)
+        public ActionResult CapNhat(QLSACH sach, string tenTacGia, string maTheLoai, string maNXB, HttpPostedFileBase fileAnh)
         {
             if (ModelState.IsValid)
             {
@@ -123,10 +137,10 @@ namespace QL_ThuVIenHUIT_13.Controllers
                             sachInDb.TENSACH = sach.TENSACH;
                             sachInDb.NAMXB = sach.NAMXB;
                             sachInDb.MOTA = sach.MOTA;
-
                             sachInDb.MATG = DataHelper.GetOrCreateTacGia(db, tenTacGia);
-                            sachInDb.MATHELOAI = DataHelper.GetOrCreateTheLoai(db, tenTheLoai);
-                            sachInDb.MAXB = DataHelper.GetOrCreateNXB(db, tenNXB);
+                            sachInDb.MATHELOAI = maTheLoai;
+                            sachInDb.MAXB = maNXB;
+
                             int oldTotal = sachInDb.SL ?? 0;
                             int newTotal = sach.SL ?? 0;
                             int diff = newTotal - oldTotal;
@@ -138,8 +152,11 @@ namespace QL_ThuVIenHUIT_13.Controllers
                             {
                                 ViewBag.Error = "Không thể giảm tổng số lượng thấp hơn số sách đang được mượn!";
                                 transaction.Rollback();
+                                ViewBag.MaTheLoai = new SelectList(db.THELOAIs, "MATHELOAI", "TENTHELOAI", maTheLoai);
+                                ViewBag.MaNXB = new SelectList(db.NHAXUATBANs, "MAXB", "TENNXB", maNXB);
                                 return View(sach);
                             }
+
                             if (fileAnh != null && fileAnh.ContentLength > 0)
                             {
                                 string fileName = DateTime.Now.Ticks + "_" + Path.GetFileName(fileAnh.FileName);
@@ -164,6 +181,8 @@ namespace QL_ThuVIenHUIT_13.Controllers
                     }
                 }
             }
+            ViewBag.MaTheLoai = new SelectList(db.THELOAIs, "MATHELOAI", "TENTHELOAI", maTheLoai);
+            ViewBag.MaNXB = new SelectList(db.NHAXUATBANs, "MAXB", "TENNXB", maNXB);
             return View(sach);
         }
         [HttpPost]
@@ -200,6 +219,33 @@ namespace QL_ThuVIenHUIT_13.Controllers
             {
                 ViewBag.Error = "Lỗi xóa sách: " + ex.Message;
                 return Content("<script>alert('Không thể xóa sách này do dữ liệu ràng buộc (đã từng có lịch sử mượn trả)!'); window.location.href='/Sach/QuanLySach';</script>");
+            }
+        }
+        public ActionResult NhapSach()
+        {
+            if (Session["User_info"] == null) return RedirectToAction("SignIn", "User");
+            var dsSach = db.QLSACHes.OrderBy(s => s.TENSACH).Take(10).ToList();
+            return View(dsSach);
+        }        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult XacNhanNhap(string maSach, int soLuongNhap)
+        {
+            try
+            {
+                var sach = db.QLSACHes.Find(maSach);
+                if (sach == null) return Json(new { status = false, msg = "Không tìm thấy sách!" });
+
+                if (soLuongNhap <= 0) return Json(new { status = false, msg = "Số lượng nhập phải lớn hơn 0!" });
+
+                sach.SL = (sach.SL ?? 0) + soLuongNhap;
+                sach.TINHTRANG = (sach.TINHTRANG ?? 0) + soLuongNhap;
+
+                db.SaveChanges();
+                return Json(new { status = true, msg = "Đã nhập thêm " + soLuongNhap + " cuốn vào kho!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = false, msg = "Lỗi: " + ex.Message });
             }
         }
     }

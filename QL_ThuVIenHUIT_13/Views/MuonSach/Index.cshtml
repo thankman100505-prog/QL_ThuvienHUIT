@@ -1,265 +1,87 @@
-﻿@using QL_ThuVIenHUIT_13.Models
+﻿@model List<QL_ThuVIenHUIT_13.Models.QLSACH>
 @{
-    ViewBag.Title = "Quản lý Mượn sách";
+    ViewBag.Title = "Mượn sách tại quầy";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var listSachMuon = Session["DsSachMuon"] as List<SachMuonTam>;
 }
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-<style>
-    body {
-        background-color: #f0f2f5;
-        font-family: 'Segoe UI', sans-serif;
-    }
-
-    /* Panel (Khối) đẹp hơn */
-    .panel {
-        border: none;
-        border-radius: 12px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        background: #fff;
-        margin-bottom: 20px;
-    }
-
-    .panel-heading {
-        border-radius: 12px 12px 0 0;
-        padding: 15px;
-        color: #fff !important;
-        font-weight: bold;
-        text-transform: uppercase;
-        border: none;
-    }
-
-    /* Màu Gradient */
-    .panel-primary > .panel-heading {
-        background: linear-gradient(135deg, #4e73df, #224abe);
-    }
-
-    .panel-info > .panel-heading {
-        background: linear-gradient(135deg, #36b9cc, #258391);
-    }
-
-    /* Input & Button */
-    .form-control {
-        border-radius: 20px;
-        height: 45px;
-        box-shadow: none;
-        border: 1px solid #d1d3e2;
-    }
-
-    .btn {
-        border-radius: 20px;
-        font-weight: 600;
-        transition: all 0.2s;
-        padding: 10px 20px;
-    }
-
-    /* Dropdown mũi tên đẹp */
-    select.form-control {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='%23858796'><polygon points='0,0 100,0 50,50'/></svg>") no-repeat;
-        background-size: 10px;
-        background-position: calc(100% - 15px) center;
-        background-color: #fff;
-    }
-
-    /* Table */
-    .table > thead > tr > th {
-        border-bottom: 2px solid #e3e6f0;
-        font-size: 12px;
-        color: #858796;
-        text-transform: uppercase;
-    }
-
-    .table > tbody > tr > td {
-        vertical-align: middle;
-        color: #5a5c69;
-        font-weight: 500;
-    }
-</style>
-
-<div class="container-fluid" style="margin-top: 30px; padding-bottom: 50px;">
-
-    <div class="row mb-4">
-        <div class="col-md-12 text-center">
-            <h2 style="color: #4e73df; font-weight: 800; text-transform: uppercase;">
-                <i class="fas fa-book-reader"></i> Hệ thống Lập Phiếu Mượn
-            </h2>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-4">
-            <div class="panel panel-primary">
-                <div class="panel-heading"><i class="fas fa-user"></i> 1. Thông tin Độc giả</div>
-                <div class="panel-body">
-                    <label class="text-muted small">MÃ THẺ THƯ VIỆN</label>
-                    <div class="input-group">
-                        <input type="text" id="txtMaThe" class="form-control" placeholder="Ví dụ: TH00001..." onkeypress="handleEnter(event)">
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary" type="button" onclick="checkDocGia()" style="height: 45px; border-radius: 0 20px 20px 0;">
-                                <i class="fas fa-search"></i> Kiểm tra
-                            </button>
-                        </span>
+<div class="container py-4">
+    <div class="row g-4">
+        <div class="col-lg-5">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white fw-bold">CHỌN SÁCH MƯỢN</div>
+                <div class="card-body">
+                    <input type="text" id="txtSearch" class="form-control mb-3" placeholder="Tìm mã/tên sách..." onkeyup="searchBook()">
+                    <div style="max-height: 450px; overflow-y: auto;" id="listBooks">
+                        @foreach (var s in Model)
+                        {
+                            <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
+                                <div><b>@s.TENSACH</b><br /><small class="text-muted">Mã: @s.MASACH | Tồn: @s.TINHTRANG</small></div>
+                                <button class="btn btn-sm btn-primary rounded-pill px-3" onclick="addBook('@s.MASACH')">Chọn</button>
+                            </div>
+                        }
                     </div>
-
-                    <div id="result-docgia" class="alert mt-3" style="display:none; margin-top: 15px; border-radius: 10px;">
-                        <strong id="lblTenDocGia" style="font-size: 15px;"></strong>
-                        <div id="lblHanThe" class="small mt-1"></div>
-                    </div>
-
-                    <hr />
-                    @using (Html.BeginForm("LuuPhieu", "MuonSach", FormMethod.Post))
-                    {
-                        <input type="hidden" name="maThe" id="hiddenMaThe" />
-                        <button type="submit" class="btn btn-success btn-lg btn-block shadow"
-                                style="background-color: #1cc88a; border: none;" onclick="return validateLuu()">
-                            <i class="fas fa-save"></i> HOÀN TẤT PHIẾU
-                        </button>
-                    }
                 </div>
             </div>
         </div>
 
-        <div class="col-md-8">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-8" style="padding-top: 5px;">
-                            <i class="fas fa-shopping-cart"></i> 2. Danh sách sách mượn
-                        </div>
-                        <div class="col-xs-4 text-right">
-                            SL: <strong style="background: white; color: #36b9cc; padding: 2px 8px; border-radius: 5px;">@(listSachMuon != null ? listSachMuon.Sum(x=>x.SoLuong) : 0)</strong>
-                        </div>
+        <div class="col-lg-7">
+            <div class="card shadow-sm border-0 p-4">
+                <h5 class="fw-bold border-bottom pb-2 mb-4">THÔNG TIN MƯỢN SÁCH</h5>
+                @using (Html.BeginForm("LuuPhieu", "MuonSach", FormMethod.Post))
+                {
+                    <div class="row g-2 mb-3">
+                        <div class="col-9"><input type="text" name="maThe" id="txtMaThe" class="form-control" placeholder="Mã thẻ độc giả..." onchange="checkReader()"></div>
+                        <div class="col-3"><button type="button" class="btn btn-outline-primary w-100" onclick="checkReader()">Check</button></div>
                     </div>
-                </div>
+                    <div id="readerInfo" class="alert alert-info py-2 small mb-4" style="display:none;"></div>
 
-                <div class="panel-body" style="min-height: 400px;">
-                    <div class="well" style="background: #f8f9fc; border: none; border-radius: 15px;">
-                        <div class="row">
-                            <div class="col-md-9">
-                                <label class="text-muted small">CHỌN SÁCH (A-Z)</label>
-                                @Html.DropDownList("ddlSach", ViewBag.ListSach as SelectList, "-- Chọn sách --", new { @class = "form-control", @id = "ddlChonSach" })
-                            </div>
-                            <div class="col-md-3">
-                                <label>&nbsp;</label>
-                                <button type="button" class="btn btn-info btn-block" style="height: 45px;" onclick="themSachTuDropdown()">
-                                    <i class="fas fa-plus-circle"></i> Thêm ngay
-                                </button>
-                            </div>
-                        </div>
+                    <div id="divSelectedBooks">
+                        @Html.Action("GetSelectedBooks")
                     </div>
 
-                    <h5 class="text-uppercase text-muted font-weight-bold mt-4" style="border-bottom: 2px solid #e3e6f0; padding-bottom: 10px;">
-                        Chi tiết phiếu mượn
-                    </h5>
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Mã sách</th>
-                                    <th>Tên sách</th>
-                                    <th class="text-center">Số lượng</th>
-                                    <th class="text-center">Xóa</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (listSachMuon != null && listSachMuon.Count > 0)
-                                {
-                                    foreach (var item in listSachMuon)
-                                    {
-                                        <tr>
-                                            <td class="text-muted">@item.MaSach</td>
-                                            <td style="color: #4e73df; font-weight: 600;">@item.TenSach</td>
-                                            <td class="text-center"><span class="badge" style="background: #36b9cc;">@item.SoLuong</span></td>
-                                            <td class="text-center">
-                                                <a href="@Url.Action("XoaSach", new { maSach = item.MaSach })" class="btn btn-danger btn-xs" style="border-radius: 50%; width: 30px; height: 30px; padding-top: 6px;">
-                                                    <i class="fas fa-trash"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                                else
-                                {
-                                    <tr>
-                                        <td colspan="4" class="text-center text-muted" style="padding: 40px;">
-                                            <i class="fas fa-inbox fa-3x" style="opacity: 0.3;"></i><br />
-                                            <span class="small">Chưa có sách nào.</span>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                    <button type="submit" id="btnLuuPhieu" class="btn btn-success w-100 mt-4 fw-bold py-3" disabled>XÁC NHẬN CHO MƯỢN</button>
+                }
             </div>
         </div>
     </div>
 </div>
-
 @section Scripts {
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+    $(document).ready(function () {
+        console.log("jQuery đã load thành công và sẵn sàng!");
+        window.checkReader = function() {
+            var maThe = $('#txtMaThe').val();
+            if (!maThe) { alert("Vui lòng nhập mã thẻ!"); return; }
 
-    <script type="text/javascript">
-        // Đảm bảo trang tải xong mới chạy code
-        $(document).ready(function () {
-
-            // 1. Hàm Thêm sách
-            window.themSachTuDropdown = function() {
-                var maSach = $('#ddlChonSach').val();
-
-                if (!maSach || maSach === "") {
-                    alert("Vui lòng chọn sách!");
-                    return;
+            $.post('@Url.Action("KiemTraDocGia", "MuonSach")', { maThe: maThe }, function (res) {
+                if (res.status) {
+                    var colorClass = res.isValid ? 'text-success' : 'text-danger';
+                    $('#readerInfo').html(`Độc giả: <b>${res.ten}</b> - Trạng thái: <b class="${colorClass}">${res.trangThai}</b>`).fadeIn();
+                    $('#btnLuuPhieu').prop('disabled', !res.isValid);
+                } else {
+                    $('#readerInfo').html(`<span class="text-danger">${res.message}</span>`).fadeIn();
+                    $('#btnLuuPhieu').prop('disabled', true);
                 }
+            });
+        };
 
-                $.post('@Url.Action("ThemSachAjax", "MuonSach")', { maSach: maSach }, function(res) {
-                    if(res.status) {
-                        location.reload();
-                    } else {
-                        alert("Lỗi: " + res.msg);
-                    }
-                }).fail(function() {
-                    alert("Lỗi kết nối Server!");
-                });
-            };
+        window.addBook = function(id) {
+            $.post('@Url.Action("ThemSachAjax", "MuonSach")', { maSach: id }, function (res) {
+                if (res.status) {
+                    $('#divSelectedBooks').load('@Url.Action("GetSelectedBooks", "MuonSach")');
+                } else {
+                    alert(res.msg);
+                }
+            });
+        };
 
-            // 2. Hàm Check Độc giả
-            window.checkDocGia = function() {
-                var mt = $('#txtMaThe').val();
-                if(!mt) { alert("Nhập mã thẻ!"); return; }
-
-                $('#result-docgia').show().attr('class', 'alert alert-warning').html('Checking...');
-
-                $.post('@Url.Action("KiemTraDocGia", "MuonSach")', { maThe: mt }, function(res) {
-                    if(res.status) {
-                        $('#result-docgia').attr('class', 'alert alert-success');
-                        $('#result-docgia').html('<strong><i class="fas fa-check"></i> ' + res.ten + '</strong><br>Hạn: ' + res.han);
-                        $('#hiddenMaThe').val(mt);
-                    } else {
-                        $('#result-docgia').attr('class', 'alert alert-danger').html(res.message);
-                        $('#hiddenMaThe').val('');
-                    }
-                });
-            };
-
-            // 3. Validate
-            window.validateLuu = function() {
-                if($('#hiddenMaThe').val() === "") { alert("Chưa kiểm tra Độc giả!"); return false; }
-                var sl = @(listSachMuon != null ? listSachMuon.Count : 0);
-                if(sl === 0) { alert("Giỏ sách trống!"); return false; }
-                return confirm("Tạo phiếu mượn?");
-            };
-
-            // 4. Enter Event
-            window.handleEnter = function(e) {
-                if(e.keyCode === 13) checkDocGia();
-            };
-        });
+        window.removeBook = function(id) {
+            $.post('@Url.Action("XoaSachAjax", "MuonSach")', { maSach: id }, function (res) {
+                if (res.status) {
+                    $('#divSelectedBooks').load('@Url.Action("GetSelectedBooks", "MuonSach")');
+                }
+            });
+        };
+    });
     </script>
 }

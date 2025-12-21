@@ -106,7 +106,7 @@
     <div class="row">
 
         <div class="col-lg-3 col-md-4 mb-4">
-            @Html.Action("_SidebarPartial", "Sach")
+            @Html.Action("SidebarPartial", "Sach")
         </div>
 
         <div class="col-lg-9 col-md-8">
@@ -114,7 +114,6 @@
             <div class="row mb-5">
                 <div class="col-md-5 mb-3 text-center">
                     @{
-                        // Lấy ảnh từ bảng BIASACH theo trường URL_ANH
                         string imgUrl = (Model.BIASACH != null && !string.IsNullOrEmpty(Model.BIASACH.URL_ANH))
                                         ? "/Images/" + Model.BIASACH.URL_ANH
                                         : "https://via.placeholder.com/300x400?text=No+Image";
@@ -152,12 +151,24 @@
                                 @(!string.IsNullOrEmpty(Model.MOTA) ? Model.MOTA : "Nội dung đang cập nhật")
                             </li>
                         </ul>
-                        <form action="@Url.Action("ThemVaoGio", "GioSach")" method="post">
-                            <input type="hidden" name="maSach" value="@Model.MASACH" />
+                        @using (Html.BeginForm("ThemGioSach", "MuonSach", FormMethod.Post))
+                        {
+                            @Html.Hidden("id", Model.MASACH)
+                            @Html.Hidden("soLuong", 1)
+
+                            if (TempData["Success"] != null)
+                            {
+                                <div class="alert alert-success py-2 small mb-2">@TempData["Success"]</div>
+                            }
+                            if (TempData["Error"] != null)
+                            {
+                                <div class="alert alert-danger py-2 small mb-2">@TempData["Error"]</div>
+                            }
+
                             <button type="submit" class="btn-add-borrow">
                                 <i class="fas fa-cart-plus me-2"></i>Thêm vào danh sách mượn
                             </button>
-                        </form>
+                        }
                     </div>
                 </div>
             </div>

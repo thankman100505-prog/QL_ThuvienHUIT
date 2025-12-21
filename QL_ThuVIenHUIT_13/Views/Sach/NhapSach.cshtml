@@ -1,0 +1,87 @@
+﻿@model List<QL_ThuVIenHUIT_13.Models.QLSACH>
+@{
+    ViewBag.Title = "Nhập thêm sách";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <h2 class="text-primary fw-bold mb-4"><i class="fa fa-plus-square me-2"></i>NHẬP THÊM SÁCH VÀO KHO</h2>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <input type="text" id="txtSearch" class="form-control mb-3" placeholder="Tìm mã hoặc tên sách..." onkeyup="searchBook()">
+                    <div id="listBooks" style="max-height: 500px; overflow-y: auto;">
+                        @foreach (var s in Model)
+                        {
+                            <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                                <div><b>@s.TENSACH</b><br /><small class="text-muted">Mã: @s.MASACH | Hiện có: @s.SL</small></div>
+                                <button class="btn btn-sm btn-outline-primary" onclick="selectBook('@s.MASACH', '@s.TENSACH')">Chọn</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 p-4">
+                <div id="formNhap" style="display:none;">
+                    <h5 class="fw-bold text-dark mb-4">SÁCH ĐANG CHỌN: <span id="lblTenSach" class="text-primary"></span></h5>
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="selectedMaSach" />
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">SỐ LƯỢNG NHẬP THÊM</label>
+                            <input type="number" id="nbSoLuong" class="form-control form-control-lg" value="1" min="1" />
+                        </div>
+                        <button type="button" class="btn btn-success btn-lg w-100 fw-bold" onclick="confirmImport()">
+                            <i class="fa fa-download me-2"></i>XÁC NHẬN NHẬP KHO
+                        </button>
+                    }
+                </div>
+                <div id="noSelect" class="text-center py-5 text-muted fst-italic">
+                    Vui lòng chọn một đầu sách bên trái để thực hiện nhập thêm
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+    function searchBook() {
+        $.get('@Url.Action("TimKiemSach", "MuonSach")', { tuKhoa: $('#txtSearch').val() }, function (res) {
+            let h = '';
+            res.data.forEach(i => {
+                h += `<div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                        <div><b>${i.TENSACH}</b><br/><small class="text-muted">Mã: ${i.MASACH} | Hiện có: ${i.SL_TON}</small></div>
+                        <button class="btn btn-sm btn-outline-primary" onclick="selectBook('${i.MASACH}', '${i.TENSACH}')">Chọn</button>
+                      </div>`;
+            });
+            $('#listBooks').html(h);
+        });
+    }
+
+    function selectBook(id, name) {
+        $('#selectedMaSach').val(id);
+        $('#lblTenSach').text(name);
+        $('#noSelect').hide();
+        $('#formNhap').fadeIn();
+    }
+
+    function confirmImport() {
+        var data = {
+            maSach: $('#selectedMaSach').val(),
+            soLuongNhap: $('#nbSoLuong').val(),
+            __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+        };
+        $.post('@Url.Action("XacNhanNhap", "Sach")', data, function (res) {
+            alert(res.msg);
+            if (res.status) location.reload();
+        });
+    }
+    </script>
+}

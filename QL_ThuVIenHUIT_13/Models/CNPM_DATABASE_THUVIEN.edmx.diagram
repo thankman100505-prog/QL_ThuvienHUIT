@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4476ad7830f04a19bac2171e2826eaf5" Name="Diagram1" ZoomLevel="54">
+      <Diagram DiagramId="4476ad7830f04a19bac2171e2826eaf5" Name="Diagram1" ZoomLevel="62">
         <EntityTypeShape EntityType="CNPM_DATABASE_THUVIENModel.BIASACH" Width="1.5" PointX="5.25" PointY="7.125" />
         <EntityTypeShape EntityType="CNPM_DATABASE_THUVIENModel.CHITIETPM" Width="1.5" PointX="5.25" PointY="3.875" />
         <EntityTypeShape EntityType="CNPM_DATABASE_THUVIENModel.DOCGIA" Width="1.5" PointX="1.5" PointY="16.5" />
@@ -38,6 +38,7 @@
         <EntityTypeShape EntityType="CNPM_DATABASE_THUVIENModel.VIPHAM" Width="1.5" PointX="5.25" PointY="12.375" />
         <AssociationConnector Association="CNPM_DATABASE_THUVIENModel.FK__VIPHAM__MAPM__02084FDA" />
         <EntityTypeShape EntityType="CNPM_DATABASE_THUVIENModel.THAMSO" Width="1.5" PointX="3.375" PointY="0.75" />
+        <AssociationConnector Association="CNPM_DATABASE_THUVIENModel.FK__PHIEU_MUO__MANV___10566F31" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

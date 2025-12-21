@@ -1,18 +1,10 @@
-﻿
-@{
-    ViewBag.Title = "ThanhCong";
+﻿@{
+    ViewBag.Title = "Thành công";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2 style="text-align:center;color:green">
-    Đặt phòng thành công! đang in phiếu đặt phòng vui lòng chờ.....
-</h2>
+<h2>Đặt phòng thành công!</h2>
 
-<div style="text-align:center;margin-top:20px">
-    <a href="@Url.Action("LichSuDatPhong", "Phong")"
-       class="btn btn-success">
-        OK
-    </a>
-</div>
+<p>Phiếu đặt phòng của bạn đã được lưu.</p>
 
-
+<a href="@Url.Action("LichSuDatPhong")">Xem lịch sử đặt phòng</a>

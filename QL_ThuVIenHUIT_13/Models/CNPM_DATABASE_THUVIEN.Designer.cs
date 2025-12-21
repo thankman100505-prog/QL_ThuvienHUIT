@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'D:\HUIT\CNPM\QL_ThuvienHUIT\QL_ThuVIenHUIT_13\Models\CNPM_DATABASE_THUVIEN.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\buitr\Downloads\QL_ThuvienHUIT-main (1)\QL_ThuvienHUIT-main\QL_ThuVIenHUIT_13\Models\CNPM_DATABASE_THUVIEN.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

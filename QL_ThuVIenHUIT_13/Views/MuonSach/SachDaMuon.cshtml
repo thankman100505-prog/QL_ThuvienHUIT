@@ -1,0 +1,92 @@
+﻿
+@{
+    ViewBag.Title = "Sách đã mượn";
+}
+@model List<QL_ThuVIenHUIT_13.Models.PHIEUMUON>
+
+<div class="card" style="padding:30px;margin:0 auto">
+    <h2 class="card-title" style="text-align:center">Sách đã mượn</h2>
+
+    <div class="card-body">
+        @foreach (var pm in Model)
+        {
+            <div class="card" style="padding:20px;margin-bottom:40px">
+                <div class="row">
+                    <div class="col-4">
+                        <h6>Mã phiếu mượn:</h6>
+                    </div>
+                    <div class="col-6">
+                        <p>@pm.MAPM</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <h6>Nhân viên thực hiện duyệt:</h6>
+                    </div>
+                    <div class="col-6">
+                        <p>@pm.QLNHANVIEN.TENNV</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <h6>Ngày mượn:</h6>
+                    </div>
+                    <div class="col-6">
+                        <p>@pm.NgayMuon</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-4">
+                        <h6>Ngày đến hạn:</h6>
+                    </div>
+                    <div class="col-6">
+                        <p>@pm.NgayDenHan</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-4">
+                        <h6>Tổng tiền thế chân:</h6>
+                    </div>
+                    <div class="col-6">
+                        <p class="text-danger">@pm.CHITIETPMs.Sum(x => x.TIENTHECHAN).Value.ToString("N0")</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr class="table-light">
+                                <th scope="col">Sách</th>
+                                <th scope="col" class="text-center">Tác giả</th>
+                                <th scope="col" class="text-center">Số lượng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in pm.CHITIETPMs)
+                            {
+                                <tr style="margin-bottom:15px">
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <a href="@Url.Action("ChiTietSanPham", "Home", new { id = item.MASACH})">
+                                                <img src="@Url.Content("~/Images/"+item.QLSACH.BIASACH.URL_ANH)" class="me-3" alt="@item.QLSACH.TENSACH" width="50">
+                                                <span class="fw-bold">@item.QLSACH.TENSACH</span>
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">@item.QLSACH.TACGIA.TENTG</td>
+                                    <td class="text-center">
+                                        <b>@item.SLMUON</b>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
