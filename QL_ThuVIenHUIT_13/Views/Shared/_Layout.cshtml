@@ -79,6 +79,13 @@
                 <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i> TRANG CHỦ</a></li>
                 <li><a href="@Url.Action("About", "Home")">GIỚI THIỆU</a></li>
                 <li><a href="@Url.Action("ChiTiet", "TinTuc")">TIN TỨC</a></li>
+                <li>
+                    <a href="#">HƯỚNG DẪN <i class="fa fa-caret-down" style="margin-left: 10px;"></i></a>
+                    <ul>
+                        <li><a href="@Url.Action("HuongDan_DK_The", "Home")">HƯỚNG DẪN ĐĂNG KÝ THẺ</a></li>
+                        <li><a href="@Url.Action("HuongDan_SD_PhongHop", "Home")">HƯỚNG DẪN MƯỢN PHÒNG </a></li>
+                    </ul>
+                </li>
 
                 @if (Session["User_info"] != null && Session["Role"] != null)
                 {
